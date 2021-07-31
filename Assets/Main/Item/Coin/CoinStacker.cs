@@ -1,8 +1,10 @@
 using UnityEngine;
 using MLAPI.Messaging;
 using System.Linq;
+using MyFunc;
 using Prefab;
 using CoinSpace;
+
 public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>
 {
     const float THICKNESS = 0.0045f;
@@ -21,6 +23,17 @@ public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>
             coin.transform.localRotation = default;
             pos += THICKNESS;
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void HandoverServerRpc(ulong receiverId, int index, int count)
+    => Handover(NetworkFunc.GetComponent<CoinStacker>(receiverId), index, count);
+    [ServerRpc(RequireOwnership = false)]
+    public void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
+    {
+        var receiver = PrefabGenerator.SpawnPrefabWithoutManager(PrefabHash).GetComponent<CoinStacker>();
+        receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
+        Handover(receiver, index, count);
     }
 
     public int GetSum(Coin target)

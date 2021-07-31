@@ -7,10 +7,11 @@ using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using System.Linq;
 using UniRx;
+using MyFunc;
 using Prefab;
 using PlayingCardSpace;
 
-public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, PlayingCard, CardInfo>, IControllable
+public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, PlayingCard, CardInfo>, IControllable, IStackRpcCaller
 {
     override protected LocalPrefabName ChildPrefabName => LocalPrefabName.PlayingCard;
     override protected float CHILD_MASS => 0.0005f;
@@ -30,6 +31,17 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
     {
         m_IsDeckNV = null;
         base.OnPool();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void HandoverServerRpc(ulong receiverId, int index, int count)
+    => Handover(NetworkFunc.GetComponent<PlayingCardStacker>(receiverId), index, count);
+    [ServerRpc(RequireOwnership = false)]
+    public void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
+    {
+        var receiver = PrefabGenerator.SpawnPrefabWithoutManager(PrefabHash).GetComponent<PlayingCardStacker>();
+        receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
+        Handover(receiver, index, count);
     }
 
     public void SetFullDeck()

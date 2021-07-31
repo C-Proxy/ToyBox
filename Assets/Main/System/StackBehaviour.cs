@@ -20,11 +20,36 @@ where TInfo : INetworkSerializable
     void Set(TInfo serial, TParent parent);
     void OnSet(TInfo info);
 }
+public interface IStackRpcCaller
+{
+    // [ServerRpc(RequireOwnership = false)]
+    // void AddChildrenServerRpc(INetworkSerializable[] infos);
+    [ServerRpc(RequireOwnership = false)]
+    void HandoverServerRpc(ulong receiverId, int index, int count);
+    [ServerRpc(RequireOwnership = false)]
+    void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count);
+
+    // [ServerRpc(RequireOwnership = false)]
+    // protected void AddChildrenServerRpc(TInfo[] infos)
+    // => AddChildInfos(infos);
+    // [ServerRpc(RequireOwnership = false)]
+    // protected void HandoverServerRpc(ulong receiverId, int index, int count)
+    // => Handover(NetworkFunc.GetComponent<TParent>(receiverId), index, count);
+    // [ServerRpc(RequireOwnership = false)]
+    // protected void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
+    // {
+    //     var receiver = PrefabGenerator.SpawnPrefabWithoutManager(PrefabHash).GetComponent<TParent>();
+    //     receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
+    //     Handover(receiver, index, count);
+    // }
+
+}
 abstract public class StackParentBehaviour<TParent, TChild, TInfo> : BaseItem
 where TParent : StackParentBehaviour<TParent, TChild, TInfo>
 where TChild : StackChildBehaviour<TParent, TChild, TInfo>
 where TInfo : INetworkSerializable
 {
+    IStackRpcCaller RpcCaller => (IStackRpcCaller)this;
     const int MAX_STACK = byte.MaxValue;
     abstract protected float CHILD_MASS { get; }
     abstract protected LocalPrefabName ChildPrefabName { get; }
@@ -36,9 +61,11 @@ where TInfo : INetworkSerializable
     {
         base.OnSpawn();
         m_ChildInfosNV = new NetworkVariable<TInfo[]>();
+        m_ChildList = new List<TChild>();
 
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
+            Debug.Log($"Pre:{pre},Cur:{cur}");
             var infoLength = cur.Length;
             if (infoLength == 0)
             {
@@ -66,40 +93,40 @@ where TInfo : INetworkSerializable
         m_ChildInfosNV = null;
         foreach (var child in m_ChildList)
             child.Destroy();
+        m_ChildList.Clear();
+        m_ChildList = null;
         base.OnPool();
     }
 
     public void HandoverToGrabber(IGrabber grabber, TChild child)
-    => HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), 1);
+    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), 1);
     public void HandoverTopToGrabber(IGrabber grabber)
-    => HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.Count - 1, 1);
+    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.Count - 1, 1);
     public void HandoverBottomToGrabber(IGrabber grabber)
-    => HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, 1);
+    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, 1);
 
     public void HandoverBottomChildren(TParent receiver, int index)
-    => HandoverServerRpc(receiver.NetworkObjectId, 0, index + 1);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, index + 1);
     public void HandoverTopChildrenRpc(TParent receiver, int index)
-    => HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
 
     public void HandoverChild(TParent receiver, TChild child)
-    => HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.IndexOf(child), 1);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.IndexOf(child), 1);
     public void HandoverTopChild(TParent receiver)
-    => HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.Count - 1, 1);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.Count - 1, 1);
     public void HandoverBottomChild(TParent receiver)
-    => HandoverServerRpc(receiver.NetworkObjectId, 0, 1);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, 1);
     public void HandoverTopChildren(TParent receiver, TChild child)
     {
         var index = m_ChildList.IndexOf(child);
-        HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
+        RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
     }
     public void HandoverBottomChildren(TParent receiver, TChild child)
-    => HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.IndexOf(child) + 1);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.IndexOf(child) + 1);
     public void HandoverAll(TParent receiver)
-    => HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.Count);
+    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.Count);
 
-    // [ServerRpc(RequireOwnership = false)]
-    // protected void AddChildrenServerRpc(TInfo[] infos)
-    // => AddChildInfos(infos);
+
     public void AddChildInfos(TInfo[] infos)
     {
         var list = ChildInfos.ToList();
@@ -114,10 +141,8 @@ where TInfo : INetworkSerializable
         ChildInfos = list.ToArray();
         return removed.ToArray();
     }
-    [ServerRpc(RequireOwnership = false)]
-    protected void HandoverServerRpc(ulong receiverId, int index, int count)
-    => Handover(NetworkFunc.GetComponent<TParent>(receiverId), index, count);
-    void Handover(TParent receiver, int index, int count)
+
+    protected void Handover(TParent receiver, int index, int count)
     {
         var childCnt = receiver.ChildInfos.Length;
         if (childCnt + count > MAX_STACK)
@@ -126,14 +151,6 @@ where TInfo : INetworkSerializable
         var removed = receiver.RemoveChildInfos(index, count);
         AddChildInfos(removed);
     }
-    [ServerRpc(RequireOwnership = false)]
-    protected void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
-    {
-        var receiver = PrefabGenerator.SpawnPrefabWithoutManager(PrefabHash).GetComponent<TParent>();
-        receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
-        Handover(receiver, index, count);
-    }
-
 
     abstract protected void Align();
 
