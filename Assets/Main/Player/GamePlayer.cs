@@ -1,0 +1,366 @@
+﻿// using System;
+// using System.Threading;
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
+// using System.Linq;
+// using UniRx;
+// using UniRx.Triggers;
+// using Cysharp.Threading.Tasks;
+
+// namespace PlayerSpace
+// {
+//     public class GamePlayer : MonoBehaviourPun, IPunObservable//, IGrabberHandler
+//     {
+//         [SerializeField] PlayerIKAnchor m_PlayerIKAnchor = default;
+//         [SerializeField] PlayerHand m_LeftHand = default, m_RightHand = default;
+//         PoseController m_PoseController;
+//         HandController m_LeftHandController, m_RightHandController;
+//         // GrabberHandler m_GrabberHandler;
+
+//         // public IGrabber GetGrabber(int grabberId) => m_GrabberHandler.GetTargetGrabber(grabberId);
+//         private void Start()
+//         {
+//             var isMine = photonView.IsMine;
+//             if (isMine)
+//             {
+//                 var playerRoot = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
+//                 var playerLeft = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
+//                 var playerRight = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+//                 var playerLook = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
+//                 var playerEye = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
+
+//                 var ovrIKAnchor = OVRRigHandler.PlayerIKAnchor;
+//                 // var ovrRoot = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
+//                 // var ovrLeft = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
+//                 // var ovrRight = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+//                 // var ovrLook = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
+//                 // var ovrEye = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
+
+//                 // this.UpdateAsObservable().Subscribe(_ =>
+//                 // {
+//                 //     var rot = ovrRoot.rotation.eulerAngles;
+//                 //     playerRoot.SetPositionAndRotation(ovrRoot.position, Quaternion.Euler(new Vector3(0, rot.y, rot.z)));
+//                 // // playerRoot.SetPositionAndRotation(ovrRoot.position, ovrRoot.rotation);
+//                 // playerLeft.SetPositionAndRotation(ovrLeft.position, ovrLeft.rotation);
+//                 //     playerRight.SetPositionAndRotation(ovrRight.position, ovrRight.rotation);
+//                 //     playerLook.SetPositionAndRotation(ovrLook.position, ovrLook.rotation);
+//                 //     playerEye.SetPositionAndRotation(ovrEye.position, ovrEye.rotation);
+
+//                 // }).AddTo(this);
+//             }
+//             // m_GrabberHandler = new GrabberHandler(photonView.ViewID);
+//             // m_LeftHandController = new HandController(true, m_LeftHand, m_GrabberHandler, isMine);
+//             // m_RightHandController = new HandController(false, m_RightHand, m_GrabberHandler, isMine);
+//             m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
+//         }
+//         private void OnAnimatorIK()
+//         {
+//             m_PoseController.ApplyIK();
+//         }
+//         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+//         {
+//             if (stream.IsWriting)
+//             {
+//                 stream.SendNext((byte)m_LeftHandController.HandState);
+//                 stream.SendNext((byte)m_RightHandController.HandState);
+//             }
+//             else
+//             {
+//                 m_LeftHandController.HandState = (HandState)(byte)stream.ReceiveNext();
+//                 m_RightHandController.HandState = (HandState)(byte)stream.ReceiveNext();
+//             }
+//         }
+//         class PoseController
+//         {
+//             bool IsActive = true;
+//             Animator m_Animator;
+//             HandShape m_LeftHandShape = default, m_RightHandShape = default;
+//             Transform m_LeftThumbTransform, m_RightThumbTransform, m_LeftTarget, m_RightTarget, m_LookTarget;
+//             HumanPoseHandler m_HumanPoseHandler;
+//             HandController m_LeftHandController, m_RightHandController;
+//             HumanPose m_HumanPose;
+
+//             public PoseController(Animator animator, PlayerIKAnchor iKAnchor, PlayerHand leftHand, PlayerHand rightHand)
+//             {
+//                 m_Animator = animator;
+//                 var thumb = FingerName.Thumb;
+//                 m_LeftThumbTransform = leftHand.HandTransform.GetFingerTransform(thumb, 0);
+//                 m_RightThumbTransform = rightHand.HandTransform.GetFingerTransform(thumb, 0);
+
+//                 m_LeftTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
+//                 m_RightTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+//                 m_LookTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
+
+//                 m_HumanPoseHandler = new HumanPoseHandler(animator.avatar, animator.transform);
+
+//                 // leftHand.HandShapeAsObservable.Subscribe(shape => m_LeftHandShape = shape).AddTo(leftHand);
+//                 // rightHand.HandShapeAsObservable.Subscribe(shape => m_RightHandShape = shape).AddTo(rightHand);
+//             }
+//             void OverwriteHandPose(HandShape hand, ref int id)
+//             {
+//                 OverwriteFingerPose(hand.Thumb, ref id);
+//                 OverwriteFingerPose(hand.Index, ref id);
+//                 OverwriteFingerPose(hand.Middle, ref id);
+//                 OverwriteFingerPose(hand.Ring, ref id);
+//                 OverwriteFingerPose(hand.Little, ref id);
+//             }
+//             public void OverwriteThumbRotate()
+//             {
+//                 m_LeftThumbTransform.Rotate(Vector3.left, m_LeftHandShape.ThumbRotation * 90f, Space.Self);
+//                 m_RightThumbTransform.Rotate(Vector3.left, m_RightHandShape.ThumbRotation * 90f, Space.Self);
+//             }
+//             void OverwriteFingerPose(Finger finger, ref int id)
+//             {
+//                 m_HumanPose.muscles[id++] = finger.Streached1;
+//                 m_HumanPose.muscles[id++] = finger.Spread;
+//                 m_HumanPose.muscles[id++] = finger.Streached2;
+//                 m_HumanPose.muscles[id++] = finger.Streached3;
+//             }
+
+//             private void LateUpdate()
+//             {
+//                 if (IsActive)
+//                 {
+//                     m_HumanPoseHandler.GetHumanPose(ref m_HumanPose);
+//                     int id = 55;
+//                     OverwriteHandPose(m_LeftHandShape, ref id);
+//                     OverwriteHandPose(m_RightHandShape, ref id);
+//                     m_HumanPoseHandler.SetHumanPose(ref m_HumanPose);
+//                     OverwriteThumbRotate();
+//                 }
+//             }
+//             public void ApplyIK()
+//             {
+//                 m_Animator.SetLookAtWeight(1, 0.2f, 0.9f, 0.7f);
+//                 m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+//                 m_Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+//                 m_Animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+//                 m_Animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+//                 m_Animator.SetIKPosition(AvatarIKGoal.LeftHand, m_LeftTarget.position);
+//                 m_Animator.SetIKPosition(AvatarIKGoal.RightHand, m_RightTarget.position);
+//                 m_Animator.SetIKRotation(AvatarIKGoal.LeftHand, m_LeftTarget.rotation);
+//                 m_Animator.SetIKRotation(AvatarIKGoal.RightHand, m_RightTarget.rotation);
+//                 m_Animator.SetLookAtPosition(m_LookTarget.position);
+//             }
+//         }
+//         class HandController : IControllable
+//         {
+//             PlayerHand m_PlayerHand;
+//             ReactiveProperty<HandState> m_HandStateRP = new ReactiveProperty<HandState>();
+//             public HandState HandState { set { m_HandStateRP.Value = value; } get { return m_HandStateRP.Value; } }
+//             public IObservable<HandShape> HandShapeAsObservable { private set; get; }
+//             List<IDisposable> m_Subscriptions;
+
+//             // public HandController(bool isLeft, PlayerHand playerHand, GrabberHandler grabberHandler, bool isMine)
+//             // {
+//             //     var laser = playerHand.LaserTargetFinder;
+
+//             //     m_PlayerHand = playerHand;
+//             //     var wispHand = m_PlayerHand.WispHand;
+//             //     var grabber = playerHand.HandGrabber;
+//             //     grabberHandler.Append(grabber);
+
+//             //     // HandShapeAsObservable = grabber.TargetAsObservable.Select(target =>
+//             //     // {
+//             //     //     if (target != null)
+//             //     //         return target.HandShapeAsObservable;
+//             //     //     else
+//             //     //         return m_PlayerHand.HandShapeAsObservable;
+//             //     // }).Switch().Publish().RefCount();
+
+//             //     m_Subscriptions = new List<IDisposable>(new[]{
+
+//             //     //LaserFocus
+//             //     Observable.CombineLatest(laser.TargetAsObservable, grabber.TargetAsObservable, (target, grabbable) => (target, grabbable)).Subscribe(tuple =>
+//             //     {
+//             //         var target = tuple.target;
+//             //         if (target is ILaserReceivable laserReceivable)
+//             //             laserReceivable.SendFocusInfo(laser, tuple.grabbable);
+//             //         else
+//             //             laser.SetSpriteAndText(SpriteManager.LaserIcon.Default);
+
+//             //     }),
+
+//             //     //StateChange
+//             //     m_HandStateRP.Subscribe(state =>
+//             //     {
+//             //         m_PlayerHand.EnableLaser(state == HandState.Laser);
+//             //         if (state == HandState.Wisp)
+//             //         {
+//             //             wispHand.EnableTrace(m_PlayerHand.transform, grabber.Target?.transform.localPosition ?? default);
+//             //             grabber.transform.SetParent(wispHand.transform,false);
+//             //             grabber.PlayerHandEnabled=false;
+//             //         }
+//             //         else
+//             //         {
+//             //             wispHand.StopTrace();
+//             //             grabber.transform.SetParent(playerHand.transform,false);
+//             //             grabber.PlayerHandEnabled=true;
+//             //         }
+//             //         if(grabber.Target is BaseItem item)
+//             //             item.SetOffsetPosition(grabber);
+//             //     }),
+
+//             //     //WispSpriteMove
+//             //     // grabber.TargetAsObservable.Subscribe(target=>{
+//             //     //     if(HandState==HandState.Wisp)
+//             //     //         wispHand.SetSpritePosition(target?.transform.localPosition??default);
+//             //     // }),
+//             // });
+
+//             //     if (isMine)
+//             //     {
+
+//             //         var playerInput = InputDriver.GetPlayerInput(isLeft);
+//             //         IDisposable[] controlSubscriptions = default;
+//             //         m_Subscriptions.AddRange(new[]{
+
+//             //         //InputConnection
+//             //         grabber.TargetAsObservable.Subscribe(target =>
+//             //         {
+//             //             if (controlSubscriptions != null)
+//             //                 foreach (var discription in controlSubscriptions)
+//             //                     discription.Dispose();
+//             //             var controllable = target as IControllable ?? this;
+//             //             controlSubscriptions = controllable.Connect(playerInput);
+//             //         }),
+
+//             //         //WispMode
+//             //         playerInput.ClickAsObservable(KeyType.MainButton).Where(isDouble => isDouble).Subscribe(_ =>
+//             //         {
+//             //             if (HandState != HandState.Wisp)
+//             //                 HandState = HandState.Wisp;
+//             //             else
+//             //                 HandState = HandState.Default;
+//             //         }),
+
+//             //         //LaserMode
+//             //         playerInput.ClickAsObservable(KeyType.SubButton).Where(isDouble => isDouble).Subscribe(_ =>
+//             //         {
+//             //             if (HandState != HandState.Laser)
+//             //                 HandState = HandState.Laser;
+//             //             else
+//             //                 HandState = HandState.Default;
+//             //         }),
+
+//             //         //Grab
+//             //         playerInput.ButtonAsObservable(KeyType.HandTrigger).Subscribe(isPressed =>
+//             //         {
+//             //             if (isPressed)
+//             //             {
+//             //                 if (HandState != HandState.Laser)
+//             //                     grabber.Grab();
+//             //                 else
+//             //                     m_PlayerHand.Interact(grabber.Target as IInteractor, false);
+//             //             }
+//             //             else
+//             //                 grabber.Release();
+//             //         }),
+
+//             //         //Interact
+//             //         playerInput.PickAsObservable.Where(_ => HandState == HandState.Laser).Subscribe(isDouble => m_PlayerHand.Interact(grabber.Target as IInteractor, isDouble)),
+//             //         });
+//             //     }
+//             // }
+//             public IDisposable[] Connect(InputDriver.PlayerInput playerInput) => new[]{
+//             playerInput.Axis1DAsObservable(KeyType.IndexTrigger).Subscribe(value=>m_PlayerHand.Animator.SetFloat("IndexValue",value)),
+//             playerInput.Axis1DAsObservable(KeyType.HandTrigger).Subscribe(value=>m_PlayerHand.Animator.SetFloat("HandValue",value)),
+//         };
+//         }
+//         public enum HandState
+//         {
+//             Default,
+//             Wisp,
+//             Laser,
+//         }
+
+//     }
+
+//     [Serializable]
+//     public struct PlayerIKAnchor
+//     {
+//         [SerializeField] Transform m_Root, m_LookAnchor, m_EyeAnchor, m_LeftHandAnchor, m_RightHandAnchor;
+//         PlayerIKAnchor(Transform root, Transform lookAnchor, Transform eyeAnchor, Transform leftAnchor, Transform rightAnchor)
+//         {
+//             m_Root = root;
+//             m_LookAnchor = lookAnchor;
+//             m_EyeAnchor = eyeAnchor;
+//             m_LeftHandAnchor = leftAnchor;
+//             m_RightHandAnchor = rightAnchor;
+//         }
+//         public Transform GetIKAnchor(AnchorBone ikBone)
+//         {
+//             switch (ikBone)
+//             {
+//                 case AnchorBone.Root:
+//                     return m_Root;
+//                 case AnchorBone.LookTarget:
+//                     return m_LookAnchor;
+//                 case AnchorBone.Eye:
+//                     return m_EyeAnchor;
+//                 case AnchorBone.LeftHand:
+//                     return m_LeftHandAnchor;
+//                 case AnchorBone.RightHand:
+//                     return m_RightHandAnchor;
+//             }
+//             return default;
+//         }
+//         public Transform[] ToArray() => new Transform[] { m_Root, m_LookAnchor, m_LeftHandAnchor, m_RightHandAnchor };
+
+//         public enum AnchorBone
+//         {
+//             Root,
+//             LookTarget,
+//             Eye,
+//             LeftHand,
+//             RightHand,
+//         }
+//     }
+
+//     [Serializable]
+//     public struct Finger
+//     {
+//         [Range(-2f, 2f)] public float Spread, Streached1, Streached2, Streached3;
+//         public Finger(float spread, float streached1, float streached2, float streached3)
+//         {
+//             Spread = spread;
+//             Streached1 = streached1;
+//             Streached2 = streached2;
+//             Streached3 = streached3;
+//         }
+//         public override string ToString()
+//         => $"({Spread}f,{Streached1}f,{Streached2}f,{Streached3}f)";
+//         public static Finger Lerp(Finger finger1, Finger finger2, float lerp)
+//         => new Finger(Mathf.Lerp(finger1.Spread, finger2.Spread, lerp), Mathf.Lerp(finger1.Streached1, finger2.Streached1, lerp), Mathf.Lerp(finger1.Streached2, finger2.Streached2, lerp), Mathf.Lerp(finger1.Streached3, finger2.Streached3, lerp));
+//     }
+//     [Serializable]
+//     public struct HandShape
+//     {
+//         [Range(-1f, 1f)] public float ThumbRotation;
+//         public Finger Thumb, Index, Middle, Ring, Little;
+//         public HandShape(Finger thumb, Finger index, Finger middle, Finger ring, Finger little, float thumbRot = 0f)
+//         {
+//             Thumb = thumb;
+//             Index = index;
+//             Middle = middle;
+//             Ring = ring;
+//             Little = little;
+//             ThumbRotation = thumbRot;
+//         }
+//         public static HandShape Lerp(HandShape hand1, HandShape hand2, float lerp)
+//         => new HandShape(Finger.Lerp(hand1.Thumb, hand2.Thumb, lerp), Finger.Lerp(hand1.Index, hand2.Index, lerp), Finger.Lerp(hand1.Middle, hand2.Middle, lerp), Finger.Lerp(hand1.Ring, hand2.Ring, lerp), Finger.Lerp(hand1.Little, hand2.Little, lerp));
+//     }
+//     [Serializable]
+//     public class HandShapeReactiveProperty : ReactiveProperty<HandShape>
+//     {
+//         public HandShapeReactiveProperty() { }
+//         public HandShapeReactiveProperty(HandShape handShape) : base(handShape) { }
+//     }
+//     [Serializable]
+//     public struct HandleAnchor
+//     {
+//         public Vector3 Position;
+//         public Quaternion Rotation;
+//     }
+// }

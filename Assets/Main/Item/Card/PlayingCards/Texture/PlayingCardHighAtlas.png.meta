@@ -1,0 +1,1356 @@
+fileFormatVersion: 2
+guid: 53220cbd7bab84c4b963eb54740f640a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5296909037299777025
+    second: PlayingCardHighAtlas_0
+  - first:
+      213: 824761030830044046
+    second: PlayingCardHighAtlas_1
+  - first:
+      213: 1217376973431314540
+    second: PlayingCardHighAtlas_2
+  - first:
+      213: -284077954843284338
+    second: PlayingCardHighAtlas_3
+  - first:
+      213: 5737060884467605383
+    second: PlayingCardHighAtlas_4
+  - first:
+      213: 8963638542970765979
+    second: PlayingCardHighAtlas_5
+  - first:
+      213: 3329201971366392478
+    second: PlayingCardHighAtlas_6
+  - first:
+      213: 4282471310899249613
+    second: PlayingCardHighAtlas_7
+  - first:
+      213: 6017033013972847551
+    second: PlayingCardHighAtlas_8
+  - first:
+      213: -131689711584683344
+    second: PlayingCardHighAtlas_9
+  - first:
+      213: -4925570711740099525
+    second: PlayingCardHighAtlas_10
+  - first:
+      213: 7648865620269854611
+    second: PlayingCardHighAtlas_11
+  - first:
+      213: -731831933766990087
+    second: PlayingCardHighAtlas_12
+  - first:
+      213: -3083260666024813406
+    second: PlayingCardHighAtlas_13
+  - first:
+      213: 4326760984194629713
+    second: PlayingCardHighAtlas_14
+  - first:
+      213: -1814870235478286886
+    second: PlayingCardHighAtlas_15
+  - first:
+      213: 563894629660123141
+    second: PlayingCardHighAtlas_16
+  - first:
+      213: -5000421063693879650
+    second: PlayingCardHighAtlas_17
+  - first:
+      213: 3143877893116495561
+    second: PlayingCardHighAtlas_18
+  - first:
+      213: 8811537134865153885
+    second: PlayingCardHighAtlas_19
+  - first:
+      213: 2742910985195435027
+    second: PlayingCardHighAtlas_20
+  - first:
+      213: -3442010389287841212
+    second: PlayingCardHighAtlas_21
+  - first:
+      213: 793043962454468166
+    second: PlayingCardHighAtlas_22
+  - first:
+      213: -8220894371399872012
+    second: PlayingCardHighAtlas_23
+  - first:
+      213: 5515434551689834213
+    second: PlayingCardHighAtlas_24
+  - first:
+      213: 3094818762289833219
+    second: PlayingCardHighAtlas_25
+  - first:
+      213: 6737773317852199166
+    second: PlayingCardHighAtlas_26
+  - first:
+      213: -9172645004038973400
+    second: PlayingCardHighAtlas_27
+  - first:
+      213: -3371811828656521721
+    second: PlayingCardHighAtlas_28
+  - first:
+      213: -4422001361289970234
+    second: PlayingCardHighAtlas_29
+  - first:
+      213: 5869350593379478151
+    second: PlayingCardHighAtlas_30
+  - first:
+      213: 3721546275191067357
+    second: PlayingCardHighAtlas_31
+  - first:
+      213: 6410624444641643245
+    second: PlayingCardHighAtlas_32
+  - first:
+      213: 4616294542553939835
+    second: PlayingCardHighAtlas_33
+  - first:
+      213: -3354178527483645519
+    second: PlayingCardHighAtlas_34
+  - first:
+      213: 1890562620490332925
+    second: PlayingCardHighAtlas_35
+  - first:
+      213: 7088333025983278646
+    second: PlayingCardHighAtlas_36
+  - first:
+      213: 3257762344366207319
+    second: PlayingCardHighAtlas_37
+  - first:
+      213: -6346527173705827258
+    second: PlayingCardHighAtlas_38
+  - first:
+      213: -8792297061480679495
+    second: PlayingCardHighAtlas_39
+  - first:
+      213: 9026185252028990951
+    second: PlayingCardHighAtlas_40
+  - first:
+      213: -9082343483769261866
+    second: PlayingCardHighAtlas_41
+  - first:
+      213: 8954547967582120188
+    second: PlayingCardHighAtlas_42
+  - first:
+      213: 4259600729401201792
+    second: PlayingCardHighAtlas_43
+  - first:
+      213: 7889573622714619889
+    second: PlayingCardHighAtlas_44
+  - first:
+      213: -6237864866132674167
+    second: PlayingCardHighAtlas_45
+  - first:
+      213: -5706075633183304050
+    second: PlayingCardHighAtlas_46
+  - first:
+      213: -7210770075591049794
+    second: PlayingCardHighAtlas_47
+  - first:
+      213: -9070180878754953078
+    second: PlayingCardHighAtlas_48
+  - first:
+      213: 3217914859483875213
+    second: PlayingCardHighAtlas_49
+  - first:
+      213: 1728719061323427857
+    second: PlayingCardHighAtlas_50
+  - first:
+      213: 8181505764495487969
+    second: PlayingCardHighAtlas_51
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 4700
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff1c0387b499d76b0800000000000000
+      internalID: -5296909037299777025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_1
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e83b53ba9c3227b00800000000000000
+      internalID: 824761030830044046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_2
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c681d1b48edf4e010800000000000000
+      internalID: 1217376973431314540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_3
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8ceb0dea90ce0cf0800000000000000
+      internalID: -284077954843284338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_4
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78fda796a722e9f40800000000000000
+      internalID: 5737060884467605383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_5
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b92c5c073cd356c70800000000000000
+      internalID: 8963638542970765979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_6
+      rect:
+        serializedVersion: 2
+        x: 1626
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e92f2d8dd83b33e20800000000000000
+      internalID: 3329201971366392478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_7
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc183feb7f46e6b30800000000000000
+      internalID: 4282471310899249613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_8
+      rect:
+        serializedVersion: 2
+        x: 2168
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbb46a785abc08350800000000000000
+      internalID: 6017033013972847551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_9
+      rect:
+        serializedVersion: 2
+        x: 2439
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0badb60b7e42c2ef0800000000000000
+      internalID: -131689711584683344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_10
+      rect:
+        serializedVersion: 2
+        x: 2710
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b34d9a2d88bd4abb0800000000000000
+      internalID: -4925570711740099525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_11
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39fe1e691ca362a60800000000000000
+      internalID: 7648865620269854611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_12
+      rect:
+        serializedVersion: 2
+        x: 3252
+        y: 1224
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f60880dbb208d5f0800000000000000
+      internalID: -731831933766990087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ac18a392ce0635d0800000000000000
+      internalID: -3083260666024813406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_14
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 150c0f2e03ebb0c30800000000000000
+      internalID: 4326760984194629713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_15
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: add13ece22940d6e0800000000000000
+      internalID: -1814870235478286886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_16
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50064a39d2b53d700800000000000000
+      internalID: 563894629660123141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_17
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e963523398fea9ab0800000000000000
+      internalID: -5000421063693879650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_18
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c6896c694c41ab20800000000000000
+      internalID: 3143877893116495561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_19
+      rect:
+        serializedVersion: 2
+        x: 1626
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5ffcc0b65ed84a70800000000000000
+      internalID: 8811537134865153885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_20
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 314371b2207c01620800000000000000
+      internalID: 2742910985195435027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_21
+      rect:
+        serializedVersion: 2
+        x: 2168
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4425b4999c58b30d0800000000000000
+      internalID: -3442010389287841212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_22
+      rect:
+        serializedVersion: 2
+        x: 2439
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 646ed593845710b00800000000000000
+      internalID: 793043962454468166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_23
+      rect:
+        serializedVersion: 2
+        x: 2710
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f1d3b8102489ed80800000000000000
+      internalID: -8220894371399872012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_24
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ee6363b082ca8c40800000000000000
+      internalID: 5515434551689834213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_25
+      rect:
+        serializedVersion: 2
+        x: 3252
+        y: 816
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 305ef7a644103fa20800000000000000
+      internalID: 3094818762289833219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_26
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef87fa36221618d50800000000000000
+      internalID: 6737773317852199166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_27
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 828de73b7f734b080800000000000000
+      internalID: -9172645004038973400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_28
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70eb777a10be431d0800000000000000
+      internalID: -3371811828656521721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_29
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cd7400d035e1a2c0800000000000000
+      internalID: -4422001361289970234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_30
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78aac9c744f147150800000000000000
+      internalID: 5869350593379478151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_31
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd211f3ae9695a330800000000000000
+      internalID: 3721546275191067357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_32
+      rect:
+        serializedVersion: 2
+        x: 1626
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dea0d4ba7fc17f850800000000000000
+      internalID: 6410624444641643245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_33
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7f7083ad6f501040800000000000000
+      internalID: 4616294542553939835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_34
+      rect:
+        serializedVersion: 2
+        x: 2168
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b1381486609371d0800000000000000
+      internalID: -3354178527483645519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_35
+      rect:
+        serializedVersion: 2
+        x: 2439
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfa35fbcfa0ac3a10800000000000000
+      internalID: 1890562620490332925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_36
+      rect:
+        serializedVersion: 2
+        x: 2710
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63e276fd451de5260800000000000000
+      internalID: 7088333025983278646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_37
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75177928795e53d20800000000000000
+      internalID: 3257762344366207319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_38
+      rect:
+        serializedVersion: 2
+        x: 3252
+        y: 408
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64c76ed292b9ce7a0800000000000000
+      internalID: -6346527173705827258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_39
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b7bbbaf76c7bf580800000000000000
+      internalID: -8792297061480679495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_40
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e5ce08f9a3734d70800000000000000
+      internalID: 9026185252028990951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_41
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d079d9c8b805f180800000000000000
+      internalID: -9082343483769261866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_42
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf8adebeee1f44c70800000000000000
+      internalID: 8954547967582120188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_43
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08414f88b442d1b30800000000000000
+      internalID: 4259600729401201792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_44
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f7523bb8656d7d60800000000000000
+      internalID: 7889573622714619889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_45
+      rect:
+        serializedVersion: 2
+        x: 1626
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 989b54134f6ae69a0800000000000000
+      internalID: -6237864866132674167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_46
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e86d8969172ffc0b0800000000000000
+      internalID: -5706075633183304050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_47
+      rect:
+        serializedVersion: 2
+        x: 2168
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebdf06f02d23eeb90800000000000000
+      internalID: -7210770075591049794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_48
+      rect:
+        serializedVersion: 2
+        x: 2439
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a884541fb8e302280800000000000000
+      internalID: -9070180878754953078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_49
+      rect:
+        serializedVersion: 2
+        x: 2710
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d87ccf4f38458ac20800000000000000
+      internalID: 3217914859483875213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_50
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11031aeb3d4adf710800000000000000
+      internalID: 1728719061323427857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayingCardHighAtlas_51
+      rect:
+        serializedVersion: 2
+        x: 3252
+        y: 0
+        width: 271.69232
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e37094352c8a8170800000000000000
+      internalID: 8181505764495487969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 0bddc62eac89d6341a8c21441aa1c831
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
