@@ -80,35 +80,29 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         }
     }
     public static void SpawnNetworkPrefab(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default, int[] infos = default)
-    => _Singleton.SpawnServerRpc(prefabName, position, rotation);
+    => _Singleton.SpawnServerRpc(prefabName, position, rotation, infos);
     public void SpawnNetworkPrefabWithOwnership(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, int[] infos = default)
     => _Singleton.SpawnWithOwnershipServerRpc(prefabName, position, rotation, ownerId, infos);
     [ServerRpc(RequireOwnership = false)]
     void SpawnServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, int[] infos = default)
     {
-        GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation).Spawn();
+        var networkObject = GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation);
+        networkObject.Spawn();
+        PrefabInit(networkObject, infos);
     }
     [ServerRpc(RequireOwnership = false)]
     void SpawnWithOwnershipServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, int[] infos)
     {
-        GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation).SpawnWithOwnership(ownerId);
+        var networkObject = GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation);
+        networkObject.SpawnWithOwnership(ownerId);
+        PrefabInit(networkObject, infos);
     }
     public void PrefabInit(NetworkObject prefab, int[] infos)
+    => prefab.GetComponent<INetworkInitializable>()?.NetworkInit(infos);
+
+    public static NetworkObject SpawnPrefabWithoutRpc(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
     {
-        var component = prefab.GetComponent<IGrabbable>();
-        switch (component)
-        {
-            case PlayingCardStacker playingCardStacker:
-                playingCardStacker.SetFullDeck();
-                break;
-            case CoinStacker coinStacker:
-                coinStacker.Set((Coinage)infos[0], infos[1]);
-                break;
-        }
-    }
-    public static NetworkObject SpawnPrefabWithoutManager(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
-    {
-        if (!IsServer) throw new Exception("Only Server can call SpawnPrefabWithoutManager");
+        if (!IsServer) throw new Exception("Only Server can call SpawnPrefabWithoutRpc");
         var singleton = _Singleton;
         var networkObject = singleton.GetSpawnNetworkObject(prefabHash, position, rotation);
         networkObject.Spawn();

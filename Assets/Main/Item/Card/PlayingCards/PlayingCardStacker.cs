@@ -11,7 +11,7 @@ using MyFunc;
 using Prefab;
 using PlayingCardSpace;
 
-public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, PlayingCard, CardInfo>, IControllable, IStackRpcCaller
+public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, PlayingCard, CardInfo>, IControllable, IStackRpcCaller, INetworkInitializable
 {
     override protected LocalPrefabName ChildPrefabName => LocalPrefabName.PlayingCard;
     override protected float CHILD_MASS => 0.0005f;
@@ -32,6 +32,8 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
         m_IsDeckNV = null;
         base.OnPool();
     }
+    public void NetworkInit(int[] infos)
+    => ChildInfos = Enumerable.Range(0, 53).Select(count => new CardInfo((byte)count)).ToArray();
 
     [ServerRpc(RequireOwnership = false)]
     public void HandoverServerRpc(ulong receiverId, int index, int count)
@@ -39,13 +41,11 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
     [ServerRpc(RequireOwnership = false)]
     public void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
     {
-        var receiver = PrefabGenerator.SpawnPrefabWithoutManager(PrefabHash).GetComponent<PlayingCardStacker>();
+        var receiver = PrefabGenerator.SpawnPrefabWithoutRpc(PrefabHash).GetComponent<PlayingCardStacker>();
         receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
         Handover(receiver, index, count);
     }
 
-    public void SetFullDeck()
-    => ChildInfos = Enumerable.Range(0, 53).Select(count => new CardInfo((byte)count)).ToArray();
     void SetDeckMode(bool enable) => IsDeck = enable;
     [ServerRpc(RequireOwnership = false)]
     void ShuffleServerRpc()
