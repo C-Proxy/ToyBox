@@ -55,35 +55,38 @@ where TInfo : INetworkSerializable
     abstract protected LocalPrefabName ChildPrefabName { get; }
     NetworkVariable<TInfo[]> m_ChildInfosNV;
     public TInfo[] ChildInfos { protected set { m_ChildInfosNV.Value = value; } get { return m_ChildInfosNV.Value; } }
+    public int ChildLength => ChildInfos?.Length ?? 0;
     protected List<TChild> m_ChildList;
 
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_ChildInfosNV = new NetworkVariable<TInfo[]>();
+        m_ChildInfosNV = new NetworkVariable<TInfo[]>(new TInfo[0]);
         m_ChildList = new List<TChild>();
 
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
-            Debug.Log($"Pre:{pre},Cur:{cur}");
             var infoLength = cur.Length;
+            Debug.Log(infoLength);
             if (infoLength == 0)
             {
-                Destroy();
+                if (IsServer)
+                    DespawnServerRpc();
                 return;
             }
             m_Rigidbody.mass = CHILD_MASS * infoLength;
             var childCount = m_ChildList.Count;
             if (infoLength > childCount)
-                m_ChildList.AddRange(GenerateChildren(cur));
+                m_ChildList.AddRange(GenerateChildren(infoLength - childCount));
             else if (infoLength < childCount)
             {
                 for (int i = infoLength; i < childCount; i++)
-                    m_ChildList[i].Destroy();
+                    m_ChildList[i].OnDespawn();
                 m_ChildList.RemoveRange(infoLength, childCount - infoLength);
             }
+            var stackParent = (TParent)this;
             foreach (var (child, info) in Enumerable.Zip(m_ChildList, cur, (child, info) => (child, info)))
-                child.Set(info, (TParent)this);
+                child.Set(info, stackParent);
             Align();
         };
     }
@@ -92,7 +95,7 @@ where TInfo : INetworkSerializable
     {
         m_ChildInfosNV = null;
         foreach (var child in m_ChildList)
-            child.Destroy();
+            child.OnDespawn();
         m_ChildList.Clear();
         m_ChildList = null;
         base.OnPool();
@@ -104,7 +107,13 @@ where TInfo : INetworkSerializable
     => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.Count - 1, 1);
     public void HandoverBottomToGrabber(IGrabber grabber)
     => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, 1);
-
+    public void HandoverTopChildrenToGrabber(IGrabber grabber, TChild child)
+    {
+        var index = m_ChildList.IndexOf(child);
+        RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), m_ChildList.Count - index);
+    }
+    public void HandoverBottomChildrenToGrabber(IGrabber grabber, TChild child)
+    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, m_ChildList.IndexOf(child) + 1);
     public void HandoverBottomChildren(TParent receiver, int index)
     => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, index + 1);
     public void HandoverTopChildrenRpc(TParent receiver, int index)
@@ -144,12 +153,12 @@ where TInfo : INetworkSerializable
 
     protected void Handover(TParent receiver, int index, int count)
     {
-        var childCnt = receiver.ChildInfos.Length;
+        var childCnt = receiver.ChildLength;
         if (childCnt + count > MAX_STACK)
             count = MAX_STACK - childCnt;
         if (count <= 0) return;
-        var removed = receiver.RemoveChildInfos(index, count);
-        AddChildInfos(removed);
+        var removed = RemoveChildInfos(index, count);
+        receiver.AddChildInfos(removed);
     }
 
     abstract protected void Align();
@@ -161,14 +170,10 @@ where TInfo : INetworkSerializable
             child.EnableCollision(enable);
     }
 
-    protected TChild GenerateChild(TInfo info)
-    {
-        var child = PrefabGenerator.GenerateLocalPrefab(ChildPrefabName).GetComponent<TChild>();
-        child.Set(info, this as TParent);
-        return child;
-    }
-    protected TChild[] GenerateChildren(TInfo[] infos)
-    => infos.Select(GenerateChild).ToArray();
+    protected TChild GenerateChild()
+    => PrefabGenerator.GenerateLocalPrefab(ChildPrefabName).GetComponent<TChild>();
+    protected TChild[] GenerateChildren(int count)
+    => Enumerable.Range(0, count).Select(_ => GenerateChild()).ToArray();
 
     override public string ToString() => m_ChildList.ToString();
 }

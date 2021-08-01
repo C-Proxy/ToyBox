@@ -5,7 +5,7 @@ using MyFunc;
 using Prefab;
 using CoinSpace;
 
-public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, INetworkInitializable
+public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, IStackRpcCaller, INetworkInitializable
 {
     const float THICKNESS = 0.0045f;
     override protected LocalPrefabName ChildPrefabName => LocalPrefabName.Coin;
@@ -30,13 +30,19 @@ public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, IN
 
     [ServerRpc(RequireOwnership = false)]
     public void HandoverServerRpc(ulong receiverId, int index, int count)
-    => Handover(NetworkFunc.GetComponent<CoinStacker>(receiverId), index, count);
+    {
+        if (NetworkFunc.TryGetComponent<CoinStacker>(receiverId, out var stacker))
+            Handover(stacker, index, count);
+    }
     [ServerRpc(RequireOwnership = false)]
     public void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
     {
-        var receiver = PrefabGenerator.SpawnPrefabWithoutRpc(PrefabHash).GetComponent<CoinStacker>();
-        receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
-        Handover(receiver, index, count);
+        if (networkInfo.TryToComponent<IGrabber>(out var grabber))
+        {
+            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash).GetComponent<CoinStacker>();
+            receiver.RequestChangeParent(grabber);
+            Handover(receiver, index, count);
+        }
     }
 
     public int GetSum(Coin target)

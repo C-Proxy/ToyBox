@@ -5,12 +5,18 @@ using UnityEngine;
 using UniRx;
 using Prefab;
 using MLAPI;
+using MLAPI.Messaging;
 
 abstract public class PoolableNetworkBehaviour : NetworkPoolableChildBehaviour, INetworkPoolable
 {
     public ulong PrefabHash => NetworkObject.PrefabHash;
     public void SetActive(bool active) => gameObject.SetActive(active);
-    virtual public void Destroy() => NetworkObject.Despawn();
+    [ServerRpc(RequireOwnership = false)]
+    public void DespawnServerRpc()
+    {
+        NetworkObject.Despawn();
+        PrefabGenerator.DespawnPrefabOnServer(NetworkObject);
+    }
     override public void OnPool()
     {
         foreach (var subscription in Subscriptions)
@@ -38,7 +44,7 @@ abstract public class LocalPoolableBehaviour : PoolableChildBehaviour, ILocalPoo
 {
     abstract public LocalPrefabName PrefabName { get; }
     public void SetActive(bool active) => gameObject.SetActive(active);
-    virtual public void Destroy() => PrefabGenerator.PoolLocalObject(this);
+    virtual public void OnDespawn() => PrefabGenerator.PoolLocalObject(this);
     override public void OnPool()
     {
         base.OnPool();
@@ -56,18 +62,7 @@ abstract public class PoolableChildBehaviour : MonoBehaviour, IPoolableChild
     }
     virtual protected void AfterAwake() { }
     virtual public void OnSpawn() { }
-    virtual protected void OnEnable()
-    {
-        OnSpawn();
-    }
-    virtual protected void OnDisable()
-    {
-        OnPool();
-    }
-    private void OnApplicationQuit()
-    {
-        OnPool();
-    }
+
     virtual public void OnPool()
     {
         foreach (var subscription in m_Subscriptions)

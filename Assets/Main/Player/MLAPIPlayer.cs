@@ -33,7 +33,7 @@ namespace MLAPIPlayerSpace
         }
         override public void OnPool()
         {
-            m_OVRTraceCTS.Cancel();
+            m_OVRTraceCTS?.Cancel();
             m_OVRTraceCTS = null;
         }
         private void Start()

@@ -24,6 +24,8 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             NetworkSpawnManager.RegisterSpawnHandler(hash, (position, rotation) => GetSpawnNetworkObject(hash, position, rotation));
             NetworkSpawnManager.RegisterDestroyHandler(hash, PoolNetworkObject);
         }
+
+        m_LocalPools = m_LocalPrefabs.Select(_ => new Queue<ILocalPoolable>()).ToArray();
     }
     #region NetworkObject
     [SerializeField, EnumIndex(typeof(NetworkPrefabName))] GameObject[] m_NetworkPrefabs;
@@ -36,6 +38,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         if (TryGetNetworkPoolObject(prefabHash, out var poolable))
         {
             poolable.SetActive(true);
+            poolable.transform.SetParent(null);
             poolable.OnSpawn();
             poolable.transform.SetPositionAndRotation(position, rotation);
             return poolable.NetworkObject;
@@ -49,7 +52,8 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
     }
     void PoolNetworkObject(NetworkObject networkObject)
     {
-        var poolable = gameObject.GetComponent<INetworkPoolable>();
+        Debug.Log($"Pooled:{networkObject.name}");
+        var poolable = networkObject.GetComponent<INetworkPoolable>();
         if (poolable != null)
         {
             poolable.OnPool();
@@ -100,13 +104,17 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
     public void PrefabInit(NetworkObject prefab, int[] infos)
     => prefab.GetComponent<INetworkInitializable>()?.NetworkInit(infos);
 
-    public static NetworkObject SpawnPrefabWithoutRpc(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
+    public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
     {
-        if (!IsServer) throw new Exception("Only Server can call SpawnPrefabWithoutRpc");
-        var singleton = _Singleton;
-        var networkObject = singleton.GetSpawnNetworkObject(prefabHash, position, rotation);
+        if (!IsServer) throw new Exception("Not Server can't call SpawnPrefabOnServer");
+        var networkObject = _Singleton.GetSpawnNetworkObject(prefabHash, position, rotation);
         networkObject.Spawn();
         return networkObject;
+    }
+    public static void DespawnPrefabOnServer(NetworkObject networkObject)
+    {
+        if (!IsServer) throw new Exception("Not Server can't call DesspawnPrefabOnServer");
+        _Singleton.PoolNetworkObject(networkObject);
     }
     #endregion
 

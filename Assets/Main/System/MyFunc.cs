@@ -30,6 +30,11 @@ namespace MyFunc
     }
     public static class NetworkFunc
     {
+        public static bool TryGetComponent<T>(ulong networkId, out T result)
+        {
+            result = default;
+            return NetworkSpawnManager.SpawnedObjects[networkId]?.TryGetComponent<T>(out result) ?? false;
+        }
         public static T GetComponent<T>(ulong networkId)
         => NetworkSpawnManager.SpawnedObjects[networkId].GetComponent<T>();
     }

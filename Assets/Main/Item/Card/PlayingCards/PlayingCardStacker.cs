@@ -33,17 +33,25 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
         base.OnPool();
     }
     public void NetworkInit(int[] infos)
-    => ChildInfos = Enumerable.Range(0, 53).Select(count => new CardInfo((byte)count)).ToArray();
-
+    {
+        ChildInfos = Enumerable.Range(0, 53).Select(count => new CardInfo((byte)count)).ToArray();
+        IsDeck = true;
+    }
     [ServerRpc(RequireOwnership = false)]
     public void HandoverServerRpc(ulong receiverId, int index, int count)
-    => Handover(NetworkFunc.GetComponent<PlayingCardStacker>(receiverId), index, count);
+    {
+        if (NetworkFunc.TryGetComponent<PlayingCardStacker>(receiverId, out var stacker))
+            Handover(stacker, index, count);
+    }
     [ServerRpc(RequireOwnership = false)]
     public void HandoverToGrabberServerRpc(NetworkInfo networkInfo, int index, int count)
     {
-        var receiver = PrefabGenerator.SpawnPrefabWithoutRpc(PrefabHash).GetComponent<PlayingCardStacker>();
-        receiver.RequestChangeParent(networkInfo.ToComponent<IGrabber>());
-        Handover(receiver, index, count);
+        if (networkInfo.TryToComponent<IGrabber>(out var grabber))
+        {
+            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash).GetComponent<PlayingCardStacker>();
+            receiver.RequestChangeParent(grabber);
+            Handover(receiver, index, count);
+        }
     }
 
     void SetDeckMode(bool enable) => IsDeck = enable;

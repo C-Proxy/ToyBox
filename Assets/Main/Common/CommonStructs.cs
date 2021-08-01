@@ -24,7 +24,12 @@ public struct NetworkInfo : INetworkSerializable
         serializer.Serialize(ref NetworkBehaviourId);
     }
     public NetworkBehaviour ToNetworkBehaviour()
-    => NetworkSpawnManager.SpawnedObjects[NetworkObjectId].GetComponent<INetworkHandler>().FindNetworkBehaviour(NetworkBehaviourId);
+    => NetworkSpawnManager.SpawnedObjects[NetworkObjectId]?.GetComponent<INetworkHandler>()?.FindNetworkBehaviour(NetworkBehaviourId);
     public T ToComponent<T>()
     => ToNetworkBehaviour().GetComponent<T>();
+    public bool TryToComponent<T>(out T result)
+    {
+        result = default;
+        return ToNetworkBehaviour()?.TryGetComponent<T>(out result) ?? false;
+    }
 }

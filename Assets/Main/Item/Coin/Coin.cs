@@ -40,7 +40,7 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
               switch (info.Interactor)
               {
                   case HandGrabber grabber:
-                      m_Parent.HandoverToGrabber(grabber, this);
+                      m_Parent.HandoverTopChildrenToGrabber(grabber, this);
                       break;
                   case CoinStacker coinStacker:
                       m_Parent.HandoverTopChildren(coinStacker, this);
