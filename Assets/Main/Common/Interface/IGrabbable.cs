@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MLAPI.Messaging;
-using MLAPIPlayerSpace;
 
 public interface IGrabbable
 {

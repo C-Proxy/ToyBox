@@ -10,7 +10,6 @@ using MLAPI.Spawning;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using Prefab;
-using MLAPIPlayerSpace;
 
 [RequireComponent(typeof(Rigidbody))]
 abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteractor

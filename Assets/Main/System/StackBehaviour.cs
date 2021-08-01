@@ -67,7 +67,6 @@ where TInfo : INetworkSerializable
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
             var infoLength = cur.Length;
-            Debug.Log(infoLength);
             if (infoLength == 0)
             {
                 if (IsServer)

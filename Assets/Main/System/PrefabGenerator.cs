@@ -8,7 +8,6 @@ using MLAPI.Spawning;
 using System.Linq;
 using Prefab;
 using CoinSpace;
-using MLAPIPlayerSpace;
 
 public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
 {

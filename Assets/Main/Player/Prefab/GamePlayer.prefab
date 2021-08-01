@@ -159,11 +159,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5542251785613906256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847fd3ea9f3c5fb4f9cadf077c5ec95e, type: 3}
+  m_Script: {fileID: 11500000, guid: f4de0b513c72d514b8cec3faac22e57c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerIKAnchor:
-    m_Root: {fileID: 5542251785613906257}
+    m_Root: {fileID: 3615657220185778777}
     m_LookAnchor: {fileID: 5542251786321969105}
     m_EyeAnchor: {fileID: 7084945785936411461}
     m_LeftHandAnchor: {fileID: 2465109375537239212}

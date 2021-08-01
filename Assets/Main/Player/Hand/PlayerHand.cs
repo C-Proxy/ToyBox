@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
-using MLAPIPlayerSpace;
 
 public class PlayerHand : BaseHand, IHumanHand
 {
