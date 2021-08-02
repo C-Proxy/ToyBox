@@ -190,7 +190,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                     m_PlayerHand.EnableLaser(state == HandState.Laser);
                     if (state == HandState.Wisp)
                     {
-                        wispHand.EnableTrace(m_PlayerHand.transform, grabber.Target?.transform.localPosition ?? default);
+                        wispHand.EnableTrace(m_PlayerHand.transform);
                         grabber.transform.SetParent(wispHand.transform,false);
                         grabber.PlayerHandEnabled=false;
                     }

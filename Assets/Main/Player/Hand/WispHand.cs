@@ -7,19 +7,20 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 
-public class WispHand : MonoBehaviour, IPoolableChild
+public class WispHand : NetworkPoolableChildBehaviour
 {
     bool m_WispActive;
     const float SPEED = 10f;
     SpriteRenderer m_SpriteRenderer;
-    private void Awake()
+    override protected void Awake()
     {
+        base.Awake();
         m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         m_SpriteRenderer.gameObject.SetActive(false);
     }
     public void SetSpritePosition(Vector3 position) => m_SpriteRenderer.transform.localPosition = position;
     CancellationTokenSource m_TraceCTS;
-    public void EnableTrace(Transform handAnchor, Vector3 itemPosition)
+    public void EnableTrace(Transform handAnchor)
     {
         m_WispActive = true;
         // SetSpritePosition(itemPosition);
@@ -44,18 +45,10 @@ public class WispHand : MonoBehaviour, IPoolableChild
         }, false, token);
     }
     public void StopTrace() => m_WispActive = false;
-    public void OnSpawn() { }
-    public void OnPool()
+    override public void OnSpawn() { }
+    override public void OnPool()
     {
         m_WispActive = false;
         m_TraceCTS?.Cancel();
-    }
-    private void OnDisable()
-    {
-        OnPool();
-    }
-    private void OnApplicationQuit()
-    {
-        OnPool();
     }
 }

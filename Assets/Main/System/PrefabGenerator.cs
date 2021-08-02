@@ -181,6 +181,7 @@ namespace Prefab
         CasinoChair,
         CoinPlate,
         AttacheCase,
+        Wingman,
     }
     public enum LocalPrefabName
     {

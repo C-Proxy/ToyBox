@@ -57,7 +57,7 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
                 else
                 {
                     finderAnchor.localPosition = default;
-                    finderAnchor.localRotation = default;
+                    finderAnchor.localEulerAngles = default;
                 }
             })
         );

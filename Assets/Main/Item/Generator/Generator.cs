@@ -19,5 +19,6 @@ public class Generator : MonoBehaviour
         m_ButtonObservables[4].SetPressEvent(() => CasinoChair.Generate(transform.position));
         m_ButtonObservables[5].SetPressEvent(() => CoinPlate.Generate(transform.position));
         m_ButtonObservables[6].SetPressEvent(() => AttacheCase.Generate(transform.position));
+        m_ButtonObservables[7].SetPressEvent(() => Wingman.Generate(transform.position));
     }
 }
