@@ -171,6 +171,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                     return m_PlayerHand.HandShapeAsObservable;
             }).Switch().Publish().RefCount();
 
+            CancellationTokenSource traceCTS = default;
             m_Subscriptions = new List<IDisposable>(new[]{
 
                 //LaserFocus
@@ -184,19 +185,20 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
 
                 }),
 
-                //StateChange
+                //ChangeState
                 m_HandStateRP.Subscribe(state =>
                 {
                     m_PlayerHand.EnableLaser(state == HandState.Laser);
                     if (state == HandState.Wisp)
                     {
-                        wispHand.EnableTrace(m_PlayerHand.transform);
+                        traceCTS = new CancellationTokenSource();
+                        wispHand.EnableTrace(m_PlayerHand.transform,traceCTS.Token);
                         grabber.transform.SetParent(wispHand.transform,false);
                         grabber.PlayerHandEnabled=false;
                     }
                     else
                     {
-                        wispHand.StopTrace();
+                        traceCTS?.Cancel();
                         grabber.transform.SetParent(playerHand.transform,false);
                         grabber.PlayerHandEnabled=true;
                     }
@@ -213,62 +215,61 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
 
             if (isMine)
             {
+                var inputType = isLeft ? InputManager.InputType.LeftController : InputManager.InputType.RightController;
+                var handInput = InputManager.CreateHandInput(inputType);
 
-                var playerInput = InputDriver.GetPlayerInput(isLeft);
-                IDisposable[] controlSubscriptions = default;
-                m_Subscriptions.AddRange(new[]{
-
-                    //InputConnection
-                    grabber.TargetAsObservable.Subscribe(target =>
-                    {
-                        if (controlSubscriptions != null)
-                            foreach (var discription in controlSubscriptions)
-                                discription.Dispose();
-                        var controllable = target as IControllable ?? this;
-                        controlSubscriptions = controllable.Connect(playerInput);
-                    }),
-
-                    //WispMode
-                    playerInput.ClickAsObservable(KeyType.MainButton).Where(isDouble => isDouble).Subscribe(_ =>
-                    {
-                        if (HandState != HandState.Wisp)
-                            HandState = HandState.Wisp;
-                        else
-                            HandState = HandState.Default;
-                    }),
-
-                    //LaserMode
-                    playerInput.ClickAsObservable(KeyType.SubButton).Where(isDouble => isDouble).Subscribe(_ =>
+                //WispMode
+                handInput.MainClick.AddListener(isDouble =>
+                {
+                    if (isDouble)
+                        HandState = HandState != HandState.Wisp ? HandState.Wisp : HandState.Default;
+                });
+                //LaseMode
+                handInput.SubClick.AddListener(isDouble =>
+                {
+                    if (isDouble)
+                        HandState = HandState != HandState.Laser ? HandState.Laser : HandState.Default;
+                });
+                //Grab
+                handInput.HandPress.AddListener(pressed =>
+                {
+                    if (pressed)
                     {
                         if (HandState != HandState.Laser)
-                            HandState = HandState.Laser;
+                            grabber.SendGrabAction();
                         else
-                            HandState = HandState.Default;
-                    }),
-
-                    //Grab
-                    playerInput.ButtonAsObservable(KeyType.HandTrigger).Subscribe(isPressed =>
+                            m_PlayerHand.Interact(grabber.Target as IInteractor, false);
+                    }
+                    else
+                        grabber.Release();
+                });
+                handInput.IndexClick.AddListener(isDouble =>
+                {
+                    if (isDouble)
                     {
-                        if (isPressed)
+                        if (HandState == HandState.Laser)
                         {
-                            if (HandState != HandState.Laser)
-                                grabber.SendGrabAction();
-                            else
-                                m_PlayerHand.Interact(grabber.Target as IInteractor, false);
+                            m_PlayerHand.Interact(grabber.Target as IInteractor, isDouble);
                         }
-                        else
-                            grabber.Release();
-                    }),
+                    }
+                });
 
-                    //Interact
-                    playerInput.PickAsObservable.Where(_ => HandState == HandState.Laser).Subscribe(isDouble => m_PlayerHand.Interact(grabber.Target as IInteractor, isDouble)),
-                    });
+                InputManager.HandInput controlInput = default;
+                //InputConnection
+                m_Subscriptions.Add(grabber.TargetAsObservable.Subscribe(target =>
+                {
+                    controlInput?.Destroy();
+                    var controllable = target as IControllable ?? this;
+                    controlInput = InputManager.CreateHandInput(inputType);
+                    controllable.Connect(controlInput);
+                }));
             }
         }
-        public IDisposable[] Connect(InputDriver.PlayerInput playerInput) => new[]{
-            playerInput.Axis1DAsObservable(KeyType.IndexTrigger).Subscribe(value=>m_PlayerHand.Animator.SetFloat("IndexValue",value)),
-            playerInput.Axis1DAsObservable(KeyType.HandTrigger).Subscribe(value=>m_PlayerHand.Animator.SetFloat("HandValue",value)),
-        };
+        public void Connect(InputManager.HandInput input)
+        {
+            input.IndexTrigger.AddListener(value => m_PlayerHand.Animator.SetFloat("IndexValue", value));
+            input.HandTrigger.AddListener(value => m_PlayerHand.Animator.SetFloat("HandValue", value));
+        }
     }
     public enum HandState
     {
