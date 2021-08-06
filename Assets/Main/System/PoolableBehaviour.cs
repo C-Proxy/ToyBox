@@ -39,33 +39,31 @@ abstract public class NetworkPoolableChildBehaviour : NetworkBehaviour, IPoolabl
     abstract public void OnSpawn();
     abstract public void OnPool();
 }
-abstract public class LocalPoolableBehaviour : PoolableChildBehaviour, ILocalPoolable
+abstract public class LocalPoolableBehaviour : LocalPoolableChildBehaviour, ILocalPoolable
 {
     abstract public LocalPrefabName PrefabName { get; }
-    public void SetActive(bool active) => gameObject.SetActive(active);
-    virtual public void OnDespawn() => PrefabGenerator.PoolLocalObject(this);
-    override public void OnPool()
-    {
-        base.OnPool();
-    }
-}
-
-abstract public class PoolableChildBehaviour : MonoBehaviour, IPoolableChild
-{
-    List<IDisposable> m_Subscriptions = new List<IDisposable>();
-    protected List<IDisposable> Subscriptions => m_Subscriptions;
     virtual protected void Awake()
     {
         AfterAwake();
         OnSpawn();
     }
     virtual protected void AfterAwake() { }
-    virtual public void OnSpawn() { }
+    public void SetActive(bool active) => gameObject.SetActive(active);
+    virtual public void Despawn() => PrefabGenerator.PoolLocalObject(this);
+    override public void OnPool() { }
+}
 
+abstract public class LocalPoolableChildBehaviour : MonoBehaviour, IPoolableChild
+{
+
+    // List<IDisposable> m_Subscriptions = new List<IDisposable>();
+    // protected List<IDisposable> Subscriptions => m_Subscriptions;
+    virtual public void Init() { }
+    virtual public void OnSpawn() { }
     virtual public void OnPool()
     {
-        foreach (var subscription in m_Subscriptions)
-            subscription.Dispose();
-        m_Subscriptions.Clear();
+        // foreach (var subscription in m_Subscriptions)
+        // subscription.Dispose();
+        // m_Subscriptions.Clear();
     }
 }

@@ -10,28 +10,30 @@ namespace GunSpace
 {
     public class BaseBullet : PoolableNetworkBehaviour, INetworkInitializable
     {
+        TrailLaser m_TrailLaser;
         float m_Velocity;
-        TrailRenderer m_TrailRenrerer;
         CancellationTokenSource m_DespawnCTS;
 
         override protected void Awake()
         {
-            m_TrailRenrerer = GetComponent<TrailRenderer>();
+            m_TrailLaser = GetComponent<TrailLaser>();
+            m_TrailLaser.Init();
             base.Awake();
         }
         override public void OnSpawn()
         {
-            m_TrailRenrerer.emitting = true;
+            m_TrailLaser.OnSpawn();
         }
         override public void OnPool()
         {
+            m_TrailLaser.OnPool();
             m_DespawnCTS?.Cancel();
-            m_TrailRenrerer.emitting = false;
             base.OnPool();
         }
         private void Update()
         {
             transform.position += transform.forward * m_Velocity * Time.deltaTime;
+            m_TrailLaser.AddPosition(transform.position);
         }
         public void NetworkInit(RpcPackage package)
         {

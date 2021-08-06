@@ -80,7 +80,7 @@ where TInfo : INetworkSerializable
             else if (infoLength < childCount)
             {
                 for (int i = infoLength; i < childCount; i++)
-                    m_ChildList[i].OnDespawn();
+                    m_ChildList[i].Despawn();
                 m_ChildList.RemoveRange(infoLength, childCount - infoLength);
             }
             var stackParent = (TParent)this;
@@ -94,7 +94,7 @@ where TInfo : INetworkSerializable
     {
         m_ChildInfosNV = null;
         foreach (var child in m_ChildList)
-            child.OnDespawn();
+            child.Despawn();
         m_ChildList.Clear();
         m_ChildList = null;
         base.OnPool();

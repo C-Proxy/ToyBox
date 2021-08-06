@@ -13,13 +13,12 @@ public class ToggleEventHandler : BaseEventHandler, ILaserReceivable
 
     bool m_IsDown;
 
-    override protected void Awake()
+    void Awake()
     {
         m_SkinnedMeshrenderer = GetComponent<SkinnedMeshRenderer>();
         var materials = m_SkinnedMeshrenderer.sharedMaterials;
         m_BaseMaterial = materials[0];
         m_UpMaterial = materials[1];
-        base.Awake();
     }
     private void Start()
     {
