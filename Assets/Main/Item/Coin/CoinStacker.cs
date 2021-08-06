@@ -11,10 +11,10 @@ public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, IS
     override protected LocalPrefabName ChildPrefabName => LocalPrefabName.Coin;
     override protected float CHILD_MASS => 0.005f;
 
-    public void NetworkInit(int[] infos)
+    public void NetworkInit(RpcPackage package)
     {
-        var coinage = (Coinage)infos[0];
-        var count = infos[1];
+        var coinage = (Coinage)package.GetInt();
+        var count = package.GetInt();
         ChildInfos = Enumerable.Range(0, count).Select(_ => new CoinInfo(coinage)).ToArray();
     }
     override protected void Align()
@@ -52,7 +52,11 @@ public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, IS
     }
 
     public static void GenerateCoins(Vector3 position, Quaternion rotation, Coinage coinage, int count)
-    => PrefabGenerator.SpawnNetworkPrefab(NetworkPrefabName.CoinStacker, position, rotation, new[] { (int)coinage, count });
-
+    {
+        var package = new RpcPackage();
+        package.Append((int)coinage);
+        package.Append(count);
+        PrefabGenerator.SpawnNetworkPrefab(NetworkPrefabName.CoinStacker, position, rotation, package);
+    }
     override public string ToString() => m_ChildList.ToString();
 }

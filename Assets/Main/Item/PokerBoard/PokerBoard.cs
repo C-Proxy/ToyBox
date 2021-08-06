@@ -7,8 +7,8 @@ using Prefab;
 
 public class PokerBoard : BaseItem
 {
-    [SerializeField] ToggleButtonObservable m_GrabToggleButton = default;
-    [SerializeField] ButtonAsObservable m_StabilizeButton = default;
+    [SerializeField] ToggleEventHandler m_GrabToggleButton = default;
+    [SerializeField] ButtonEventHandler m_StabilizeButton = default;
     NetworkVariableBool m_IsLockedNV = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.Everyone });
     bool IsLocked { set { m_IsLockedNV.Value = value; } get { return m_IsLockedNV.Value; } }
 

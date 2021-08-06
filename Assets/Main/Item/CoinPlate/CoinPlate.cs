@@ -8,12 +8,12 @@ using Prefab;
 
 public class CoinPlate : BaseItem
 {
-    ActionObservable[] m_CoinStackObservables;
+    ActionEventHandler[] m_CoinStackObservables;
 
     override protected void Awake()
     {
         base.Awake();
-        m_CoinStackObservables = GetComponentsInChildren<ActionObservable>();
+        m_CoinStackObservables = GetComponentsInChildren<ActionEventHandler>();
     }
     override public void OnSpawn()
     {

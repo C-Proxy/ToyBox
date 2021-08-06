@@ -9,9 +9,9 @@ public class SphereTargetFinder : MonoBehaviour, ITargetFinder
     float m_GrabRadius = 0.1f;
     Collider[] mem_Colliders = new Collider[NUM_FINDABLE];
     public T FindTarget<T>()
-    where T : BaseObservable => default;
+    where T : BaseEventHandler => default;
     public T FindTarget<T>(int layer)
-    where T : BaseObservable
+    where T : BaseEventHandler
     {
         var pos = transform.position;
         var length = Physics.OverlapSphereNonAlloc(pos, m_GrabRadius, mem_Colliders, layer);

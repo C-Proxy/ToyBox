@@ -14,12 +14,12 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
     public int Value { private set; get; }
     MeshRenderer m_MeshRenderer;
     TextMeshPro[] m_TextMeshes;
-    ActionObservable m_ActionObservable;
+    ActionEventHandler m_ActionObservable;
     override protected void Awake()
     {
         m_MeshRenderer = GetComponentInChildren<MeshRenderer>();
         m_TextMeshes = GetComponentsInChildren<TextMeshPro>();
-        m_ActionObservable = GetComponent<ActionObservable>();
+        m_ActionObservable = GetComponent<ActionEventHandler>();
         base.Awake();
     }
     override public void OnSpawn()

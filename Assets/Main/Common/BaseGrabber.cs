@@ -31,7 +31,7 @@ abstract public class BaseGrabber : NetworkPoolableChildBehaviour, IGrabber, IIn
     abstract public void SetTarget(IGrabbable grabbable);
     abstract public void RemoveTarget(IGrabbable grabbable);
     abstract public bool HasTarget(IGrabbable grabbable);
-    public void SendGrabAction() => m_TargetFinder.FindTarget<GrabObservable>((int)LayerName.GrabTarget)?.Grab(this);
+    public void SendGrabAction() => m_TargetFinder.FindTarget<GrabEventHandler>((int)LayerName.GrabTarget)?.Grab(this);
 
     abstract public void Release();
     virtual public void OnGrab(IGrabbable grabbable) { }

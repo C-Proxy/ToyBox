@@ -4,6 +4,8 @@
     GrabTarget = 1 << 8,
     InteractTarget = 1 << 9,
     RaycastTarget = Wall + InteractTarget,
+    EventSender = 1 << 10,
+    EventReceiver = 1 << 11,
 }
 public enum Direction
 {
@@ -13,4 +15,8 @@ public enum Direction
     Right,
     Forward,
     Backward,
+}
+public enum BulletType
+{
+    WingmanAmmo,
 }

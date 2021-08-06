@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GrabObservable : BaseObservable
+public class GrabEventHandler : BaseEventHandler
 {
     UnityEvent<IGrabber> m_GrabEvent = new UnityEvent<IGrabber>();
     public void SetGrabEvent(UnityAction<IGrabber> action) => m_GrabEvent.AddListener(action);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ActionObservable : BaseObservable, ILaserReceivable
+public class ActionEventHandler : BaseEventHandler, ILaserReceivable
 {
     UnityEvent<InteractInfo> m_InteractEvent = new UnityEvent<InteractInfo>();
     UnityEvent<LaserFocusInfo> m_FocusEvent = new UnityEvent<LaserFocusInfo>();

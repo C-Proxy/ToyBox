@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IControllable
 {
-    IDisposable[] Connect(InputDriver.PlayerInput input);
+    void Connect(InputManager.HandInput input);
 }
 /*
 public interface IControllable : IStickControllable, IMainButtonControllable, ISubButtonControllable, IHandTriggerControllable, IIndexTriggerControllable, IOtherButtonControllable { }

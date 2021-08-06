@@ -14,7 +14,6 @@ abstract public class PoolableNetworkBehaviour : NetworkPoolableChildBehaviour, 
     [ServerRpc(RequireOwnership = false)]
     public void DespawnServerRpc()
     {
-        NetworkObject.Despawn();
         PrefabGenerator.DespawnPrefabOnServer(NetworkObject);
     }
     override public void OnPool()

@@ -26,7 +26,7 @@ abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteract
     bool m_Defaultkinematic;
     IGrabber m_Parent;
     public IGrabber Parent => m_Parent;
-    [SerializeField] protected GrabObservable m_GrabTarget = default;
+    [SerializeField] protected GrabEventHandler m_GrabTarget = default;
 
     override protected void Awake()
     {

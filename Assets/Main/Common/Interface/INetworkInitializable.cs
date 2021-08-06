@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface INetworkInitializable
 {
-    void NetworkInit(int[] infos);
+    void NetworkInit(RpcPackage package);
 }

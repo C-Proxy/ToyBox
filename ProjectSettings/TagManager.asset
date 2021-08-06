@@ -16,8 +16,8 @@ TagManager:
   - Wall
   - GrabTarget
   - InteractTarget
-  - 
-  - 
+  - EventSender
+  - EventReceiver
   - 
   - 
   - 

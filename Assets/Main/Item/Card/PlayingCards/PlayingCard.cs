@@ -8,12 +8,12 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
 {
     override public LocalPrefabName PrefabName => LocalPrefabName.PlayingCard;
     SpriteRenderer m_SpriteRenderer;
-    ActionObservable m_ActionObservable;
+    ActionEventHandler m_ActionObservable;
 
     override protected void Awake()
     {
         m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        m_ActionObservable = GetComponent<ActionObservable>();
+        m_ActionObservable = GetComponent<ActionEventHandler>();
         base.Awake();
     }
     override public void OnSpawn()

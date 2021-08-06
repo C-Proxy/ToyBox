@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ButtonAsObservable : BaseObservable, ILaserReceivable
+public class ButtonEventHandler : BaseEventHandler, ILaserReceivable
 {
     [SerializeField] SpriteManager.LaserIcon m_FocusIcon = default;
     [SerializeField] string m_FocusText = default;

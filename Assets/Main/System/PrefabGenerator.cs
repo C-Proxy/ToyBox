@@ -82,26 +82,26 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             throw;
         }
     }
-    public static void SpawnNetworkPrefab(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default, int[] infos = default)
-    => _Singleton.SpawnServerRpc(prefabName, position, rotation, infos);
-    public void SpawnNetworkPrefabWithOwnership(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, int[] infos = default)
-    => _Singleton.SpawnWithOwnershipServerRpc(prefabName, position, rotation, ownerId, infos);
+    public static void SpawnNetworkPrefab(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default, RpcPackage package = default)
+    => _Singleton.SpawnServerRpc(prefabName, position, rotation, package?.ToByteArray());
+    public void SpawnNetworkPrefabWithOwnership(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, RpcPackage package = default)
+    => _Singleton.SpawnWithOwnershipServerRpc(prefabName, position, rotation, ownerId, package?.ToByteArray());
     [ServerRpc(RequireOwnership = false)]
-    void SpawnServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, int[] infos = default)
+    void SpawnServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, byte[] infos = default)
     {
         var networkObject = GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation);
         networkObject.Spawn();
-        PrefabInit(networkObject, infos);
+        PrefabInit(networkObject, new RpcPackage(infos));
     }
     [ServerRpc(RequireOwnership = false)]
-    void SpawnWithOwnershipServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, int[] infos)
+    void SpawnWithOwnershipServerRpc(NetworkPrefabName prefabName, Vector3 position, Quaternion rotation, ulong ownerId, byte[] infos)
     {
         var networkObject = GetSpawnNetworkObject(m_PrefabHashes[(int)prefabName], position, rotation);
         networkObject.SpawnWithOwnership(ownerId);
-        PrefabInit(networkObject, infos);
+        PrefabInit(networkObject, new RpcPackage(infos));
     }
-    public void PrefabInit(NetworkObject prefab, int[] infos)
-    => prefab.GetComponent<INetworkInitializable>()?.NetworkInit(infos);
+    public void PrefabInit(NetworkObject prefab, RpcPackage package)
+    => prefab.GetComponent<INetworkInitializable>()?.NetworkInit(package);
 
     public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
     {
@@ -110,9 +110,12 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         networkObject.Spawn();
         return networkObject;
     }
+    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default)
+    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], position, rotation);
     public static void DespawnPrefabOnServer(NetworkObject networkObject)
     {
         if (!IsServer) throw new Exception("Not Server can't call DesspawnPrefabOnServer");
+        networkObject.Despawn();
         _Singleton.PoolNetworkObject(networkObject);
     }
     #endregion
@@ -182,12 +185,14 @@ namespace Prefab
         CoinPlate,
         AttacheCase,
         Wingman,
+        WingmanAmmo,
+        NormalBullet,
     }
     public enum LocalPrefabName
     {
         PlayingCard,
         Coin,
-
+        Mock_WingmanAmmo,
     }
     // [Serializable]
     // public class PrefabTable : Serialize.TableBase<PrefabName, GameObject, PrefabPair> { }
@@ -196,4 +201,109 @@ namespace Prefab
     // {
     //     public PrefabPair(PrefabName key, GameObject value) : base(key, value) { }
     // }
+
+}
+public class RpcPackage
+{
+    List<byte> m_ByteList;
+    byte[] m_Array;
+    byte[] Array => m_Array ?? (m_Array = m_ByteList.ToArray());
+    int m_Index;
+    public RpcPackage()
+    {
+        m_ByteList = new List<byte>();
+    }
+    public RpcPackage(byte[] infos)
+    {
+        m_ByteList = infos?.ToList();
+    }
+    public void Append(dynamic value) => m_ByteList.AddRange(BitConverter.GetBytes(value));
+    public void Append(Vector3 value)
+    {
+        Append(value.x);
+        Append(value.y);
+        Append(value.z);
+
+    }
+    public void Append(Quaternion value)
+    {
+        Append(value.x);
+        Append(value.y);
+        Append(value.z);
+        Append(value.w);
+    }
+    public void Append(int[] value)
+    {
+        Append(value.Length);
+        foreach (var v in value)
+            Append(v);
+    }
+    public bool GetBool()
+    {
+        var result = BitConverter.ToBoolean(Array, m_Index);
+        m_Index += sizeof(bool);
+        return result;
+    }
+    public Char GetChar()
+    {
+        var result = BitConverter.ToChar(Array, m_Index);
+        m_Index += sizeof(char);
+        return result;
+    }
+    public short GetShort()
+    {
+        var result = BitConverter.ToInt16(Array, m_Index);
+        m_Index += sizeof(short);
+        return result;
+    }
+    public ushort GetUshort()
+    {
+        var result = BitConverter.ToUInt16(Array, m_Index);
+        m_Index += sizeof(ushort);
+        return result;
+    }
+    public int GetInt()
+    {
+        var result = BitConverter.ToInt32(Array, m_Index);
+        m_Index += sizeof(int);
+        return result;
+    }
+    public uint GetUint()
+    {
+        var result = BitConverter.ToUInt32(Array, m_Index);
+        m_Index += sizeof(uint);
+        return result;
+    }
+    public long GetLong()
+    {
+        var result = BitConverter.ToInt64(Array, m_Index);
+        m_Index += sizeof(long);
+        return result;
+    }
+    public ulong GetUlong()
+    {
+        var result = BitConverter.ToUInt64(Array, m_Index);
+        m_Index += sizeof(ulong);
+        return result;
+    }
+    public float GetFloat()
+    {
+        var result = BitConverter.ToSingle(Array, m_Index);
+        m_Index += sizeof(float);
+        return result;
+    }
+    public Double GetDouble()
+    {
+        var result = BitConverter.ToDouble(Array, m_Index);
+        m_Index += sizeof(double);
+        return result;
+    }
+    public Vector3 GetVector3()
+    => new Vector3(GetFloat(), GetFloat(), GetFloat());
+    public void GetQuaternion()
+    => new Quaternion(GetFloat(), GetFloat(), GetFloat(), GetFloat());
+    public int[] GetIntArray()
+    => Enumerable.Range(0, GetInt()).Select(_ => GetInt()).ToArray();
+    public byte[] ToByteArray() => m_ByteList.ToArray();
+
 }

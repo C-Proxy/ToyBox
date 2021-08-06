@@ -15,7 +15,7 @@ public interface ITargetFinder
 {
     Transform transform { get; }
     T FindTarget<T>()
-    where T : BaseObservable;
+    where T : BaseEventHandler;
     T FindTarget<T>(int layer)
-    where T : BaseObservable;
+    where T : BaseEventHandler;
 }

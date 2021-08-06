@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using MaterialSpace;
 
-public class ToggleButtonObservable : BaseObservable, ILaserReceivable
+public class ToggleEventHandler : BaseEventHandler, ILaserReceivable
 {
     [SerializeField] SpriteManager.LaserIcon m_UpLaserIcon = default, m_DownLaserIcon = default;
     SkinnedMeshRenderer m_SkinnedMeshrenderer;

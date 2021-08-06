@@ -8,7 +8,7 @@ using CoinSpace;
 
 public class Generator : MonoBehaviour
 {
-    [SerializeField] ButtonAsObservable[] m_ButtonObservables = default;
+    [SerializeField] ButtonEventHandler[] m_ButtonObservables = default;
 
     private void Awake()
     {
@@ -20,5 +20,6 @@ public class Generator : MonoBehaviour
         m_ButtonObservables[5].SetPressEvent(() => CoinPlate.Generate(transform.position));
         m_ButtonObservables[6].SetPressEvent(() => AttacheCase.Generate(transform.position));
         m_ButtonObservables[7].SetPressEvent(() => Wingman.Generate(transform.position));
+        m_ButtonObservables[8].SetPressEvent(() => WingmanAmmo.Generate(transform.position));
     }
 }

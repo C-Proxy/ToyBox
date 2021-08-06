@@ -32,7 +32,7 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
         m_IsDeckNV = null;
         base.OnPool();
     }
-    public void NetworkInit(int[] infos)
+    public void NetworkInit(RpcPackage package)
     {
         ChildInfos = Enumerable.Range(0, 53).Select(count => new CardInfo((byte)count)).ToArray();
         IsDeck = true;
@@ -94,13 +94,18 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
         }
     }
 
-    public IDisposable[] Connect(InputDriver.PlayerInput playerInput)
+    public void Connect(InputManager.HandInput input)
     {
-        return new[]{
-        playerInput.ClickAsObservable(KeyType.MainButton).Where(isDouble=>!isDouble).Subscribe(_=>SetDeckMode(!IsDeck)),
-        playerInput.ClickAsObservable(KeyType.SubButton).Where(isDouble=>!isDouble).Subscribe(_=>ShuffleServerRpc()),
-        };
-
+        input.MainClick.AddListener(isDouble =>
+        {
+            if (!isDouble)
+                SetDeckMode(!IsDeck);
+        });
+        input.SubClick.AddListener(isDouble =>
+        {
+            if (!isDouble)
+                ShuffleServerRpc();
+        });
     }
     override public void OnGrab(IGrabber parent)
     {

@@ -3,29 +3,14 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UniRx;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 
 public class Test : MonoBehaviour
 {
-    CancellationTokenSource m_TokenSource;
-    public void StartTask()
-    {
-        m_TokenSource = new CancellationTokenSource();
-        UniTask.Run(async () =>
-        {
-            await UniTask.SwitchToMainThread();
-            Debug.Log("Start");
-            int count = 0;
-            while (!m_TokenSource.Token.IsCancellationRequested)
-            {
-                count++;
-                Debug.Log(count);
-                await UniTask.Delay(1000);
-            }
-            Debug.Log("End");
-        });
-    }
-    public void StopTask() => m_TokenSource?.Cancel();
+    public void OnInput(InputAction.CallbackContext context) => Debug.Log("");
+    public void OnInputFloat(InputAction.CallbackContext context) => Debug.Log(context.ReadValue<float>());
+    public void OnInputVector2(InputAction.CallbackContext context) => Debug.Log(context.ReadValue<Vector2>());
 }
