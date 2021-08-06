@@ -50,8 +50,6 @@ abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteract
 
     override public void OnPool()
     {
-        if (IsGrabbed)
-            ForceReleaseServerRpc();
         m_ParentBehaviourNV = null;
         m_Rigidbody.useGravity = false;
         base.OnPool();
@@ -77,6 +75,7 @@ abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteract
     }
     virtual public void OnRelease(IGrabber parent)
     {
+        Debug.Log("OnRelease");
         m_GrabTarget.IsTargettable = true;
         m_Rigidbody.isKinematic = m_Defaultkinematic;
         m_Rigidbody.useGravity = m_DefaultUseGravity;
@@ -147,8 +146,7 @@ abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteract
             });
         }
     }
-    [ServerRpc(RequireOwnership = false)]
-    public void ForceReleaseServerRpc()
+    public void ForceRelease()
     => RequestChangeParent(null);
 
     async protected UniTask GrabAsync(IGrabber parent)

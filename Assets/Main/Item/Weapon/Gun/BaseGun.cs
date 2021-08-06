@@ -54,7 +54,8 @@ namespace GunSpace
             {
                 var current = BulletCount;
                 BulletCount = Mathf.Clamp(current + count, 0, m_GunInfo.MaxBullets);
-                PrefabGenerator.DespawnPrefabOnServer(NetworkSpawnManager.SpawnedObjects[interactorId]);
+                var interactor = NetworkSpawnManager.SpawnedObjects[interactorId];
+                PrefabGenerator.DespawnPrefabOnServer(interactor);
                 OnReloadClientRpc();
             }
         }
@@ -86,7 +87,7 @@ namespace GunSpace
             input.IndexPress.AddListener(pressed => { if (pressed && IsShootable) ShotServerRpc(); });
         }
     }
-
+    [Serializable]
     public struct GunInfo
     {
         public int MaxBullets;

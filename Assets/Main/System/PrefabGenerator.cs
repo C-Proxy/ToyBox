@@ -38,8 +38,8 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         {
             poolable.SetActive(true);
             poolable.transform.SetParent(null);
-            poolable.OnSpawn();
             poolable.transform.SetPositionAndRotation(position, rotation);
+            poolable.OnSpawn();
             return poolable.NetworkObject;
         }
         else
@@ -115,6 +115,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
     public static void DespawnPrefabOnServer(NetworkObject networkObject)
     {
         if (!IsServer) throw new Exception("Not Server can't call DesspawnPrefabOnServer");
+        networkObject.GetComponent<IGrabbable>()?.ForceRelease();
         networkObject.Despawn();
         _Singleton.PoolNetworkObject(networkObject);
     }
@@ -130,8 +131,8 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         if (singleton.TryGetLocalPoolObject(index, out var poolable))
         {
             poolable.SetActive(true);
-            poolable.OnSpawn();
             poolable.transform.SetPositionAndRotation(position, rotation);
+            poolable.OnSpawn();
             return poolable.gameObject;
         }
         else

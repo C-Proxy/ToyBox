@@ -76,6 +76,7 @@ public class Wingman : BaseGun
                 await UniTask.Delay(TimeSpan.FromSeconds(3f));
                 PrefabGenerator.PoolLocalObject(mock);
             });
+            m_MagazineMock = null;
         }
     }
 

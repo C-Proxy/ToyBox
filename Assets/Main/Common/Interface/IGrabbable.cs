@@ -13,8 +13,7 @@ public interface IGrabbable
     IObservable<HandShape> HandShapeAsObservable { get; }
     void RequestChangeParent(IGrabber parent);
     void Release(IGrabber parent);
-    [ServerRpc]
-    void ForceReleaseServerRpc();
+    void ForceRelease();
     void OnGrab(IGrabber grabber);
     void OnRelease(IGrabber grabber);
 }

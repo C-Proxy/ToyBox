@@ -11,12 +11,22 @@ namespace GunSpace
     public class BaseBullet : PoolableNetworkBehaviour, INetworkInitializable
     {
         float m_Velocity;
+        TrailRenderer m_TrailRenrerer;
         CancellationTokenSource m_DespawnCTS;
 
-        override public void OnSpawn() { }
+        override protected void Awake()
+        {
+            m_TrailRenrerer = GetComponent<TrailRenderer>();
+            base.Awake();
+        }
+        override public void OnSpawn()
+        {
+            m_TrailRenrerer.emitting = true;
+        }
         override public void OnPool()
         {
             m_DespawnCTS?.Cancel();
+            m_TrailRenrerer.emitting = false;
             base.OnPool();
         }
         private void Update()
@@ -45,7 +55,7 @@ namespace GunSpace
             DespawnServerRpc();
         }
     }
-
+    [Serializable]
     public struct BulletInfo
     {
         public float Velocity;
