@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7145145545072533685}
   - component: {fileID: 8498792456709221260}
   - component: {fileID: 3008021523175056241}
-  - component: {fileID: -1234771958966740573}
   - component: {fileID: 4429827632898519054}
+  - component: {fileID: -1234771958966740573}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -63,6 +63,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bdaaac72c6caf448b458cea97fbbc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4429827632898519054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4052526354825085894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04f6556886813a48a4ccb175c275b38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxCount: 8
 --- !u!120 &-1234771958966740573
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -133,8 +146,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 0, a: 0}
-      key1: {r: 1, g: 0.39504427, b: 0, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 0.8674295, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -168,16 +181,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &4429827632898519054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4052526354825085894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04f6556886813a48a4ccb175c275b38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_DisplayTime: 1
