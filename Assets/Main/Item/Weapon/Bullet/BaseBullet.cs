@@ -16,20 +16,18 @@ namespace GunSpace
         RaycastHit[] m_RaycastResults;
         CancellationTokenSource m_DespawnCTS;
 
-        override protected void Awake()
+        virtual protected void Awake()
         {
             m_TrailLaser = GetComponent<TrailLaser>();
-            m_TrailLaser.Init();
             m_RaycastResults = new RaycastHit[8];
-            base.Awake();
         }
         override public void OnSpawn()
         {
+            base.OnSpawn();
             m_TrailLaser.OnSpawn();
         }
         override public void OnPool()
         {
-
             m_TrailLaser.OnPool();
             m_DespawnCTS?.Cancel();
             base.OnPool();

@@ -12,9 +12,8 @@ public class WispHand : NetworkPoolableChildBehaviour
 {
     const float SPEED = 10f;
     SpriteRenderer m_SpriteRenderer;
-    override protected void Awake()
+    protected void Awake()
     {
-        base.Awake();
         m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         m_SpriteRenderer.gameObject.SetActive(false);
     }
@@ -44,6 +43,4 @@ public class WispHand : NetworkPoolableChildBehaviour
             }
         });
     }
-    override public void OnSpawn() { }
-    override public void OnPool() { }
 }

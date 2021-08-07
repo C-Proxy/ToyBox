@@ -20,7 +20,6 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
         m_MeshRenderer = GetComponentInChildren<MeshRenderer>();
         m_TextMeshes = GetComponentsInChildren<TextMeshPro>();
         m_ActionObservable = GetComponent<ActionEventHandler>();
-        base.Awake();
     }
     override public void OnSpawn()
     {

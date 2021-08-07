@@ -20,7 +20,6 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
     const float THICKNESS = 0.0005f;
     NetworkVariableBool m_IsDeckNV;
     public bool IsDeck { private set { m_IsDeckNV.Value = value; } get { return m_IsDeckNV.Value; } }
-
     override public void OnSpawn()
     {
         base.OnSpawn();

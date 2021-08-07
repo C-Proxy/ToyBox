@@ -28,20 +28,18 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     override public void OnSpawn()
     {
         m_OVRTraceCTS = new CancellationTokenSource();
+        m_LeftHand.OnSpawn();
+        m_RightHand.OnSpawn();
+        m_LeftHandController = new HandController(true, m_LeftHand, IsOwner);
+        m_RightHandController = new HandController(false, m_RightHand, IsOwner);
+        m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
+        if (IsOwner)
+            IKTrace(m_OVRTraceCTS.Token).Forget();
     }
     override public void OnPool()
     {
         m_OVRTraceCTS?.Cancel();
         m_OVRTraceCTS = null;
-    }
-    private void Start()
-    {
-        m_LeftHandController = new HandController(true, m_LeftHand, IsOwner);
-        m_RightHandController = new HandController(false, m_RightHand, IsOwner);
-        m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
-
-        if (IsOwner)
-            IKTrace(m_OVRTraceCTS.Token).Forget();
     }
     private void OnAnimatorIK()
     {

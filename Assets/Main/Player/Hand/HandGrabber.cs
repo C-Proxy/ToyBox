@@ -31,13 +31,12 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
 
     override protected void Awake()
     {
+        base.Awake();
         m_NetworkTargetNV = new NetworkVariable<NetworkObject>();
         m_NetworkTargetNV.OnValueChanged += (pre, cur) => Target = cur?.GetComponent<IGrabbable>();
-        base.Awake();
     }
-    override protected void AfterAwake()
+    virtual protected void Start()
     {
-        base.AfterAwake();
         var finderAnchor = m_TargetFinder.transform;
         m_PlayerHandOffset = new HandOffset(finderAnchor.localPosition, finderAnchor.localEulerAngles);
     }

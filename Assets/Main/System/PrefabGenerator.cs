@@ -46,12 +46,12 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         {
             var prefab = m_NetworkPrefabDicitionary[prefabHash];
             var obj = Instantiate(prefab, position, rotation);
+            obj.GetComponent<INetworkPoolable>().OnSpawn();
             return obj.GetComponent<NetworkObject>();
         }
     }
     void PoolNetworkObject(NetworkObject networkObject)
     {
-        Debug.Log($"Pooled:{networkObject.name}");
         var poolable = networkObject.GetComponent<INetworkPoolable>();
         if (poolable != null)
         {
@@ -137,7 +137,9 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         }
         else
         {
-            return Instantiate(singleton.m_LocalPrefabs[index], position, rotation);
+            var obj = Instantiate(singleton.m_LocalPrefabs[index], position, rotation);
+            obj.GetComponent<ILocalPoolable>().OnSpawn();
+            return obj;
         }
     }
     public static void PoolLocalObject(ILocalPoolable poolable)

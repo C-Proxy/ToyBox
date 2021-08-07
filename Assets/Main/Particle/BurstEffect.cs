@@ -10,9 +10,10 @@ public class BurstEffect : LocalPoolableBehaviour
     [SerializeField] ParticleSystem m_Cracker = default, m_Smoke = default;
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_Cracker.Emit(30);
         m_Smoke.Emit(20);
-        DespawnAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        DespawnAsync(m_AliveCTS.Token).Forget();
     }
     async UniTaskVoid DespawnAsync(CancellationToken token)
     {

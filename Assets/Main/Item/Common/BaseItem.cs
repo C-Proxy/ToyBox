@@ -28,17 +28,16 @@ abstract public class BaseItem : NetworkPoolableBehaviour, IGrabbable, IInteract
     public IGrabber Parent => m_Parent;
     [SerializeField] protected GrabEventHandler m_GrabTarget = default;
 
-    override protected void Awake()
+    virtual protected void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         m_DefaultUseGravity = m_Rigidbody.useGravity;
         m_Defaultkinematic = m_Rigidbody.isKinematic;
         m_HandShapeHandler = GetComponent<HandShapeHandler>();
-        base.Awake();
     }
-
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_ParentBehaviourNV = new NetworkVariable<NetworkBehaviour>();
         m_ParentBehaviourNV.OnValueChanged += async (pre, cur) => await GrabAsync(cur?.GetComponent<IGrabber>());
 
@@ -75,7 +74,6 @@ abstract public class BaseItem : NetworkPoolableBehaviour, IGrabbable, IInteract
     }
     virtual public void OnRelease(IGrabber parent)
     {
-        Debug.Log("OnRelease");
         m_GrabTarget.IsTargettable = true;
         m_Rigidbody.isKinematic = m_Defaultkinematic;
         m_Rigidbody.useGravity = m_DefaultUseGravity;

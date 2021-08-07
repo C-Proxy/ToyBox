@@ -14,7 +14,7 @@ public class TrailLaser : LocalPoolableChildBehaviour
     LineRenderer m_LineRenderer;
     Queue<Vector3[]> m_PointsQueue;
 
-    override public void Init()
+    protected void Awake()
     {
         m_LineRenderer = GetComponent<LineRenderer>();
     }

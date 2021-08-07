@@ -17,10 +17,9 @@ abstract public class BaseGrabber : NetworkPoolableChildBehaviour, IGrabber, IIn
     protected ITargetFinder m_TargetFinder;
     public ITargetFinder TargetFinder => m_TargetFinder;
     virtual public Transform GrabAnchor => transform;
-    override protected void Awake()
+    virtual protected void Awake()
     {
         m_TargetFinder = GetComponentInChildren<ITargetFinder>();
-        base.Awake();
     }
     public void Set(NetworkBehaviour networkParent) { }// => m_NetworkParent = networkParent;
     public void Set(NetworkBehaviour networkBehaviour, HandDominant handDominant)

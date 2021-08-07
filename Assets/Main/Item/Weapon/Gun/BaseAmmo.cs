@@ -11,7 +11,6 @@ namespace GunSpace
         {
             if (other.TryGetComponent<ReloadEventHandler>(out var reloadHandler) && reloadHandler.IsReloadable(BulletType))
             {
-                Debug.Log("TriggerEnter");
                 reloadHandler.Interact(this, new ReloadAction(BulletType, 8));
             }
         }

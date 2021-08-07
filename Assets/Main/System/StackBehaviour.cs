@@ -61,9 +61,8 @@ where TInfo : INetworkSerializable
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_ChildInfosNV = new NetworkVariable<TInfo[]>(new TInfo[0]);
+        m_ChildInfosNV = new NetworkVariable<TInfo[]>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly }, new TInfo[0]);
         m_ChildList = new List<TChild>();
-
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
             var infoLength = cur.Length;
@@ -186,10 +185,9 @@ where TInfo : INetworkSerializable
     protected TParent m_Parent;
     protected TInfo m_ChildInfo;
 
-    override protected void Awake()
+    virtual protected void Awake()
     {
         m_Colliders = GetComponentsInChildren<Collider>();
-        base.Awake();
     }
     public void Set(TInfo info, TParent parent)
     {

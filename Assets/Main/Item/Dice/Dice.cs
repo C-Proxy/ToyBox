@@ -19,8 +19,8 @@ public class Dice : BaseItem
 
     override protected void Awake()
     {
-        m_TextMesh = GetComponentInChildren<TextMeshPro>();
         base.Awake();
+        m_TextMesh = GetComponentInChildren<TextMeshPro>();
     }
     override public void OnSpawn()
     {
@@ -75,7 +75,7 @@ public class Dice : BaseItem
         return (velocity, angularVelocity);
     }
 
-    void SetText(byte number) => m_TextMesh.text = number != 0 ? number.ToString() : "";
-
+    void SetText(byte number)
+    => m_TextMesh.text = number != 0 ? number.ToString() : "";
     public static void Generate(Vector3 position) => PrefabGenerator.SpawnNetworkPrefab(NetworkPrefabName.Dice, position);
 }

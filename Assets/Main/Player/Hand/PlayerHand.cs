@@ -24,6 +24,12 @@ public class PlayerHand : BaseHand, IHumanHand
         m_HandGrabber = GetComponentInChildren<HandGrabber>();
         m_Animator = GetComponent<Animator>();
     }
+    override public void OnSpawn()
+    {
+        base.OnSpawn();
+        m_HandGrabber.OnSpawn();
+        m_WispHand.OnSpawn();
+    }
     public void EnableLaser(bool enable) => m_Laser.gameObject.SetActive(enable);
     public void Interact(IInteractor interactor, bool isDouble) => LaserTargetFinder.Target?.Interact(interactor ?? m_HandGrabber, new LaserAction(isDouble));
 }

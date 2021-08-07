@@ -10,9 +10,8 @@ public class MockObject : LocalPoolableBehaviour
     Rigidbody m_Rigidbody;
     public Rigidbody Rigidbody => m_Rigidbody;
 
-    override protected void Awake()
+    protected void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        base.Awake();
     }
 }
