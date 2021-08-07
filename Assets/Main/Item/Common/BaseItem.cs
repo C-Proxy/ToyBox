@@ -12,7 +12,7 @@ using Cysharp.Threading.Tasks;
 using Prefab;
 
 [RequireComponent(typeof(Rigidbody))]
-abstract public class BaseItem : PoolableNetworkBehaviour, IGrabbable, IInteractor
+abstract public class BaseItem : NetworkPoolableBehaviour, IGrabbable, IInteractor
 {
     NetworkVariable<NetworkBehaviour> m_ParentBehaviourNV;
     NetworkBehaviour ParentBehaviour { set { m_ParentBehaviourNV.Value = value; } get { return m_ParentBehaviourNV.Value; } }

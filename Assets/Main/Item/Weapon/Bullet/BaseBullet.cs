@@ -8,16 +8,19 @@ using Cysharp.Threading.Tasks;
 
 namespace GunSpace
 {
-    public class BaseBullet : PoolableNetworkBehaviour, INetworkInitializable
+    public class BaseBullet : NetworkPoolableBehaviour, INetworkInitializable, IDamageDealer
     {
         TrailLaser m_TrailLaser;
         float m_Velocity;
+        float m_DamageValue;
+        RaycastHit[] m_RaycastResults;
         CancellationTokenSource m_DespawnCTS;
 
         override protected void Awake()
         {
             m_TrailLaser = GetComponent<TrailLaser>();
             m_TrailLaser.Init();
+            m_RaycastResults = new RaycastHit[8];
             base.Awake();
         }
         override public void OnSpawn()
@@ -26,12 +29,21 @@ namespace GunSpace
         }
         override public void OnPool()
         {
+
             m_TrailLaser.OnPool();
             m_DespawnCTS?.Cancel();
             base.OnPool();
         }
         private void Update()
         {
+            if (IsOwner)
+            {
+                var length = Physics.RaycastNonAlloc(transform.position, transform.forward, m_RaycastResults, m_Velocity, (int)LayerName.RaycastTarget, QueryTriggerInteraction.Ignore);
+                for (var i = 0; i < length; i++)
+                {
+                    m_RaycastResults[i].collider?.GetComponent<ActionEventHandler>()?.Interact(this, new DamageAction(m_DamageValue));
+                }
+            }
             transform.position += transform.forward * m_Velocity * Time.deltaTime;
             m_TrailLaser.AddPosition(transform.position);
         }
@@ -53,7 +65,17 @@ namespace GunSpace
         => Set(velocity, lifetime);
         async UniTaskVoid DespawnAsync(float lifetime, CancellationToken token)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(lifetime), DelayType.DeltaTime, PlayerLoopTiming.Update, token);
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(lifetime), DelayType.DeltaTime, PlayerLoopTiming.Update, token);
+            }
+            catch { }
+            DespawnServerRpc();
+        }
+
+        public void OnDealDamage()
+        {
+            m_DespawnCTS.Cancel();
             DespawnServerRpc();
         }
     }

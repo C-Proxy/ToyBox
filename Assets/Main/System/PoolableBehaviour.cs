@@ -7,7 +7,7 @@ using Prefab;
 using MLAPI;
 using MLAPI.Messaging;
 
-abstract public class PoolableNetworkBehaviour : NetworkPoolableChildBehaviour, INetworkPoolable
+abstract public class NetworkPoolableBehaviour : NetworkPoolableChildBehaviour, INetworkPoolable
 {
     public ulong PrefabHash => NetworkObject.PrefabHash;
     public void SetActive(bool active) => gameObject.SetActive(active);

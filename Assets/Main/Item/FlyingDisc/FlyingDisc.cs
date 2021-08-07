@@ -10,6 +10,7 @@ using Prefab;
 public class FlyingDisc : BaseItem
 {
     [SerializeField] float m_Force = default, m_FlyableLimit = default;
+    [SerializeField] ActionEventHandler m_ActionHandler = default;
     NetworkVariableBool m_IsFlyingNV;
     public bool IsFlying { set { m_IsFlyingNV.Value = value; } get { return m_IsFlyingNV.Value; } }
 
@@ -30,10 +31,22 @@ public class FlyingDisc : BaseItem
                 m_FlyingCTS = null;
             }
         };
+        m_ActionHandler.SetInteractEvent(info =>
+        {
+            var interactor = info.Interactor;
+            var action = info.ActionInfo;
+            switch (action)
+            {
+                case DamageAction damageAction:
+                    ReceiveDamage();
+                    break;
+            }
+        });
     }
     override public void OnPool()
     {
         m_IsFlyingNV = null;
+        PrefabGenerator.GenerateLocalPrefab(LocalPrefabName.Eff_Burst, transform.position, transform.rotation);
         base.OnPool();
     }
     override public void OnGrab(IGrabber parent)
@@ -49,6 +62,10 @@ public class FlyingDisc : BaseItem
             IsFlying = true;
             m_Rigidbody.angularVelocity = Vector3.zero;
         }
+    }
+    void ReceiveDamage()
+    {
+        DespawnServerRpc();
     }
     CancellationTokenSource m_FlyingCTS;
     async UniTaskVoid FlyAsync(CancellationToken token)

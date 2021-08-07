@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Prefab;
 
-abstract public class GrabberBehaviour : PoolableNetworkBehaviour
+abstract public class GrabberBehaviour : NetworkPoolableBehaviour
 {
     protected List<IGrabber> m_Grabbers = new List<IGrabber>();
 

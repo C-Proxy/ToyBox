@@ -195,6 +195,7 @@ namespace Prefab
         PlayingCard,
         Coin,
         Mock_WingmanAmmo,
+        Eff_Burst,
     }
     // [Serializable]
     // public class PrefabTable : Serialize.TableBase<PrefabName, GameObject, PrefabPair> { }

@@ -18,6 +18,7 @@ MonoBehaviour:
   m_GrabTarget: {fileID: 6926836695877331575}
   m_Force: 15
   m_FlyableLimit: 0.6
+  m_ActionHandler: {fileID: 3095762232987876220}
 --- !u!65 &1785139196533873600
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31,6 +32,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.025, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3095762232987876220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6048734297725908702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d12367c998f04bb4c9a8e4ffa47a2638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsTargettable: 1
 --- !u!1001 &2656891938907455118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -198,6 +212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FlyingDisc
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f615c6ece321d334ca28da2aea485b49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f615c6ece321d334ca28da2aea485b49, type: 3}

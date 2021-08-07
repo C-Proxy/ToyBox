@@ -8,6 +8,10 @@ public interface IInteractor
 {
 
 }
+public interface IDamageDealer : IInteractor
+{
+    void OnDealDamage();
+}
 public interface ILaserReceivable
 {
     bool IsTargettable { set; get; }
