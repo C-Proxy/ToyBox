@@ -188,6 +188,7 @@ namespace Prefab
         Wingman,
         WingmanAmmo,
         NormalBullet,
+        FlyingDisc,
     }
     public enum LocalPrefabName
     {

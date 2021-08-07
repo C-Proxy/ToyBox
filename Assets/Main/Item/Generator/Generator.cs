@@ -21,5 +21,7 @@ public class Generator : MonoBehaviour
         m_ButtonObservables[6].SetPressEvent(() => AttacheCase.Generate(transform.position));
         m_ButtonObservables[7].SetPressEvent(() => Wingman.Generate(transform.position));
         m_ButtonObservables[8].SetPressEvent(() => WingmanAmmo.Generate(transform.position));
+        m_ButtonObservables[9].SetPressEvent(() => FlyingDisc.Generate(transform.position));
+
     }
 }
