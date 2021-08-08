@@ -12,9 +12,9 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
 
     override protected void Awake()
     {
+        base.Awake();
         m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         m_ActionObservable = GetComponent<ActionEventHandler>();
-        base.Awake();
     }
     override public void OnSpawn()
     {

@@ -47,16 +47,14 @@ public class Wingman : BaseGun
         m_BulletCountNV = null;
         base.OnPool();
     }
-    [ClientRpc]
-    override protected void OnReloadClientRpc()
+    override protected void OnReload()
     {
         var mock = PrefabGenerator.GenerateLocalPrefab(LocalPrefabName.Mock_WingmanAmmo, m_CyllinderAnchor.position, m_CyllinderAnchor.rotation).GetComponent<MockObject>();
         m_MagazineMock = mock;
         mock.transform.SetParent(m_CyllinderAnchor);
         mock.Rigidbody.isKinematic = true;
     }
-    [ClientRpc]
-    override protected void OnShotClientRpc()
+    override protected void OnShot()
     {
         m_MuzzleFlash.Emit(6);
         m_Smoke.Emit(3);

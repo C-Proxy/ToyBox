@@ -14,8 +14,8 @@ public class PokerBoard : BaseItem
 
     override protected void Awake()
     {
-        m_IsLockedNV.OnValueChanged += (pre, cur) => LockGrab(cur);
         base.Awake();
+        m_IsLockedNV.OnValueChanged += (pre, cur) => LockGrab(cur);
     }
     override public void OnSpawn()
     {

@@ -16,7 +16,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         base.Awake();
         m_PrefabHashes = m_NetworkPrefabs.Select(prefab => prefab.GetComponent<NetworkObject>().PrefabHash).ToArray();
         m_NetworkPrefabDicitionary = Enumerable.Zip(m_PrefabHashes, m_NetworkPrefabs, (hash, prefab) => (hash, prefab)).ToDictionary(pair => pair.hash, pair => pair.prefab);
-        m_NetworkPoolDictionary = m_PrefabHashes.ToDictionary(hash => hash, _ => new Queue<INetworkPoolable>());
+        m_NetworkPoolDictionary = m_PrefabHashes.ToDictionary(hash => hash, _ => new Queue<INetworkPoolableParent>());
 
         foreach (var hash in m_PrefabHashes)
         {
@@ -24,12 +24,12 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             NetworkSpawnManager.RegisterDestroyHandler(hash, PoolNetworkObject);
         }
 
-        m_LocalPools = m_LocalPrefabs.Select(_ => new Queue<ILocalPoolable>()).ToArray();
+        m_LocalPools = m_LocalPrefabs.Select(_ => new Queue<ILocalPoolableParent>()).ToArray();
     }
     #region NetworkObject
     [SerializeField, EnumIndex(typeof(NetworkPrefabName))] GameObject[] m_NetworkPrefabs;
     ulong[] m_PrefabHashes;
-    Dictionary<ulong, Queue<INetworkPoolable>> m_NetworkPoolDictionary;
+    Dictionary<ulong, Queue<INetworkPoolableParent>> m_NetworkPoolDictionary;
     Dictionary<ulong, GameObject> m_NetworkPrefabDicitionary;
 
     NetworkObject GetSpawnNetworkObject(ulong prefabHash, Vector3 position, Quaternion rotation)
@@ -39,20 +39,18 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             poolable.SetActive(true);
             poolable.transform.SetParent(null);
             poolable.transform.SetPositionAndRotation(position, rotation);
-            poolable.OnSpawn();
+            // poolable.OnSpawn();
             return poolable.NetworkObject;
         }
         else
         {
             var prefab = m_NetworkPrefabDicitionary[prefabHash];
-            var obj = Instantiate(prefab, position, rotation);
-            obj.GetComponent<INetworkPoolable>().OnSpawn();
-            return obj.GetComponent<NetworkObject>();
+            return Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
         }
     }
     void PoolNetworkObject(NetworkObject networkObject)
     {
-        var poolable = networkObject.GetComponent<INetworkPoolable>();
+        var poolable = networkObject.GetComponent<INetworkPoolableParent>();
         if (poolable != null)
         {
             poolable.OnPool();
@@ -61,7 +59,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             m_NetworkPoolDictionary[poolable.PrefabHash].Enqueue(poolable);
         }
     }
-    bool TryGetNetworkPoolObject(ulong prefabHash, out INetworkPoolable poolable)
+    bool TryGetNetworkPoolObject(ulong prefabHash, out INetworkPoolableParent poolable)
     {
         try
         {
@@ -123,7 +121,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
 
     #region LocalObject
     [SerializeField, EnumIndex(typeof(LocalPrefabName))] GameObject[] m_LocalPrefabs;
-    Queue<ILocalPoolable>[] m_LocalPools;
+    Queue<ILocalPoolableParent>[] m_LocalPools;
     public static GameObject GenerateLocalPrefab(LocalPrefabName prefabName, Vector3 position = default, Quaternion rotation = default)
     {
         var singleton = _Singleton;
@@ -132,17 +130,15 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         {
             poolable.SetActive(true);
             poolable.transform.SetPositionAndRotation(position, rotation);
-            poolable.OnSpawn();
+            // poolable.OnSpawn();
             return poolable.gameObject;
         }
         else
         {
-            var obj = Instantiate(singleton.m_LocalPrefabs[index], position, rotation);
-            obj.GetComponent<ILocalPoolable>().OnSpawn();
-            return obj;
+            return Instantiate(singleton.m_LocalPrefabs[index], position, rotation);
         }
     }
-    public static void PoolLocalObject(ILocalPoolable poolable)
+    public static void PoolLocalObject(ILocalPoolableParent poolable)
     {
         var singleton = _Singleton;
         poolable.OnPool();
@@ -150,7 +146,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         poolable.SetActive(false);
         singleton.m_LocalPools[(int)poolable.PrefabName].Enqueue(poolable);
     }
-    bool TryGetLocalPoolObject(int index, out ILocalPoolable poolable)
+    bool TryGetLocalPoolObject(int index, out ILocalPoolableParent poolable)
     {
         try
         {

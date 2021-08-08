@@ -19,15 +19,19 @@ public class PlayerHand : BaseHand, IHumanHand
     public Animator Animator => m_Animator;
     [SerializeField] HandShapeReactiveProperty m_HandShapeRP = new HandShapeReactiveProperty();
     public IObservable<HandShape> HandShapeAsObservable => m_HandShapeRP;
-    protected void Awake()
+    override public void Init()
     {
+        base.Init();
         m_HandGrabber = GetComponentInChildren<HandGrabber>();
+        m_HandGrabber.Init();
+        m_Laser.Init();
         m_Animator = GetComponent<Animator>();
     }
     override public void OnSpawn()
     {
         base.OnSpawn();
         m_HandGrabber.OnSpawn();
+        m_Laser.OnSpawn();
         m_WispHand.OnSpawn();
     }
     public void EnableLaser(bool enable) => m_Laser.gameObject.SetActive(enable);

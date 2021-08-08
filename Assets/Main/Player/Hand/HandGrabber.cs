@@ -29,11 +29,12 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
     }
     override public bool HasTarget(IGrabbable grabbable) => Target == grabbable;
 
-    override protected void Awake()
+    override public void Init()
     {
-        base.Awake();
+        base.Init();
         m_NetworkTargetNV = new NetworkVariable<NetworkObject>();
         m_NetworkTargetNV.OnValueChanged += (pre, cur) => Target = cur?.GetComponent<IGrabbable>();
+
     }
     virtual protected void Start()
     {
@@ -42,10 +43,11 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
     }
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_PlayerHandRP = new BoolReactiveProperty(true);
 
         var finderAnchor = m_TargetFinder.transform;
-        Subscriptions.Add(
+        m_Subscriptions.Add(
             m_PlayerHandRP.Subscribe(enable =>
             {
                 if (enable)
@@ -64,6 +66,7 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
     override public void OnPool()
     {
         m_PlayerHandRP.Dispose();
+        base.OnPool();
     }
     override public void Release() => Target?.Release(this);
 }

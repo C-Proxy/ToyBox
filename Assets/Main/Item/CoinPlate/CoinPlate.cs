@@ -17,6 +17,7 @@ public class CoinPlate : BaseItem
     }
     override public void OnSpawn()
     {
+        base.OnSpawn();
         foreach (var stacker in m_CoinStackObservables)
         {
             stacker.SetInteractEvent(info =>
@@ -29,10 +30,6 @@ public class CoinPlate : BaseItem
                 }
             });
         }
-    }
-    override public void OnPool()
-    {
-
     }
 
     public static void Generate(Vector3 position)

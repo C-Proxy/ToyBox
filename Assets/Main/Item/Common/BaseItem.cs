@@ -12,7 +12,7 @@ using Cysharp.Threading.Tasks;
 using Prefab;
 
 [RequireComponent(typeof(Rigidbody))]
-abstract public class BaseItem : NetworkPoolableBehaviour, IGrabbable, IInteractor
+abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
 {
     NetworkVariable<NetworkBehaviour> m_ParentBehaviourNV;
     NetworkBehaviour ParentBehaviour { set { m_ParentBehaviourNV.Value = value; } get { return m_ParentBehaviourNV.Value; } }
@@ -39,7 +39,11 @@ abstract public class BaseItem : NetworkPoolableBehaviour, IGrabbable, IInteract
     {
         base.OnSpawn();
         m_ParentBehaviourNV = new NetworkVariable<NetworkBehaviour>();
-        m_ParentBehaviourNV.OnValueChanged += async (pre, cur) => await GrabAsync(cur?.GetComponent<IGrabber>());
+        m_ParentBehaviourNV.OnValueChanged += async (pre, cur) =>
+        {
+            if (cur != pre)
+                await GrabAsync(cur?.GetComponent<IGrabber>());
+        };
 
         m_Rigidbody.useGravity = m_DefaultUseGravity;
         m_Rigidbody.isKinematic = m_Defaultkinematic;

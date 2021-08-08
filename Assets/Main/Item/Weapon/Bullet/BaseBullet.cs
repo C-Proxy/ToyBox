@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GunSpace
 {
-    public class BaseBullet : NetworkPoolableBehaviour, INetworkInitializable, IDamageDealer
+    public class BaseBullet : NetworkPoolableParent, INetworkInitializable, IDamageDealer
     {
         TrailLaser m_TrailLaser;
         float m_Velocity;

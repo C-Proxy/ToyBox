@@ -8,7 +8,7 @@ using MLAPI.Messaging;
 using UniRx;
 using Cysharp.Threading.Tasks;
 
-abstract public class BaseGrabber : NetworkPoolableChildBehaviour, IGrabber, IInteractor
+abstract public class BaseGrabber : NetworkPoolableChild, IGrabber, IInteractor
 {
     abstract public bool UseHandOffset { get; }
     HandDominant m_HandDominant;
@@ -17,8 +17,9 @@ abstract public class BaseGrabber : NetworkPoolableChildBehaviour, IGrabber, IIn
     protected ITargetFinder m_TargetFinder;
     public ITargetFinder TargetFinder => m_TargetFinder;
     virtual public Transform GrabAnchor => transform;
-    virtual protected void Awake()
+    override public void Init()
     {
+        base.Init();
         m_TargetFinder = GetComponentInChildren<ITargetFinder>();
     }
     public void Set(NetworkBehaviour networkParent) { }// => m_NetworkParent = networkParent;

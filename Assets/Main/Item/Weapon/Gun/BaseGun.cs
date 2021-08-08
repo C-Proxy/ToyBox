@@ -56,11 +56,14 @@ namespace GunSpace
                 BulletCount = Mathf.Clamp(current + count, 0, m_GunInfo.MaxBullets);
                 var interactor = NetworkSpawnManager.SpawnedObjects[interactorId];
                 PrefabGenerator.DespawnPrefabOnServer(interactor);
+                if (!IsHost)
+                    OnReload();
                 OnReloadClientRpc();
             }
         }
         [ClientRpc]
-        virtual protected void OnReloadClientRpc() { }
+        void OnReloadClientRpc() => OnReload();
+        virtual protected void OnReload() { }
         [ServerRpc(RequireOwnership = false)]
         virtual protected void ShotServerRpc()
         {
@@ -68,20 +71,23 @@ namespace GunSpace
             {
                 BulletCount--;
                 SpawnBullet();
+                if (!IsHost)
+                    OnShot();
                 OnShotClientRpc();
             }
         }
         [ClientRpc]
-        virtual protected void OnShotClientRpc() { }
+        void OnShotClientRpc() => OnShot();
+        virtual protected void OnShot() { }
         virtual protected void SpawnBullet()
         {
             var obj = PrefabGenerator.SpawnPrefabOnServer(BulletName, m_MuzzleAnchor.position, m_MuzzleAnchor.rotation);
             if (obj.TryGetComponent<BaseBullet>(out var bullet))
             {
+                bullet.Set(m_BulletInfo.Velocity, m_BulletInfo.Lifetime);
                 bullet.SetClientRpc(m_BulletInfo.Velocity, m_BulletInfo.Lifetime);
             }
         }
-
         virtual public void Connect(InputManager.HandInput input)
         {
             input.IndexPress.AddListener(pressed => { if (pressed && IsShootable) ShotServerRpc(); });

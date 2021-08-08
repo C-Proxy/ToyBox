@@ -5,12 +5,24 @@ using MLAPI;
 using MLAPI.Messaging;
 using Prefab;
 
-public interface IPoolable : IPoolableChild
+public interface IPoolable
+{
+
+    void OnPool();
+    void OnSpawn();
+}
+public interface IPoolableChild : IPoolable
+{
+    void Init();
+}
+public interface IPoolableParent : IPoolable
 {
     Transform transform { get; }
     GameObject gameObject { get; }
     void SetActive(bool active);
 }
+public interface INetworkPoolableParent : INetworkPoolable, IPoolableParent { }
+public interface ILocalPoolableParent : ILocalPoolable, IPoolableParent { }
 public interface INetworkPoolable : IPoolable
 {
     NetworkObject NetworkObject { get; }
@@ -21,9 +33,4 @@ public interface INetworkPoolable : IPoolable
 public interface ILocalPoolable : IPoolable
 {
     LocalPrefabName PrefabName { get; }
-}
-public interface IPoolableChild
-{
-    void OnPool();
-    void OnSpawn();
 }

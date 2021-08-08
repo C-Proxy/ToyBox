@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks.Linq;
 using UniRx;
 using UniRx.Triggers;
 
-public class WispHand : NetworkPoolableChildBehaviour
+public class WispHand : NetworkPoolableChild
 {
     const float SPEED = 10f;
     SpriteRenderer m_SpriteRenderer;

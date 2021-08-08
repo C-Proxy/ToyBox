@@ -7,7 +7,7 @@ using UniRx;
 using TMPro;
 
 [RequireComponent(typeof(LineRenderer))]
-public class LaserTargetFinder : MonoBehaviour
+public class LaserTargetFinder : LocalPoolableChild
 {
     const float MAX_DISTANCE = 2f;
     LineRenderer m_LineRenderer;
@@ -18,11 +18,14 @@ public class LaserTargetFinder : MonoBehaviour
     ReactiveProperty<ILaserReceivable> m_TargetRP = new ReactiveProperty<ILaserReceivable>();
     public IObservable<ILaserReceivable> TargetAsObservable => m_TargetRP;
     public ILaserReceivable Target { private set { m_TargetRP.Value = value; } get { return m_TargetRP.Value; } }
-    private void Awake()
+
+    override public void Init()
     {
+        base.Init();
         m_LineRenderer = GetComponent<LineRenderer>();
         m_TargetSpriteRenderer = m_TargetAnchor.GetComponent<SpriteRenderer>();
         m_TextMesh = m_TargetAnchor.GetComponentInChildren<TextMeshPro>();
+
     }
     private void Update()
     {

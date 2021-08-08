@@ -4,7 +4,7 @@ using UnityEngine;
 using Prefab;
 
 [RequireComponent(typeof(Rigidbody))]
-public class MockObject : LocalPoolableBehaviour
+public class MockObject : LocalPoolableParent
 {
     override public LocalPrefabName PrefabName => LocalPrefabName.Mock_WingmanAmmo;
     Rigidbody m_Rigidbody;

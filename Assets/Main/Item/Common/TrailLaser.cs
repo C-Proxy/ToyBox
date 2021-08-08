@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TrailLaser : LocalPoolableChildBehaviour
+public class TrailLaser : LocalPoolableChild
 {
     [SerializeField] int m_MaxCount;
     LineRenderer m_LineRenderer;
@@ -20,6 +20,7 @@ public class TrailLaser : LocalPoolableChildBehaviour
     }
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_PointsQueue = new Queue<Vector3[]>();
     }
     override public void OnPool()
@@ -27,6 +28,7 @@ public class TrailLaser : LocalPoolableChildBehaviour
         m_PointsQueue.Clear();
         m_PointsQueue = null;
         m_LineRenderer.positionCount = 0;
+        base.OnPool();
     }
     public void AddPosition(Vector3 position)
     => AddPositions(new[] { position });

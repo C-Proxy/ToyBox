@@ -18,10 +18,12 @@ public class MultipleGrabber : BaseGrabber, IMultipleGrabber
 
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_TargetRC = new ReactiveCollection<IGrabbable>();
     }
     override public void OnPool()
     {
         m_TargetRC.Dispose();
+        base.OnPool();
     }
 }

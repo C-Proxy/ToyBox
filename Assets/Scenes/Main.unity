@@ -1608,8 +1608,8 @@ MonoBehaviour:
   MaxConnections: 100
   MaxSentMessageQueueSize: 128
   ConnectAddress: 127.0.0.1
-  ConnectPort: 7777
-  ServerListenPort: 7777
+  ConnectPort: 10800
+  ServerListenPort: 10800
   ServerWebsocketListenPort: 8887
   SupportWebsocket: 0
   Channels: []
@@ -2657,7 +2657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b3400e99a62fb48a3080a6b26b827a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NetworkMode: 3
+  m_DefaultMode: 1
 --- !u!114 &1856678909
 MonoBehaviour:
   m_ObjectHideFlags: 0

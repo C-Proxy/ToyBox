@@ -744,7 +744,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1691530831}
-  - component: {fileID: 1691530830}
   - component: {fileID: 1691530832}
   m_Layer: 0
   m_Name: InputManager
@@ -753,18 +752,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1691530830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691530829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7a8645142cb70c4db902373a58d2622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1691530831
 Transform:
   m_ObjectHideFlags: 0
@@ -807,7 +794,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1691530830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InputTest, Assembly-CSharp
         m_MethodName: OnLeftStick
         m_Mode: 0
@@ -823,35 +810,19 @@ MonoBehaviour:
     m_ActionName: Player/LeftThumbStick[/DualShock4GamepadHID/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 789f29b6-cfef-4665-90d0-dd99b03d3453
-    m_ActionName: Player/RightThumbStick
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: ba8233c5-82f0-4fc2-a566-a937d8523112
     m_ActionName: Player/LeftStickClick
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f2a8f8d4-95ed-4eb6-9ef0-5e53c01ef0a4
-    m_ActionName: Player/RightStickClick
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 8ee90827-a92f-4d9f-b922-657f01471b23
     m_ActionName: Player/LeftStickTouch
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: bb75a7ac-15bd-4451-939f-6e2599a06e10
-    m_ActionName: Player/RightStickTouch
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 8b30e1f7-dea1-4d32-b11e-9438d80c556e
     m_ActionName: Player/LeftThumbTouch
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a317d52e-799e-414c-a86b-6fac25548f16
-    m_ActionName: Player/RightThumbTouch
-  - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1691530830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InputTest, Assembly-CSharp
         m_MethodName: OnLeftMainButton
         m_Mode: 0
@@ -866,12 +837,8 @@ MonoBehaviour:
     m_ActionId: 2f85cc4c-7844-49b9-8a61-854ba1a7fdc2
     m_ActionName: Player/LeftMainButton
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9ff172ae-6041-46f2-94d0-75f535659c8b
-    m_ActionName: Player/RightMainButton
-  - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1691530830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InputTest, Assembly-CSharp
         m_MethodName: OnLeftMainTouch
         m_Mode: 0
@@ -887,64 +854,32 @@ MonoBehaviour:
     m_ActionName: Player/LeftMainTouch
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 9e2fafe2-5bc8-453c-8b33-6ccf322ab000
-    m_ActionName: Player/RightMainTouch
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 5f75eac5-67ce-49a6-95f6-8f7589b663b8
     m_ActionName: Player/LeftSubButton
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b89dc8e6-0529-4a9e-8566-cf7ade75ec1e
-    m_ActionName: Player/RightSubButton
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c3dd26d0-6455-4a59-b798-d8dfd89e73fe
     m_ActionName: Player/LeftSubTouch
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ee7ac085-486d-4725-8681-72ac8d100ec1
-    m_ActionName: Player/RightSubTouch
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 37140926-951c-4fc9-9fa5-b7d75480c7f2
     m_ActionName: Player/LeftIndexTrigger
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d1ff98cc-907a-41b6-b9d6-b3d1e4aa043e
-    m_ActionName: Player/RightIndexTrigger
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: e930875b-ce4f-471b-baa8-9690ab72e1a4
     m_ActionName: Player/LeftIndexPress
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 1e994c90-d858-4f0f-8452-0f560caa6e5e
-    m_ActionName: Player/RIghtIndexPress
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 532fe2ec-39a0-404d-9ad7-57e040252fde
     m_ActionName: Player/LeftIndexTouch
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b084cb09-b8af-44e2-905b-106cb8215e34
-    m_ActionName: Player/RightIndexTouch
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 44919c47-85c9-4e31-a6c9-ca6c29885406
     m_ActionName: Player/LeftHandTrigger
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 279451cf-be2f-4883-a226-2578165e1b47
-    m_ActionName: Player/RightHandTrigger
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: fb999109-5cc2-4b50-af52-177de9694114
     m_ActionName: Player/LeftHandPress
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 13172d74-acb4-4f8b-b7f6-9d8de919ccfb
-    m_ActionName: Player/RightHandPress
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: dc7c8a19-2c57-4dfd-bcfc-cf8ff28bbc77
@@ -985,9 +920,85 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 242a7228-0697-4e03-b86e-14d0dd4eb253
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 14915f4b-1bd3-4ca6-93cf-3049b2d2e02e
+    m_ActionName: LeftInput/MainClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0d5ffe1d-2f20-4877-9bc4-d9ee171cd1ee
+    m_ActionName: LeftInput/SubClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b244f067-dbcf-458d-b10d-3f9a9ff46b0f
+    m_ActionName: LeftInput/IndexClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0f1ed1e1-4de5-4d19-bb44-c439db001bce
+    m_ActionName: RightInput/StickAxis
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ddd17568-8f4e-4882-81ba-cb81261a4174
+    m_ActionName: RightInput/StickClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 556e73ae-a8c0-4a0d-8e66-189370b5c862
+    m_ActionName: RightInput/StickTouch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 38918398-e00d-44d3-9e40-f61066e3da28
+    m_ActionName: RightInput/ThumbTouch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5766918b-87f9-4240-af61-f4fc2894d0f4
+    m_ActionName: RightInput/MainPress
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d5a25792-9f8c-4dd2-af6f-bc1aa97f11e5
+    m_ActionName: RightInput/MainClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cca0012b-7629-4ef3-8256-12c8367ec5c0
+    m_ActionName: RightInput/MainTouch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fe38d3a7-de81-4e13-a5ae-462319aa3c2d
+    m_ActionName: RightInput/SubPress
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4e0abdf4-92c7-4d42-ae8f-583cff215072
+    m_ActionName: RightInput/SubClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 49141fb9-381a-4157-8f69-667c8facf7ff
+    m_ActionName: RightInput/SubTouch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c39ab9bd-7674-4554-be1a-ade766530236
+    m_ActionName: RightInput/IndexTrigger
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0a500288-78eb-490f-8318-003fdc5c955a
+    m_ActionName: RightInput/IndexPress
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 057e4e76-3494-4d7f-88c6-8faac61aa51e
+    m_ActionName: RightInput/IndexClick
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7152d9cd-602a-4e70-8973-05d43b014729
+    m_ActionName: RightInput/IndexTouch
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 87d23760-7e16-405f-8f92-b7f4510374e8
+    m_ActionName: RightInput/HandTrigger
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5b330d29-53bf-4889-ada3-6040b0106e68
+    m_ActionName: RightInput/HandPress
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: LeftInput
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1925063992

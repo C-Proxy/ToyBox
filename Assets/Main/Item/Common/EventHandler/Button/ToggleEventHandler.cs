@@ -32,12 +32,14 @@ public class ToggleEventHandler : BaseEventHandler, ILaserReceivable
     }
     override public void OnSpawn()
     {
+        base.OnSpawn();
         m_SkinnedMeshrenderer.SetBlendShapeWeight(0, 0f);
         m_SkinnedMeshrenderer.materials = new[] { m_BaseMaterial, m_UpMaterial };
     }
     override public void OnPool()
     {
         m_ButtonEvent.RemoveAllListeners();
+        base.OnPool();
     }
 
     UnityEvent<bool> m_ButtonEvent = new UnityEvent<bool>();

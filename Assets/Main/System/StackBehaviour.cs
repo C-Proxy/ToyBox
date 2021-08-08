@@ -65,6 +65,8 @@ where TInfo : INetworkSerializable
         m_ChildList = new List<TChild>();
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
+            if (cur.Equals(pre))
+                return;
             var infoLength = cur.Length;
             if (infoLength == 0)
             {
@@ -175,7 +177,7 @@ where TInfo : INetworkSerializable
 
     override public string ToString() => m_ChildList.ToString();
 }
-abstract public class StackChildBehaviour<TParent, TChild, TInfo> : LocalPoolableBehaviour, IStackable<TParent, TChild, TInfo>
+abstract public class StackChildBehaviour<TParent, TChild, TInfo> : LocalPoolableParent, IStackable<TParent, TChild, TInfo>
 where TParent : StackParentBehaviour<TParent, TChild, TInfo>
 where TChild : StackChildBehaviour<TParent, TChild, TInfo>
 where TInfo : INetworkSerializable

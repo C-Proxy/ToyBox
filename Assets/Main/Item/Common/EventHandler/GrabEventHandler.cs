@@ -13,5 +13,6 @@ public class GrabEventHandler : BaseEventHandler
     override public void OnPool()
     {
         m_GrabEvent.RemoveAllListeners();
+        base.OnPool();
     }
 }

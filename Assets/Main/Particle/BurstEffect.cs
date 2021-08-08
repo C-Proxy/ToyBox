@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Prefab;
-public class BurstEffect : LocalPoolableBehaviour
+public class BurstEffect : LocalPoolableParent
 {
     override public LocalPrefabName PrefabName => LocalPrefabName.Eff_Burst;
     [SerializeField] ParticleSystem m_Cracker = default, m_Smoke = default;

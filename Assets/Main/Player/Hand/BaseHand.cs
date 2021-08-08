@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UniRx;
 
-abstract public class BaseHand : LocalPoolableChildBehaviour
+abstract public class BaseHand : LocalPoolableChild
 {
 
 }

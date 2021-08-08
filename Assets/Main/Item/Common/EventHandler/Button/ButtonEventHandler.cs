@@ -12,6 +12,7 @@ public class ButtonEventHandler : BaseEventHandler, ILaserReceivable
     override public void OnPool()
     {
         m_ButtonEvent.RemoveAllListeners();
+        base.OnPool();
     }
 
     UnityEvent m_ButtonEvent = new UnityEvent();
