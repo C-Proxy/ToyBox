@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using MLAPI;
 using MLAPI.Transports.UNET;
 
@@ -34,10 +35,12 @@ namespace Networking
                 mode = m_DefaultMode;
             }
             Debug.Log("Connect:" + mode.ToString());
+            var vrEnable = !Application.isBatchMode;
             switch (mode)
             {
                 case NetworkMode.Server:
                     networkManager.StartServer();
+                    vrEnable = false;
                     break;
                 case NetworkMode.Client:
                     networkManager.StartClient();
@@ -45,6 +48,24 @@ namespace Networking
                 case NetworkMode.Host:
                     networkManager.StartHost();
                     break;
+                default:
+                    vrEnable = false;
+                    break;
+            }
+            if (!vrEnable) DisableOculusVR();
+        }
+        private void DisableOculusVR()
+        {
+            var xrDisplays = new List<XRDisplaySubsystem>();
+            SubsystemManager.GetInstances(xrDisplays);
+            foreach (var display in xrDisplays)
+            {
+                if (display.subsystemDescriptor.id.Equals("oculus display"))
+                {
+                    display.Stop();
+                    Debug.Log("Stopped Oculus VR.");
+                    return;
+                }
             }
         }
         public class NetworkConfig
