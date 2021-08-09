@@ -14,12 +14,6 @@
       "dependencies": {},
       "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
     },
-    "com.unity.2d.sprite": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
     "com.unity.burst": {
       "version": "1.4.1",
       "depth": 1,
@@ -72,15 +66,6 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.ide.rider": {
-      "version": "2.0.7",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.1"
-      },
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
@@ -194,7 +179,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "10.5.0",
+      "version": "10.5.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -203,13 +188,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.universal": {
-      "version": "10.5.0",
+      "version": "10.5.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.1.0",
-        "com.unity.render-pipelines.core": "10.5.0",
-        "com.unity.shadergraph": "10.5.0"
+        "com.unity.render-pipelines.core": "10.5.1",
+        "com.unity.shadergraph": "10.5.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -241,11 +226,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "10.5.0",
+      "version": "10.5.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "10.5.0",
+        "com.unity.render-pipelines.core": "10.5.1",
         "com.unity.searcher": "4.3.2"
       },
       "url": "https://packages.unity.com"
@@ -330,7 +315,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.management": {
-      "version": "4.0.6",
+      "version": "4.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
