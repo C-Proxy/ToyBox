@@ -71,7 +71,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Custom AssetFiles
-/[Aa]ssets/[Oo]culus/
+# /[Aa]ssets/[Oo]culus/
 /[Aa]ssets/TextMesh Pro/
 *.meta
 !*.*.meta
