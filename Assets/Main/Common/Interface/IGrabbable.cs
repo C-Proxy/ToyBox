@@ -11,7 +11,7 @@ public interface IGrabbable
     Transform transform { get; }
     HandShapeHandler HandShapeHandler { get; }
     IObservable<HandShape> HandShapeAsObservable { get; }
-    void RequestChangeParent(IGrabber parent);
+    bool RequestChangeParent(IGrabber parent);
     void Release(IGrabber parent);
     void ForceRelease();
     void OnGrab(IGrabber grabber);

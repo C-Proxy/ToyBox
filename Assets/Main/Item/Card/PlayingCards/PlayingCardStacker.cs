@@ -47,7 +47,7 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
     {
         if (networkInfo.TryToComponent<IGrabber>(out var grabber))
         {
-            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash).GetComponent<PlayingCardStacker>();
+            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash, grabber.NetworkBehaviour.OwnerClientId).GetComponent<PlayingCardStacker>();
             receiver.RequestChangeParent(grabber);
             Handover(receiver, index, count);
         }

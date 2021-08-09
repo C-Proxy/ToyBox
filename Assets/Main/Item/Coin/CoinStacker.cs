@@ -39,7 +39,7 @@ public class CoinStacker : StackParentBehaviour<CoinStacker, Coin, CoinInfo>, IS
     {
         if (networkInfo.TryToComponent<IGrabber>(out var grabber))
         {
-            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash).GetComponent<CoinStacker>();
+            var receiver = PrefabGenerator.SpawnPrefabOnServer(PrefabHash, grabber.NetworkBehaviour.OwnerClientId).GetComponent<CoinStacker>();
             receiver.RequestChangeParent(grabber);
             Handover(receiver, index, count);
         }

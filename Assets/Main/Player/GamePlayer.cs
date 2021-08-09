@@ -74,18 +74,20 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         var ovrRight = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
         var ovrLook = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
         var ovrEye = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
-
-        await UniTaskAsyncEnumerable.EveryUpdate().ForEachAsync(_ =>
+        try
         {
-            var rot = ovrRoot.rotation.eulerAngles;
-            rootAnchor.SetPositionAndRotation(ovrRoot.position, Quaternion.Euler(new Vector3(0, rot.y, rot.z)));
-            // playerRoot.SetPositionAndRotation(ovrRoot.position, ovrRoot.rotation);
-            leftHandAnchor.SetPositionAndRotation(ovrLeft.position, ovrLeft.rotation);
-            rightHandAnchor.SetPositionAndRotation(ovrRight.position, ovrRight.rotation);
-            lookAnchor.SetPositionAndRotation(ovrLook.position, ovrLook.rotation);
-            eyeAnchor.SetPositionAndRotation(ovrEye.position, ovrEye.rotation);
-        }, token);
-
+            await UniTaskAsyncEnumerable.EveryUpdate().ForEachAsync(_ =>
+            {
+                var rot = ovrRoot.rotation.eulerAngles;
+                rootAnchor.SetPositionAndRotation(ovrRoot.position, Quaternion.Euler(new Vector3(0, rot.y, rot.z)));
+                // playerRoot.SetPositionAndRotation(ovrRoot.position, ovrRoot.rotation);
+                leftHandAnchor.SetPositionAndRotation(ovrLeft.position, ovrLeft.rotation);
+                rightHandAnchor.SetPositionAndRotation(ovrRight.position, ovrRight.rotation);
+                lookAnchor.SetPositionAndRotation(ovrLook.position, ovrLook.rotation);
+                eyeAnchor.SetPositionAndRotation(ovrEye.position, ovrEye.rotation);
+            }, token);
+        }
+        catch { }
     }
     class PoseController
     {
@@ -258,7 +260,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                 });
                 handInput.IndexClick.AddListener(isDouble =>
                 {
-                    if (isDouble)
+                    if (!isDouble)
                     {
                         if (HandState == HandState.Laser)
                         {

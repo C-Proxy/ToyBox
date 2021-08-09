@@ -17,6 +17,7 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
     ActionEventHandler m_ActionObservable;
     override protected void Awake()
     {
+        base.Awake();
         m_MeshRenderer = GetComponentInChildren<MeshRenderer>();
         m_TextMeshes = GetComponentsInChildren<TextMeshPro>();
         m_ActionObservable = GetComponent<ActionEventHandler>();

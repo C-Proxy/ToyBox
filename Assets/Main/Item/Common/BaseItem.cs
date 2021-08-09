@@ -109,33 +109,39 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
 
     [ServerRpc(RequireOwnership = false)]
     virtual public void TryGrabServerRpc(NetworkInfo networkInfo)
-    => RequestChangeParent(networkInfo.ToComponent<IGrabber>());
+    {
+        var grabber = networkInfo.ToComponent<IGrabber>();
+        var success = RequestChangeParent(grabber);
+        if (success)
+            NetworkObject.ChangeOwnership(grabber.NetworkBehaviour.OwnerClientId);
+    }
     [ServerRpc(RequireOwnership = false)]
     virtual public void ReleaseServerRpc(Vector3 velocity, Vector3 angularVelocity)
     {
-        RequestChangeParent(null);
+        var success = RequestChangeParent(null);
+        if (success)
+            NetworkObject.RemoveOwnership();
         m_Rigidbody.velocity = velocity;
         m_Rigidbody.angularVelocity = angularVelocity;
     }
 
-    public void RequestChangeParent(IGrabber parent)
+    public bool RequestChangeParent(IGrabber parent)
     {
         if (parent != null)
         {
-            if (IsGrabbed) return;
+            if (IsGrabbed) return false;
 
             ParentBehaviour = parent.NetworkBehaviour;
-            NetworkObject.ChangeOwnership(parent.NetworkBehaviour.OwnerClientId);
         }
         else
         {
-            if (!IsGrabbed) return;
+            if (!IsGrabbed) return false;
 
             ParentBehaviour = null;
-            NetworkObject.RemoveOwnership();
             transform.SetParent(null);
             m_Rigidbody.isKinematic = m_Defaultkinematic;
         }
+        return true;
     }
     public void Release(IGrabber parent)
     {
@@ -149,7 +155,11 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
         }
     }
     public void ForceRelease()
-    => RequestChangeParent(null);
+    {
+        var success = RequestChangeParent(null);
+        if (success)
+            NetworkObject.RemoveOwnership();
+    }
 
     async protected UniTask GrabAsync(IGrabber parent)
     {
