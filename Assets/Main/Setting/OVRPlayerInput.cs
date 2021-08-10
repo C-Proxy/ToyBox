@@ -349,7 +349,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""dce761d8-9033-4047-9a66-dc60d9a1ac4a"",
-                    ""path"": ""<XRController>{LeftHand}/trigger"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/trigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XR"",
@@ -360,7 +360,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f55a9946-92e5-494c-a9df-ba2892363a1a"",
-                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerRight>{LeftHand}/triggerpressed"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerLeft>{LeftHand}/triggerpressed"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XR"",
@@ -1442,7 +1442,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_LeftInput_IndexTouch;
     private readonly InputAction m_LeftInput_HandTrigger;
     private readonly InputAction m_LeftInput_HandPress;
-    public struct LeftInputActions : IInputActions
+    public struct LeftInputActions : InputManager.IInputActions
     {
         private @OVRPlayerInput m_Wrapper;
         public LeftInputActions(@OVRPlayerInput wrapper) { m_Wrapper = wrapper; }
@@ -1595,7 +1595,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_RightInput_IndexTouch;
     private readonly InputAction m_RightInput_HandTrigger;
     private readonly InputAction m_RightInput_HandPress;
-    public struct RightInputActions : IInputActions
+    public struct RightInputActions : InputManager.IInputActions
     {
         private @OVRPlayerInput m_Wrapper;
         public RightInputActions(@OVRPlayerInput wrapper) { m_Wrapper = wrapper; }
@@ -1928,25 +1928,5 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
-    }
-
-    public interface IInputActions
-    {
-        InputAction StickAxis { get; }
-        InputAction StickClick { get; }
-        InputAction StickTouch { get; }
-        InputAction ThumbTouch { get; }
-        InputAction MainPress { get; }
-        InputAction MainClick { get; }
-        InputAction MainTouch { get; }
-        InputAction SubPress { get; }
-        InputAction SubClick { get; }
-        InputAction SubTouch { get; }
-        InputAction IndexTrigger { get; }
-        InputAction IndexPress { get; }
-        InputAction IndexClick { get; }
-        InputAction IndexTouch { get; }
-        InputAction HandTrigger { get; }
-        InputAction HandPress { get; }
     }
 }

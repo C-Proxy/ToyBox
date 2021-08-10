@@ -336,7 +336,7 @@
                 {
                     "name": "",
                     "id": "dce761d8-9033-4047-9a66-dc60d9a1ac4a",
-                    "path": "<XRController>{LeftHand}/trigger",
+                    "path": "<OculusTouchController>{LeftHand}/trigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
@@ -347,7 +347,7 @@
                 {
                     "name": "",
                     "id": "f55a9946-92e5-494c-a9df-ba2892363a1a",
-                    "path": "<XRInputV1::Oculus::OculusTouchControllerRight>{LeftHand}/triggerpressed",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerLeft>{LeftHand}/triggerpressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
