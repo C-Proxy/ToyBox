@@ -25,7 +25,7 @@ public class InputManager : SingletonBehaviour<InputManager>
 
     public class HandInput
     {
-        readonly OVRPlayerInput.IInputActions m_InputActions;
+        readonly IInputActions m_InputActions;
         readonly public UnityEvent<Vector2> StickAxis = new UnityEvent<Vector2>();
         readonly public UnityEvent<bool> StickClick = new UnityEvent<bool>();
         readonly public UnityEvent<bool> StickTouch = new UnityEvent<bool>();
@@ -64,13 +64,14 @@ public class InputManager : SingletonBehaviour<InputManager>
         void InvokeIndexSingleClick(InputAction.CallbackContext context) => IndexClick.Invoke(false);
         void InvokeIndexDoubleClick(InputAction.CallbackContext context) => IndexClick.Invoke(true);
         void InvokeIndexPress(InputAction.CallbackContext context) => IndexPress.Invoke(context.ReadValueAsButton());
+
         void InvokeIndexTrigger(InputAction.CallbackContext context) => IndexTrigger.Invoke(context.ReadValue<float>());
         void InvokeIndexTouch(InputAction.CallbackContext context) => IndexTouch.Invoke(context.ReadValueAsButton());
 
         void InvokeHandTrigger(InputAction.CallbackContext context) => HandTrigger.Invoke(context.ReadValue<float>());
         void InvokeHandPress(InputAction.CallbackContext context) => HandPress.Invoke(context.ReadValueAsButton());
 
-        public HandInput(OVRPlayerInput.IInputActions input)
+        public HandInput(IInputActions input)
         {
             m_InputActions = input;
 
@@ -151,5 +152,24 @@ public class InputManager : SingletonBehaviour<InputManager>
     {
         LeftController,
         RightController,
+    }
+    public interface IInputActions
+    {
+        InputAction StickAxis { get; }
+        InputAction StickClick { get; }
+        InputAction StickTouch { get; }
+        InputAction ThumbTouch { get; }
+        InputAction MainPress { get; }
+        InputAction MainClick { get; }
+        InputAction MainTouch { get; }
+        InputAction SubPress { get; }
+        InputAction SubClick { get; }
+        InputAction SubTouch { get; }
+        InputAction IndexTrigger { get; }
+        InputAction IndexPress { get; }
+        InputAction IndexClick { get; }
+        InputAction IndexTouch { get; }
+        InputAction HandTrigger { get; }
+        InputAction HandPress { get; }
     }
 }

@@ -14,7 +14,7 @@ using Prefab;
 [RequireComponent(typeof(Rigidbody))]
 abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
 {
-    NetworkVariable<NetworkBehaviour> m_ParentBehaviourNV;
+    NetworkVariable<NetworkBehaviour> m_ParentBehaviourNV = new NetworkVariable<NetworkBehaviour>();
     NetworkBehaviour ParentBehaviour { set { m_ParentBehaviourNV.Value = value; } get { return m_ParentBehaviourNV.Value; } }
     HandShapeHandler m_HandShapeHandler;
     public HandShapeHandler HandShapeHandler => m_HandShapeHandler;
@@ -38,13 +38,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_ParentBehaviourNV = new NetworkVariable<NetworkBehaviour>();
-        m_ParentBehaviourNV.OnValueChanged += async (pre, cur) =>
-        {
-            if (cur != pre)
-                await GrabAsync(cur?.GetComponent<IGrabber>());
-        };
-
+        m_ParentBehaviourNV.OnValueChanged += OnParentChanged;
         m_Rigidbody.useGravity = m_DefaultUseGravity;
         m_Rigidbody.isKinematic = m_Defaultkinematic;
 
@@ -53,9 +47,23 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
 
     override public void OnPool()
     {
-        m_ParentBehaviourNV = null;
+        if (IsOwner)
+            ParentBehaviour = null;
+        m_ParentBehaviourNV.OnValueChanged -= OnParentChanged;
+
         m_Rigidbody.useGravity = false;
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
         base.OnPool();
+    }
+
+    void OnParentChanged(NetworkBehaviour previous, NetworkBehaviour current)
+    {
+        if (current != previous)
+        {
+            var parent = current?.GetComponent<IGrabber>();
+            GrabAsync(parent).Forget();
+        }
     }
 
     #region Grab

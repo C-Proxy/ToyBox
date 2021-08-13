@@ -39,7 +39,6 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
             poolable.SetActive(true);
             poolable.transform.SetParent(null);
             poolable.transform.SetPositionAndRotation(position, rotation);
-            // poolable.OnSpawn();
             return poolable.NetworkObject;
         }
         else
@@ -117,6 +116,8 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         networkObject.SpawnWithOwnership(ownerId);
         return networkObject;
     }
+    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, ulong ownerId, Vector3 position = default, Quaternion rotation = default)
+    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], ownerId, position, rotation);
     public static void DespawnPrefabOnServer(NetworkObject networkObject)
     {
         if (!IsServer) throw new Exception("Not Server can't call DesspawnPrefabOnServer");

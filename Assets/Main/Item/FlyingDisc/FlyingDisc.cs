@@ -11,26 +11,14 @@ public class FlyingDisc : BaseItem
 {
     [SerializeField] float m_Force = default, m_FlyableLimit = default;
     [SerializeField] ActionEventHandler m_ActionHandler = default;
-    NetworkVariableBool m_IsFlyingNV;
+    NetworkVariableBool m_IsFlyingNV = new NetworkVariableBool();
     public bool IsFlying { set { m_IsFlyingNV.Value = value; } get { return m_IsFlyingNV.Value; } }
 
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_IsFlyingNV = new NetworkVariableBool();
-        m_IsFlyingNV.OnValueChanged += (pre, cur) =>
-        {
-            if (cur)
-            {
-                m_FlyingCTS = new CancellationTokenSource();
-                FlyAsync(m_FlyingCTS.Token).Forget();
-            }
-            else
-            {
-                m_FlyingCTS?.Cancel();
-                m_FlyingCTS = null;
-            }
-        };
+
+        m_IsFlyingNV.OnValueChanged += OnFlyingChanged;
         m_ActionHandler.SetInteractEvent(info =>
         {
             var interactor = info.Interactor;
@@ -43,9 +31,12 @@ public class FlyingDisc : BaseItem
             }
         });
     }
+
     override public void OnPool()
     {
-        m_IsFlyingNV = null;
+        if (IsOwner)
+            IsFlying = false;
+        m_IsFlyingNV.OnValueChanged -= OnFlyingChanged;
         PrefabGenerator.GenerateLocalPrefab(LocalPrefabName.Eff_Burst, transform.position, transform.rotation);
         base.OnPool();
     }
@@ -57,7 +48,9 @@ public class FlyingDisc : BaseItem
     override public void OnRelease(IGrabber parent)
     {
         base.OnRelease(parent);
-        if (IsServer && Vector3.Dot(transform.forward, m_Rigidbody.velocity) > m_FlyableLimit)
+        var velocity = m_Rigidbody.velocity;
+        transform.Rotate(transform.up, Vector3.Angle(transform.forward, velocity));
+        if (IsServer && Vector3.Dot(transform.forward, velocity) > m_FlyableLimit)
         {
             IsFlying = true;
             m_Rigidbody.angularVelocity = Vector3.zero;
@@ -68,6 +61,23 @@ public class FlyingDisc : BaseItem
         DespawnServerRpc();
     }
     CancellationTokenSource m_FlyingCTS;
+    void OnFlyingChanged(bool previous, bool current)
+    {
+        if (current)
+        {
+            if (m_FlyingCTS != null)
+                return;
+            m_FlyingCTS = new CancellationTokenSource();
+            FlyAsync(m_FlyingCTS.Token).Forget();
+            Debug.Log("StartFlying");
+        }
+        else
+        {
+            m_FlyingCTS?.Cancel();
+            m_FlyingCTS = null;
+            Debug.Log("StopFlying");
+        }
+    }
     async UniTaskVoid FlyAsync(CancellationToken token)
     {
         try

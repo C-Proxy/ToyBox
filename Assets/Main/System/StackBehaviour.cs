@@ -53,7 +53,7 @@ where TInfo : INetworkSerializable
     const int MAX_STACK = byte.MaxValue;
     abstract protected float CHILD_MASS { get; }
     abstract protected LocalPrefabName ChildPrefabName { get; }
-    NetworkVariable<TInfo[]> m_ChildInfosNV;
+    NetworkVariable<TInfo[]> m_ChildInfosNV = new NetworkVariable<TInfo[]>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly }, new TInfo[0]);
     public TInfo[] ChildInfos { protected set { m_ChildInfosNV.Value = value; } get { return m_ChildInfosNV.Value; } }
     public int ChildLength => ChildInfos?.Length ?? 0;
     protected List<TChild> m_ChildList;
@@ -61,7 +61,6 @@ where TInfo : INetworkSerializable
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_ChildInfosNV = new NetworkVariable<TInfo[]>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly }, new TInfo[0]);
         m_ChildList = new List<TChild>();
         m_ChildInfosNV.OnValueChanged += (pre, cur) =>
         {
@@ -93,11 +92,13 @@ where TInfo : INetworkSerializable
 
     override public void OnPool()
     {
-        m_ChildInfosNV = null;
+        if (IsOwner)
+            ChildInfos = new TInfo[0];
         foreach (var child in m_ChildList)
             child.Despawn();
         m_ChildList.Clear();
         m_ChildList = null;
+        m_ChildInfosNV.OnValueChanged = null;
         base.OnPool();
     }
 

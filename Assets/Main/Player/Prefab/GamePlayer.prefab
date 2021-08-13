@@ -982,6 +982,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4768737994689911241, guid: 78b813255435ba04b8d667a87eeb35d9,
         type: 3}
+      propertyPath: m_IsLeft
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768737994689911241, guid: 78b813255435ba04b8d667a87eeb35d9,
+        type: 3}
       propertyPath: m_WispHand
       value: 
       objectReference: {fileID: 6636208028702495131}

@@ -18,17 +18,18 @@ public class PlayingCardStacker : StackParentBehaviour<PlayingCardStacker, Playi
     const float SPREAD_ANGLE = 90f;
     const float SPREAD_POSITION = 0.2f;
     const float THICKNESS = 0.0005f;
-    NetworkVariableBool m_IsDeckNV;
+    NetworkVariableBool m_IsDeckNV = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.OwnerOnly });
     public bool IsDeck { private set { m_IsDeckNV.Value = value; } get { return m_IsDeckNV.Value; } }
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_IsDeckNV = new NetworkVariableBool(new NetworkVariableSettings() { WritePermission = NetworkVariablePermission.Everyone });
         m_IsDeckNV.OnValueChanged += (pre, cur) => Align();
     }
     override public void OnPool()
     {
-        m_IsDeckNV = null;
+        if (IsOwner)
+            IsDeck = false;
+        m_IsDeckNV.OnValueChanged = null;
         base.OnPool();
     }
     public void NetworkInit(RpcPackage package)

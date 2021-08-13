@@ -34,6 +34,7 @@ namespace GunSpace
         }
         private void Update()
         {
+            m_TrailLaser.AddPosition(transform.position);
             if (IsOwner)
             {
                 var length = Physics.RaycastNonAlloc(transform.position, transform.forward, m_RaycastResults, m_Velocity, (int)LayerName.RaycastTarget, QueryTriggerInteraction.Ignore);
@@ -43,7 +44,6 @@ namespace GunSpace
                 }
             }
             transform.position += transform.forward * m_Velocity * Time.deltaTime;
-            m_TrailLaser.AddPosition(transform.position);
         }
         public void NetworkInit(RpcPackage package)
         {

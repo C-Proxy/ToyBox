@@ -19,7 +19,7 @@ namespace GunSpace
         abstract protected NetworkPrefabName BulletName { get; }
         [SerializeField] protected Transform m_MuzzleAnchor = default;
         [SerializeField] protected ReloadEventHandler m_ReloadEventHandler = default;
-        protected NetworkVariableInt m_BulletCountNV;
+        protected NetworkVariableInt m_BulletCountNV = new NetworkVariableInt();
         protected int BulletCount { set { m_BulletCountNV.Value = value; } get { return m_BulletCountNV.Value; } }
         abstract protected bool IsShootable { get; }
         abstract protected bool IsReloadable { get; }
@@ -27,8 +27,7 @@ namespace GunSpace
         override public void OnSpawn()
         {
             base.OnSpawn();
-            m_BulletCountNV = new NetworkVariableInt(m_GunInfo.MaxBullets);
-
+            BulletCount = m_GunInfo.MaxBullets;
             m_ReloadEventHandler.SetInteractEvent((info =>
             {
                 var action = info.ActionInfo;
@@ -44,7 +43,6 @@ namespace GunSpace
         }
         override public void OnPool()
         {
-            m_BulletCountNV = null;
             base.OnPool();
         }
         [ServerRpc(RequireOwnership = false)]
@@ -81,10 +79,11 @@ namespace GunSpace
         virtual protected void OnShot() { }
         virtual protected void SpawnBullet()
         {
-            var obj = PrefabGenerator.SpawnPrefabOnServer(BulletName, m_MuzzleAnchor.position, m_MuzzleAnchor.rotation);
+            var obj = PrefabGenerator.SpawnPrefabOnServer(BulletName, OwnerClientId, m_MuzzleAnchor.position, m_MuzzleAnchor.rotation);
             if (obj.TryGetComponent<BaseBullet>(out var bullet))
             {
-                bullet.Set(m_BulletInfo.Velocity, m_BulletInfo.Lifetime);
+                if (!IsHost)
+                    bullet.Set(m_BulletInfo.Velocity, m_BulletInfo.Lifetime);
                 bullet.SetClientRpc(m_BulletInfo.Velocity, m_BulletInfo.Lifetime);
             }
         }

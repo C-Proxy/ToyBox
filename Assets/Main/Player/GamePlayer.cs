@@ -21,8 +21,6 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     public NetworkBehaviour FindNetworkBehaviour(ushort behaviourId)
     => GetNetworkBehaviour(behaviourId);
 
-    CancellationTokenSource m_OVRTraceCTS;
-
     public IGrabber GetGrabber(int index) => m_Grabbers[index];
     private void Awake()
     {
@@ -31,24 +29,21 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     }
     private void Start()
     {
-        m_LeftHandController = new HandController(true, m_LeftHand, IsOwner);
-        m_RightHandController = new HandController(false, m_RightHand, IsOwner);
+        m_LeftHandController = new HandController(m_LeftHand, IsOwner);
+        m_RightHandController = new HandController(m_RightHand, IsOwner);
         m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
         if (IsOwner)
-            IKTrace(m_OVRTraceCTS.Token).Forget();
+            IKTrace(m_AliveCTS.Token).Forget();
     }
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_OVRTraceCTS = new CancellationTokenSource();
         m_LeftHand.OnSpawn();
         m_RightHand.OnSpawn();
 
     }
     override public void OnPool()
     {
-        m_OVRTraceCTS?.Cancel();
-        m_OVRTraceCTS = null;
         m_LeftHand.OnPool();
         m_RightHand.OnPool();
         m_LeftHandController = null;
@@ -170,8 +165,9 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         public IObservable<HandShape> HandShapeAsObservable { private set; get; }
         List<IDisposable> m_Subscriptions;
 
-        public HandController(bool isLeft, PlayerHand playerHand, bool isMine)
+        public HandController(PlayerHand playerHand, bool isMine)
         {
+            var isLeft = playerHand.IsLeft;
             var laser = playerHand.LaserTargetFinder;
 
             m_PlayerHand = playerHand;

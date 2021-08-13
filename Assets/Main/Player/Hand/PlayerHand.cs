@@ -7,6 +7,8 @@ using Cysharp.Threading.Tasks;
 
 public class PlayerHand : BaseHand, IHumanHand
 {
+    [SerializeField] bool m_IsLeft;
+    public bool IsLeft => m_IsLeft;
     [SerializeField] protected WispHand m_WispHand = default;
     public WispHand WispHand => m_WispHand;
     HandGrabber m_HandGrabber;
