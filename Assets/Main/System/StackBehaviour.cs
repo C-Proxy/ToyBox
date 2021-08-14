@@ -49,7 +49,7 @@ where TParent : StackParentBehaviour<TParent, TChild, TInfo>
 where TChild : StackChildBehaviour<TParent, TChild, TInfo>
 where TInfo : INetworkSerializable
 {
-    IStackRpcCaller RpcCaller => (IStackRpcCaller)this;
+    IStackRpcCaller m_RpcCaller;
     const int MAX_STACK = byte.MaxValue;
     abstract protected float CHILD_MASS { get; }
     abstract protected LocalPrefabName ChildPrefabName { get; }
@@ -58,83 +58,89 @@ where TInfo : INetworkSerializable
     public int ChildLength => ChildInfos?.Length ?? 0;
     protected List<TChild> m_ChildList;
 
+    override protected void Awake()
+    {
+        base.Awake();
+        m_RpcCaller = (IStackRpcCaller)this;
+    }
     override public void OnSpawn()
     {
         base.OnSpawn();
         m_ChildList = new List<TChild>();
-        m_ChildInfosNV.OnValueChanged += (pre, cur) =>
-        {
-            if (cur.Equals(pre))
-                return;
-            var infoLength = cur.Length;
-            if (infoLength == 0)
-            {
-                if (IsServer)
-                    DespawnServerRpc();
-                return;
-            }
-            m_Rigidbody.mass = CHILD_MASS * infoLength;
-            var childCount = m_ChildList.Count;
-            if (infoLength > childCount)
-                m_ChildList.AddRange(GenerateChildren(infoLength - childCount));
-            else if (infoLength < childCount)
-            {
-                for (int i = infoLength; i < childCount; i++)
-                    m_ChildList[i].Despawn();
-                m_ChildList.RemoveRange(infoLength, childCount - infoLength);
-            }
-            var stackParent = (TParent)this;
-            foreach (var (child, info) in Enumerable.Zip(m_ChildList, cur, (child, info) => (child, info)))
-                child.Set(info, stackParent);
-            Align();
-        };
+        m_ChildInfosNV.OnValueChanged += OnChildrenChanged;
     }
 
     override public void OnPool()
     {
-        if (IsOwner)
-            ChildInfos = new TInfo[0];
+        // if (IsOwner)
+        // ChildInfos = new TInfo[0];
         foreach (var child in m_ChildList)
             child.Despawn();
         m_ChildList.Clear();
         m_ChildList = null;
-        m_ChildInfosNV.OnValueChanged = null;
+        m_ChildInfosNV.OnValueChanged -= OnChildrenChanged;
         base.OnPool();
+    }
+    void OnChildrenChanged(TInfo[] pre, TInfo[] cur)
+    {
+        if (cur.Equals(pre))
+            return;
+        var infoLength = cur.Length;
+        if (infoLength == 0)
+        {
+            if (IsServer)
+                DespawnServerRpc();
+            return;
+        }
+        m_Rigidbody.mass = CHILD_MASS * infoLength;
+        var childCount = m_ChildList.Count;
+        if (infoLength > childCount)
+            m_ChildList.AddRange(GenerateChildren(infoLength - childCount));
+        else if (infoLength < childCount)
+        {
+            for (int i = infoLength; i < childCount; i++)
+                m_ChildList[i].Despawn();
+            m_ChildList.RemoveRange(infoLength, childCount - infoLength);
+        }
+        var stackParent = (TParent)this;
+        foreach (var (child, info) in Enumerable.Zip(m_ChildList, cur, (child, info) => (child, info)))
+            child.Set(info, stackParent);
+        Align();
     }
 
     public void HandoverToGrabber(IGrabber grabber, TChild child)
-    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), 1);
+    => m_RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), 1);
     public void HandoverTopToGrabber(IGrabber grabber)
-    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.Count - 1, 1);
+    => m_RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.Count - 1, 1);
     public void HandoverBottomToGrabber(IGrabber grabber)
-    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, 1);
+    => m_RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, 1);
     public void HandoverTopChildrenToGrabber(IGrabber grabber, TChild child)
     {
         var index = m_ChildList.IndexOf(child);
-        RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), m_ChildList.Count - index);
+        m_RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), m_ChildList.IndexOf(child), m_ChildList.Count - index);
     }
     public void HandoverBottomChildrenToGrabber(IGrabber grabber, TChild child)
-    => RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, m_ChildList.IndexOf(child) + 1);
+    => m_RpcCaller.HandoverToGrabberServerRpc(NetworkInfo.CreateFrom(grabber.NetworkBehaviour), 0, m_ChildList.IndexOf(child) + 1);
     public void HandoverBottomChildren(TParent receiver, int index)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, index + 1);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, index + 1);
     public void HandoverTopChildrenRpc(TParent receiver, int index)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
 
     public void HandoverChild(TParent receiver, TChild child)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.IndexOf(child), 1);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.IndexOf(child), 1);
     public void HandoverTopChild(TParent receiver)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.Count - 1, 1);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, m_ChildList.Count - 1, 1);
     public void HandoverBottomChild(TParent receiver)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, 1);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, 1);
     public void HandoverTopChildren(TParent receiver, TChild child)
     {
         var index = m_ChildList.IndexOf(child);
-        RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
+        m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, index, m_ChildList.Count - index);
     }
     public void HandoverBottomChildren(TParent receiver, TChild child)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.IndexOf(child) + 1);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.IndexOf(child) + 1);
     public void HandoverAll(TParent receiver)
-    => RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.Count);
+    => m_RpcCaller.HandoverServerRpc(receiver.NetworkObjectId, 0, m_ChildList.Count);
 
 
     public void AddChildInfos(TInfo[] infos)

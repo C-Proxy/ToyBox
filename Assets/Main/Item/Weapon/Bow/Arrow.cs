@@ -51,7 +51,6 @@ public class Arrow : BaseItem
                 transform.rotation = Quaternion.LookRotation(m_Rigidbody.velocity, Vector3.up);
                 m_AliveCTS.Token.ThrowIfCancellationRequested();
                 m_ProjectCTS.Token.ThrowIfCancellationRequested();
-                Debug.Log("Flying");
                 await UniTask.Yield();
             }
         }
@@ -67,7 +66,6 @@ public class Arrow : BaseItem
     public void ResetMeshAnchor() => m_TailAnchor.localRotation = Quaternion.identity;
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("CollisionEnter");
         m_ProjectCTS?.Cancel();
     }
 }

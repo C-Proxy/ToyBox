@@ -8,19 +8,19 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
 {
     override public LocalPrefabName PrefabName => LocalPrefabName.PlayingCard;
     SpriteRenderer m_SpriteRenderer;
-    ActionEventHandler m_ActionObservable;
+    ActionEventHandler m_ActionEventHandler;
 
     override protected void Awake()
     {
         base.Awake();
         m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        m_ActionObservable = GetComponent<ActionEventHandler>();
+        m_ActionEventHandler = GetComponent<ActionEventHandler>();
     }
     override public void OnSpawn()
     {
         base.OnSpawn();
         //None->Hand:Draw,None->Deck:DrawTop,Hand->Hand:Draw,Hand->Deck:DrawTop,Deck->Hand:DrawAll,Deck->Deck:DrawDeck,
-        m_ActionObservable.SetFocusEvent(info =>
+        m_ActionEventHandler.SetFocusEvent(info =>
         {
             var iconId = info.GrabItem switch
             {
@@ -31,7 +31,7 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
             };
             info.Laser.SetSpriteAndText(iconId);
         });
-        m_ActionObservable.SetInteractEvent(info =>
+        m_ActionEventHandler.SetInteractEvent(info =>
         {
             var interactor = info.Interactor;
             switch (interactor)
@@ -63,6 +63,11 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
                     return;
             }
         });
+    }
+    override public void OnPool()
+    {
+        m_ActionEventHandler.OnPool();
+        base.OnPool();
     }
     override public void OnSet(CardInfo info)
     {

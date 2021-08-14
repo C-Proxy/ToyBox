@@ -48,6 +48,11 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
               }
           });
     }
+    override public void OnPool()
+    {
+        m_ActionObservable.OnPool();
+        base.OnPool();
+    }
     override public void OnSet(CoinInfo info)
     {
         var coinage = info.Coinage;

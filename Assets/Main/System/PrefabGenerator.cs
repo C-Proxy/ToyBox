@@ -120,7 +120,7 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
     => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], ownerId, position, rotation);
     public static void DespawnPrefabOnServer(NetworkObject networkObject)
     {
-        if (!IsServer) throw new Exception("Not Server can't call DesspawnPrefabOnServer");
+        if (!IsServer) throw new Exception("Not Server can't call DespawnPrefabOnServer");
         networkObject.GetComponent<IGrabbable>()?.ForceRelease();
         networkObject.Despawn();
         _Singleton.PoolNetworkObject(networkObject);
