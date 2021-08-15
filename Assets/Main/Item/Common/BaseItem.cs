@@ -201,9 +201,10 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IInteractor
     {
         await UniTask.SwitchToMainThread();
         var prePos = transform.position;
-        var preRot = transform.rotation.eulerAngles;
+        var preRot = transform.rotation;
         await UniTask.Yield();
-        return ((transform.position - prePos) / Time.deltaTime, (transform.rotation.eulerAngles - preRot) / Time.deltaTime);
+        (Quaternion.Inverse(preRot) * transform.rotation).ToAngleAxis(out var angle, out var axis);
+        return ((transform.position - prePos) / Time.deltaTime, axis * (angle * Mathf.Deg2Rad / Time.deltaTime));
     }
     #endregion
 
