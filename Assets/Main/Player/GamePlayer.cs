@@ -65,10 +65,10 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
 
         var ovrIKAnchor = OVRRigHandler.PlayerIKAnchor;
         var ovrRoot = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
-        var ovrLeft = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
-        var ovrRight = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
         var ovrLook = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
+        var ovrLeft = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
         var ovrEye = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
+        var ovrRight = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
         try
         {
             await UniTaskAsyncEnumerable.EveryUpdate().ForEachAsync(_ =>
