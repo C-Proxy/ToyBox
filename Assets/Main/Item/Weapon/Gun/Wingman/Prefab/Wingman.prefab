@@ -4906,6 +4906,8 @@ MonoBehaviour:
     Lifetime: 3
   m_MuzzleAnchor: {fileID: 767386769607478767}
   m_ReloadEventHandler: {fileID: 1502828676339910568}
+  m_Infinite: 1
+  m_Recoil: {x: 0.2, y: 0.5, z: 0.5}
   m_MuzzleFlash: {fileID: 501404688219236417}
   m_Smoke: {fileID: 5881720840246043988}
   m_CyllinderAnchor: {fileID: 7206828941673009330}
@@ -10091,7 +10093,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!65 &703561091352913102

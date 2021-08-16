@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 
 public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
 {
+    HandFollower m_HandFollower;
     BoolReactiveProperty m_PlayerHandRP;
     public bool PlayerHandEnabled { set { m_PlayerHandRP.Value = value; } get { return m_PlayerHandRP.Value; } }
     override public bool UseHandOffset => PlayerHandEnabled;
@@ -32,6 +33,7 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
     override public void Init()
     {
         base.Init();
+        m_HandFollower = GetComponentInParent<HandFollower>();
         m_NetworkTargetNV = new NetworkVariable<NetworkObject>();
         m_NetworkTargetNV.OnValueChanged += (pre, cur) => Target = cur?.GetComponent<IGrabbable>();
 
@@ -69,4 +71,5 @@ public class HandGrabber : BaseGrabber, ISingleGrabber, IInteractor
         base.OnPool();
     }
     override public void Release() => Target?.Release(this);
+    override public void AddForce(Vector3 force) => m_HandFollower.AddForce(force);
 }

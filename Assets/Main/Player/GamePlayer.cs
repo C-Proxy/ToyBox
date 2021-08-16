@@ -33,7 +33,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         m_RightHandController = new HandController(m_RightHand, IsOwner);
         m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
         if (IsOwner)
-            IKTrace(m_AliveCTS.Token).Forget();
+            OVRRigTraceAsync(m_AliveCTS.Token).Forget();
     }
     override public void OnSpawn()
     {
@@ -55,7 +55,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     {
         m_PoseController.ApplyIK();
     }
-    async UniTaskVoid IKTrace(CancellationToken token)
+    async UniTaskVoid OVRRigTraceAsync(CancellationToken token)
     {
         var rootAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
         var lookAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
@@ -86,7 +86,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     }
     class PoseController
     {
-        bool IsActive = true;
+        bool IsActive = false;
         Animator m_Animator;
         HandShape m_LeftHandShape = default, m_RightHandShape = default;
         Transform m_LeftThumbTransform, m_RightThumbTransform, m_LeftTarget, m_RightTarget, m_LookTarget;
@@ -101,8 +101,8 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
             m_LeftThumbTransform = leftHand.HandTransform.GetFingerTransform(thumb, 0);
             m_RightThumbTransform = rightHand.HandTransform.GetFingerTransform(thumb, 0);
 
-            m_LeftTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
-            m_RightTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+            m_LeftTarget = leftHand.HandFollower.transform;
+            m_RightTarget = rightHand.HandFollower.transform;
             m_LookTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
 
             m_HumanPoseHandler = new HumanPoseHandler(animator.avatar, animator.transform);
@@ -145,6 +145,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         }
         public void ApplyIK()
         {
+            if (!IsActive) return;
             m_Animator.SetLookAtWeight(1, 0.2f, 0.9f, 0.7f);
             m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
             m_Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
@@ -210,7 +211,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                     else
                     {
                         traceCTS?.Cancel();
-                        grabber.transform.SetParent(playerHand.transform,false);
+                        grabber.transform.SetParent(playerHand.HandFollower.transform,false);
                         grabber.PlayerHandEnabled=true;
                     }
                     if(grabber.Target is BaseItem item)

@@ -13,6 +13,8 @@ public class PlayerHand : BaseHand, IHumanHand
     public WispHand WispHand => m_WispHand;
     HandGrabber m_HandGrabber;
     public HandGrabber HandGrabber => m_HandGrabber;
+    HandFollower m_HandFollower;
+    public HandFollower HandFollower => m_HandFollower;
     [SerializeField] protected LaserTargetFinder m_Laser = default;
     public LaserTargetFinder LaserTargetFinder => m_Laser;
     [SerializeField] protected HandTransform m_HandTransform = default;
@@ -25,6 +27,7 @@ public class PlayerHand : BaseHand, IHumanHand
     {
         base.Init();
         m_HandGrabber = GetComponentInChildren<HandGrabber>();
+        m_HandFollower = GetComponentInChildren<HandFollower>();
         m_HandGrabber.Init();
         m_Laser.Init();
         m_Animator = GetComponent<Animator>();

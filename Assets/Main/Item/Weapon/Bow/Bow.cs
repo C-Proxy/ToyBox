@@ -32,6 +32,7 @@ public class Bow : BaseItem
     }
     override public void OnRelease(IGrabber parent)
     {
+        m_HoldCTS?.Cancel();
         base.OnRelease(parent);
     }
     public void TrySetArrow(Arrow arrow)
@@ -84,7 +85,7 @@ public class Bow : BaseItem
         {
             ResetHandlePosition();
             // await UniTask.Delay(100);
-            if (arrow.IsOwner)
+            if (IsServer)
                 arrow.ProjectAsync((transform.position - HandleAnchor.position).sqrMagnitude * SHOT_POWER).Forget();
         }
     }

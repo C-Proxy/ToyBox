@@ -21,6 +21,7 @@ public interface IGrabber
     void RemoveTarget(IGrabbable grabbable);
     bool HasTarget(IGrabbable grabbable);
     void SendGrabAction();
+    void AddForce(Vector3 force);
 }
 public interface ISingleGrabber : IGrabber
 {

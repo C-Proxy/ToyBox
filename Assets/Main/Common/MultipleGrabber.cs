@@ -26,4 +26,6 @@ public class MultipleGrabber : BaseGrabber, IMultipleGrabber
         m_TargetRC.Dispose();
         base.OnPool();
     }
+
+    override public void AddForce(Vector3 force) { }
 }

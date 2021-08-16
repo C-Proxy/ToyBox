@@ -24,6 +24,8 @@ namespace GunSpace
         abstract protected bool IsShootable { get; }
         abstract protected bool IsReloadable { get; }
 
+        [SerializeField] bool m_Infinite = true;
+
         override public void OnSpawn()
         {
             base.OnSpawn();
@@ -67,7 +69,8 @@ namespace GunSpace
         {
             if (IsShootable)
             {
-                BulletCount--;
+                if (!m_Infinite)
+                    BulletCount--;
                 SpawnBullet();
                 if (!IsHost)
                     OnShot();

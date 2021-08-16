@@ -46,6 +46,10 @@ abstract public class LocalPoolableChild : LocalPoolableBehaviour, IPoolableChil
 abstract public class LocalPoolableBehaviour : MonoBehaviour
 {
     protected CancellationTokenSource m_AliveCTS;
+    private void OnEnable()
+    {
+        OnSpawn();
+    }
     virtual public void OnSpawn()
     {
         m_AliveCTS = new CancellationTokenSource();
@@ -60,6 +64,10 @@ abstract public class NetworkPoolableBehaviour : NetworkBehaviour
 {
     protected CancellationTokenSource m_AliveCTS;
     protected List<IDisposable> m_Subscriptions;
+    private void OnEnable()
+    {
+        OnSpawn();
+    }
     virtual public void OnSpawn()
     {
         m_AliveCTS = new CancellationTokenSource();
