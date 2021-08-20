@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GrabTarget: {fileID: 6926836695877331575}
   m_Force: 15
   m_FlyableLimit: 0.6
-  m_ActionHandler: {fileID: 3095762232987876220}
+  m_DamageEventHandler: {fileID: 3095762232987876220}
 --- !u!65 &1785139196533873600
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41,10 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6048734297725908702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d12367c998f04bb4c9a8e4ffa47a2638, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d2f57b08b4c8e9498008869f35777a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IsTargettable: 1
+  m_IsActive: 1
 --- !u!1001 &2656891938907455118
 PrefabInstance:
   m_ObjectHideFlags: 0

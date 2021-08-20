@@ -8,7 +8,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 175347980026728475}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.021
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6142e6876bfee42a59dd9bdc69bdab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IsTargettable: 1
+  m_IsActive: 1
   m_UpLaserIcon: 0
   m_DownLaserIcon: 0
 --- !u!1001 &1058240217206385994
@@ -162,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 923dab4940492c74c9f8286b36753e6c,
         type: 3}
       propertyPath: m_Name
-      value: CircleButton
+      value: ToggleButton
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 923dab4940492c74c9f8286b36753e6c,
         type: 3}
