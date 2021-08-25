@@ -116,8 +116,8 @@ MonoBehaviour:
       Streached2: 0
       Streached3: 0
   m_HandOffset:
-    m_OffsetPosition: {x: 0.032, y: -0.128, z: 0.461}
-    m_OffsetEulerAngles: {x: 15, y: -0.3, z: 0}
+    m_OffsetPosition: {x: 0, y: -0.03, z: 0.65}
+    m_OffsetEulerAngles: {x: 0, y: 0, z: 0}
   m_UseWorldRotation: 0
 --- !u!1001 &4607029020157407590
 PrefabInstance:
@@ -289,7 +289,7 @@ PrefabInstance:
     - target: {fileID: 7449680145597254925, guid: 42eaef40d4b8e0c4582d002296421ced,
         type: 3}
       propertyPath: m_Name
-      value: Arrow
+      value: Arrow Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7449680145597254925, guid: 42eaef40d4b8e0c4582d002296421ced,
         type: 3}
