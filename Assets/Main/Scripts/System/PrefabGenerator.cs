@@ -202,6 +202,7 @@ namespace Prefab
         Coin,
         Mock_WingmanAmmo,
         Eff_Burst,
+        Debug_Axis,
     }
     // [Serializable]
     // public class PrefabTable : Serialize.TableBase<PrefabName, GameObject, PrefabPair> { }

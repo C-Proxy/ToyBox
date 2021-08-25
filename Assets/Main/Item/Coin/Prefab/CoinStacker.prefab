@@ -57,7 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsReversible: 0
   m_Colliders: []
-  m_GrabTarget: {fileID: 8112851473786986734}
+  m_GrabEventHandler: {fileID: 8112851473786986734}
 --- !u!1001 &7783819459575925050
 PrefabInstance:
   m_ObjectHideFlags: 0

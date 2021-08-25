@@ -26,7 +26,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
     bool m_Defaultkinematic;
     IGrabber m_Parent;
     public IGrabber Parent => m_Parent;
-    [SerializeField] protected GrabEventHandler m_GrabTarget = default;
+    [SerializeField] protected GrabEventHandler m_GrabEventHandler = default;
 
     override protected void Awake()
     {
@@ -43,7 +43,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
         m_Rigidbody.useGravity = m_DefaultUseGravity;
         m_Rigidbody.isKinematic = m_Defaultkinematic;
 
-        m_GrabTarget.SetEvent(info => TryGrabServerRpc(NetworkInfo.CreateFrom(info.Grabber.NetworkBehaviour)));
+        m_GrabEventHandler.SetEvent(info => TryGrabServerRpc(NetworkInfo.CreateFrom(info.Grabber.NetworkBehaviour)));
     }
 
     override public void OnPool()
@@ -74,11 +74,11 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
 
     virtual public void OnGrab(IGrabber parent)
     {
-        m_GrabTarget.IsActive = false;
+        m_GrabEventHandler.IsActive = false;
         m_Rigidbody.isKinematic = true;
         m_Rigidbody.useGravity = false;
         EnableCollision(false);
-        m_GrabTarget.IsActive = false;
+        m_GrabEventHandler.IsActive = false;
         if (parent.HandDominant != HandDominant.Left && !m_IsReversible)
         {
             var scale = transform.localScale;
@@ -87,11 +87,11 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
     }
     virtual public void OnRelease(IGrabber parent)
     {
-        m_GrabTarget.IsActive = true;
+        m_GrabEventHandler.IsActive = true;
         m_Rigidbody.isKinematic = m_Defaultkinematic;
         m_Rigidbody.useGravity = m_DefaultUseGravity;
         EnableCollision(true);
-        m_GrabTarget.IsActive = true;
+        m_GrabEventHandler.IsActive = true;
         parent.RemoveTarget(this);
         transform.SetParent(null, true);
     }
@@ -129,9 +129,11 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
     {
         var success = RequestChangeParent(null);
         if (success)
+        {
             NetworkObject.RemoveOwnership();
-        m_Rigidbody.velocity = velocity;
-        m_Rigidbody.angularVelocity = angularVelocity;
+            m_Rigidbody.velocity = velocity;
+            m_Rigidbody.angularVelocity = angularVelocity;
+        }
     }
 
     public bool RequestChangeParent(IGrabber parent)
@@ -160,6 +162,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
             {
                 var (velocity, angularVelocity) = await GetMoveInfoAsync();
                 ReleaseServerRpc(velocity, angularVelocity);
+                // SyncTransform();
             });
         }
     }
@@ -188,10 +191,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
             {
                 await UniTask.WaitWhile(() => IsGrabbed, PlayerLoopTiming.Update, m_GrabCTS.Token);
             }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
+            catch (OperationCanceledException) { throw; }
             OnRelease(parent);
             m_GrabCTS = null;
         }
@@ -204,11 +204,26 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
         var prePos = transform.position;
         var preRot = transform.rotation;
         await UniTask.Yield();
-        (Quaternion.Inverse(preRot) * transform.rotation).ToAngleAxis(out var angle, out var axis);
-        return ((transform.position - prePos) / Time.deltaTime, axis * (angle * Mathf.Deg2Rad / Time.deltaTime));
+        (transform.rotation * Quaternion.Inverse(preRot)).ToAngleAxis(out var angle, out var axis);
+        var velocity = (transform.position - prePos) / Time.deltaTime;
+        var angularVelocity = axis * (angle * Mathf.Deg2Rad / Time.deltaTime);
+        return (velocity, angularVelocity);
     }
     #endregion
 
     public static BaseItem FindFromNetworkId(ulong networkId)
     => NetworkSpawnManager.SpawnedObjects[networkId].GetComponentInChildren<BaseItem>();
+
+    public void SyncTransform() => SetTransformServerRpc(transform.position, transform.rotation, NetworkManager.NetworkTime);
+    void SetTransform(Vector3 position, Quaternion rotation) => transform.SetPositionAndRotation(position, rotation);
+    [ServerRpc]
+    void SetTransformServerRpc(Vector3 position, Quaternion rotation, float time)
+    {
+        var deltaTime = NetworkManager.NetworkTime - time;
+        var deltaPos = m_Rigidbody.velocity * deltaTime;
+        var angularVelocity = m_Rigidbody.angularVelocity;
+        var deltaRot = Quaternion.AngleAxis(angularVelocity.magnitude * Mathf.Rad2Deg * deltaTime, angularVelocity);
+        SetTransform(position, deltaRot * rotation);
+    }
+
 }

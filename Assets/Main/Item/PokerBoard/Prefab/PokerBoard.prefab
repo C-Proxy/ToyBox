@@ -42,7 +42,7 @@ MonoBehaviour:
   m_Colliders:
   - {fileID: 1852668351}
   - {fileID: 1852668350}
-  m_GrabTarget: {fileID: 2121034303854402775}
+  m_GrabEventHandler: {fileID: 2121034303854402775}
   m_GrabToggleButton: {fileID: 8238724981815710797}
   m_StabilizeButton: {fileID: 2738453311226188483}
 --- !u!1001 &143095486491064350

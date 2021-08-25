@@ -31,7 +31,7 @@ public class PokerBoard : BaseItem
     }
     public void LockGrab(bool isLocked)
     {
-        m_GrabTarget.IsActive = !isLocked;
+        m_GrabEventHandler.IsActive = !isLocked;
         m_GrabToggleButton.Set(isLocked);
     }
 

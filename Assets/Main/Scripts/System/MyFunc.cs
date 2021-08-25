@@ -254,4 +254,5 @@ namespace MyClass.Rx
             Values = new[] { item };
         }
     }
+
 }

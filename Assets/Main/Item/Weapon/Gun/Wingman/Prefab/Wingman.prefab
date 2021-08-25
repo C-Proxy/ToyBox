@@ -10094,7 +10094,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8ce7d688c194db04d98f286ee90c39c2, type: 2}
+  - {fileID: 2100000, guid: 44be3658d62d5ab4b9c70cd4422b70e0, type: 2}
   - {fileID: 2100000, guid: 2ce1c1d57e6a1ad498d4d7d85f60b3a7, type: 2}
   - {fileID: 2100000, guid: ac583e378e6bc6e4ca9de7f0323e6e10, type: 2}
   - {fileID: 2100000, guid: b3404b05d41a514499b3e5c6952a4018, type: 2}
@@ -10168,7 +10168,7 @@ MonoBehaviour:
   - {fileID: 703561091352913102}
   - {fileID: 5817981937872539061}
   - {fileID: 9068121505173974850}
-  m_GrabTarget: {fileID: 3735246550102989950}
+  m_GrabEventHandler: {fileID: 3735246550102989950}
   m_GunInfo:
     MaxBullets: 8
   m_BulletInfo:

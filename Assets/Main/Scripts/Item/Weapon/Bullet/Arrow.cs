@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using MLAPI.NetworkVariable;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 
@@ -13,7 +14,6 @@ public class Arrow : BaseItem
     [SerializeField] Collider m_TailCollider = default;
     Transform m_TailAnchor;
     public Transform TailAnchor => m_TailAnchor;
-
     CancellationTokenSource m_ProjectCTS;
     override protected void Awake()
     {

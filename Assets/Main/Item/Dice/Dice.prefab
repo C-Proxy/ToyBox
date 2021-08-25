@@ -71,7 +71,7 @@ MonoBehaviour:
   m_IsReversible: 0
   m_Colliders:
   - {fileID: 6684000657306270176}
-  m_GrabTarget: {fileID: 855711747481041915}
+  m_GrabEventHandler: {fileID: 855711747481041915}
 --- !u!1 &7965095121098926856
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using UnityEngine;
 using MLAPI;
 using MLAPI.Spawning;
 using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 using UniRx;
 using UniRx.Triggers;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,16 @@ public class Bow : BaseItem
     [SerializeField] ArrowHandle m_ArrowHandle = default;
     Transform HandleAnchor => m_ArrowHandle.transform;
     Vector3 m_DefaultPosition;
+    NetworkVariable<NetworkObject> m_ArrowObjectNV = new NetworkVariable<NetworkObject>();
+    NetworkObject ArrowObject { set { m_ArrowObjectNV.Value = value; } get { return m_ArrowObjectNV.Value; } }
+    void OnArrowObjectChanged(NetworkObject pre, NetworkObject cur)
+    {
+        if (pre != cur && cur)
+        {
+            if (cur.TryGetComponent<Arrow>(out var arrow))
+                HoldAsync(arrow).Forget();
+        }
+    }
 
     CancellationTokenSource m_HoldCTS;
 
@@ -25,6 +36,16 @@ public class Bow : BaseItem
         base.Awake();
         m_DefaultPosition = HandleAnchor.localPosition;
         m_ArrowHandle.SetArrowEvent(TrySetArrow);
+    }
+    override public void OnSpawn()
+    {
+        base.OnSpawn();
+        m_ArrowObjectNV.OnValueChanged += OnArrowObjectChanged;
+    }
+    override public void OnPool()
+    {
+        m_ArrowObjectNV.OnValueChanged -= OnArrowObjectChanged;
+        base.OnPool();
     }
     override public void OnGrab(IGrabber parent)
     {
@@ -43,15 +64,8 @@ public class Bow : BaseItem
     [ServerRpc]
     void SetArrowServerRpc(ulong networkObjectId)
     {
-        SetArrow(NetworkSpawnManager.SpawnedObjects[networkObjectId].GetComponent<Arrow>());
-        SetArrowClientRpc(networkObjectId);
-    }
-    [ClientRpc]
-    void SetArrowClientRpc(ulong networkObjectId)
-    => SetArrow(NetworkSpawnManager.SpawnedObjects[networkObjectId].GetComponent<Arrow>());
-    void SetArrow(Arrow arrow)
-    {
-        HoldAsync(arrow).Forget();
+        if (m_HoldCTS != null) return;
+        ArrowObject = NetworkSpawnManager.SpawnedObjects[networkObjectId];
     }
     async public UniTaskVoid HoldAsync(Arrow arrow)
     {
@@ -70,24 +84,23 @@ public class Bow : BaseItem
                 await UniTask.Yield();
             }
         }
-        catch (OperationCanceledException) { }
+        catch (OperationCanceledException) { throw; }
         finally
         {
             m_HoldCTS = null;
-            if (IsOwner)
-            {
-                arrow.ResetMeshAnchor();
-                arrowAnchor.position = (transform.position + HandleAnchor.position) / 2;
-                arrowAnchor.LookAt(transform, HandleAnchor.up);
-            }
+            arrow.ResetMeshAnchor();
+            ResetHandlePosition();
+            if (IsServer)
+                ArrowObject = null;
         }
         if (IsOwner)
         {
-            ResetHandlePosition();
-            // await UniTask.Delay(100);
-            if (IsServer)
-                arrow.ProjectAsync((transform.position - HandleAnchor.position).sqrMagnitude * SHOT_POWER).Forget();
+            arrowAnchor.position = (transform.position + HandleAnchor.position) / 2;
+            arrowAnchor.LookAt(transform, HandleAnchor.up);
+            arrow.SyncTransform();
         }
+        if (IsServer)
+            arrow.ProjectAsync((transform.position - HandleAnchor.position).sqrMagnitude * SHOT_POWER).Forget();
     }
     public void ResetHandlePosition()
     {

@@ -169,7 +169,7 @@ MonoBehaviour:
   - {fileID: 5823049095559228239}
   - {fileID: 1351261053847979212}
   - {fileID: 4939837933259534944}
-  m_GrabTarget: {fileID: 2665849231814594427}
+  m_GrabEventHandler: {fileID: 2665849231814594427}
 --- !u!1001 &4066172261533921892
 PrefabInstance:
   m_ObjectHideFlags: 0

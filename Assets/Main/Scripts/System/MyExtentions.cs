@@ -81,4 +81,17 @@ static class MyExtensions
             list[i] = tmp;
         }
     }
+    // public static void ModifiedToAngleAxis(this Quaternion q, out float radian, out Vector3 axis)
+    // {
+    //     var arcCosW = Mathf.Acos(q.w);
+    //     radian = arcCosW * 2;
+    //     var sinACosW = Mathf.Sin(arcCosW);
+    //     var vector = new Vector3(q.x, q.y, q.z).normalized;
+    //     axis = sinACosW >= 0 ? vector : -vector;
+    //     if (radian > Mathf.PI)
+    //     {
+    //         radian -= Mathf.PI * 2;
+    //         axis = -axis;
+    //     }
+    // }
 }

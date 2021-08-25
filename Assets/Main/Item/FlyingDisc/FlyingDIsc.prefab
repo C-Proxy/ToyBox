@@ -15,7 +15,7 @@ MonoBehaviour:
   m_IsReversible: 0
   m_Colliders:
   - {fileID: 1785139196533873600}
-  m_GrabTarget: {fileID: 6926836695877331575}
+  m_GrabEventHandler: {fileID: 6926836695877331575}
   m_Force: 15
   m_FlyableLimit: 0.6
   m_DamageEventHandler: {fileID: 3095762232987876220}
