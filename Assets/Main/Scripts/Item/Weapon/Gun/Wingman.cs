@@ -11,7 +11,8 @@ using GunSpace;
 
 public class Wingman : BaseGun
 {
-    [SerializeField] Vector3 m_Recoil = default;
+    [SerializeField] Vector3 m_RecoilForce = default;
+    [SerializeField] Vector3 m_RecoilTorque = default;
 
     override protected NetworkPrefabName BulletName => NetworkPrefabName.NormalBullet;
     [SerializeField] ParticleSystem m_MuzzleFlash = default, m_Smoke = default;
@@ -61,7 +62,9 @@ public class Wingman : BaseGun
         m_MuzzleFlash.Emit(6);
         m_Smoke.Emit(3);
         if (IsOwner)
-            Parent.AddForce(transform.TransformVector(m_Recoil));
+        {
+            Parent.ForceRecoil(new Recoil(transform.TransformVector(m_RecoilForce), transform.TransformVector(m_RecoilTorque)));
+        }
     }
     [SerializeField] MockObject m_MagazineMock;
     void Eject()

@@ -18,14 +18,15 @@ public class HandFollower : LocalPoolableChild
     {
         m_Rigidbody = GetComponent<Rigidbody>();
     }
-    public void AddForce(Vector3 force)
+    public void AddForce(Recoil recoil)
     {
         if (IsSleep)
         {
             m_Rigidbody.isKinematic = false;
             FollowAsync().Forget();
         }
-        m_Rigidbody.AddForce(force, ForceMode.Impulse);
+        m_Rigidbody.AddForce(recoil.Force, ForceMode.Impulse);
+        m_Rigidbody.AddTorque(recoil.Torque, ForceMode.Impulse);
     }
     async UniTaskVoid FollowAsync()
     {
@@ -38,6 +39,8 @@ public class HandFollower : LocalPoolableChild
                 var localPosition = transform.TransformVector(transform.localPosition);
                 var force = -localPosition * STABILITY;
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
+                m_Rigidbody.angularVelocity *= 0.8f;
+                transform.localRotation = Quaternion.Lerp(transform.localRotation, default, 0.2f);
                 if (Vector3.Dot(force, m_Rigidbody.velocity) > 0 && localPosition.sqrMagnitude < SQR_RADIUS)
                     break;
                 token.ThrowIfCancellationRequested();

@@ -71,5 +71,5 @@ public class HandGrabber : BaseGrabber, ISingleGrabber
         base.OnPool();
     }
     override public void Release() => Target?.Release(this);
-    override public void AddForce(Vector3 force) => m_HandFollower.AddForce(force);
+    override public void ForceRecoil(Recoil recoil) => m_HandFollower.AddForce(recoil);
 }

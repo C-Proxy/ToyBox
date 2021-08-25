@@ -21,7 +21,7 @@ public interface IGrabber
     void RemoveTarget(IGrabbable grabbable);
     bool HasTarget(IGrabbable grabbable);
     void SendGrabEvent();
-    void AddForce(Vector3 force);
+    void ForceRecoil(Recoil recoil);
 }
 public interface ISingleGrabber : IGrabber
 {

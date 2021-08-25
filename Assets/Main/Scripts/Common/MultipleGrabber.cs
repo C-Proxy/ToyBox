@@ -27,5 +27,5 @@ public class MultipleGrabber : BaseGrabber, IMultipleGrabber
         base.OnPool();
     }
 
-    override public void AddForce(Vector3 force) { }
+    override public void ForceRecoil(Recoil recoil) { }
 }

@@ -43,7 +43,7 @@ public class Arrow : BaseItem
         if (m_ProjectCTS != null) return;
         m_ProjectCTS = new CancellationTokenSource();
         m_Rigidbody.velocity = transform.forward * firstVelocity;
-        m_Rigidbody.angularVelocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = default;
         try
         {
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate())
@@ -54,10 +54,7 @@ public class Arrow : BaseItem
                 await UniTask.Yield();
             }
         }
-        catch (OperationCanceledException)
-        {
-
-        }
+        catch (OperationCanceledException) { throw; }
         finally
         {
             m_ProjectCTS = null;
@@ -66,6 +63,10 @@ public class Arrow : BaseItem
     public void ResetMeshAnchor() => m_TailAnchor.localRotation = Quaternion.identity;
     private void OnCollisionEnter(Collision other)
     {
-        m_ProjectCTS?.Cancel();
+        if (other.gameObject.GetComponent<Bow>() == null)
+        {
+            Debug.Log(other.gameObject.name);
+            m_ProjectCTS?.Cancel();
+        }
     }
 }

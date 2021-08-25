@@ -162,7 +162,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
             {
                 var (velocity, angularVelocity) = await GetMoveInfoAsync();
                 ReleaseServerRpc(velocity, angularVelocity);
-                // SyncTransform();
+                SyncTransform();
             });
         }
     }

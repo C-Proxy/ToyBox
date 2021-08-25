@@ -99,3 +99,14 @@ namespace GunSpace
         }
     }
 }
+
+public readonly struct Recoil
+{
+    public readonly Vector3 Force;
+    public readonly Vector3 Torque;
+    public Recoil(Vector3 force, Vector3 torque)
+    {
+        Force = force;
+        Torque = torque;
+    }
+}

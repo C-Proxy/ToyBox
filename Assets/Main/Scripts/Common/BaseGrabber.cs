@@ -32,7 +32,7 @@ abstract public class BaseGrabber : NetworkPoolableChild, IGrabber, IEventSource
     abstract public void RemoveTarget(IGrabbable grabbable);
     abstract public bool HasTarget(IGrabbable grabbable);
     public void SendGrabEvent() => m_TargetFinder.FindTarget<GrabEvent>((int)LayerName.GrabTarget)?.SendEvent(new GrabEvent(this));
-    abstract public void AddForce(Vector3 force);
+    abstract public void ForceRecoil(Recoil recoil);
 
     abstract public void Release();
     virtual public void OnGrab(IGrabbable grabbable) { }

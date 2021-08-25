@@ -14,15 +14,19 @@ using Cysharp.Threading.Tasks.Linq;
 
 public class Bow : BaseItem
 {
-    const float SHOT_POWER = 4000.0f;
+    const float SHOT_POWER = 50.0f;
+    const float MAX_PULL = 1f;
     [SerializeField] ArrowHandle m_ArrowHandle = default;
     Transform HandleAnchor => m_ArrowHandle.transform;
-    Vector3 m_DefaultPosition;
+    Animator m_Animator;
+    Vector3 m_DefaultHandlePosition;
     NetworkVariable<NetworkObject> m_ArrowObjectNV = new NetworkVariable<NetworkObject>();
     NetworkObject ArrowObject { set { m_ArrowObjectNV.Value = value; } get { return m_ArrowObjectNV.Value; } }
     void OnArrowObjectChanged(NetworkObject pre, NetworkObject cur)
     {
-        if (pre != cur && cur)
+        if (cur == null)
+            m_HoldCTS?.Cancel();
+        else if (pre != cur)
         {
             if (cur.TryGetComponent<Arrow>(out var arrow))
                 HoldAsync(arrow).Forget();
@@ -34,7 +38,8 @@ public class Bow : BaseItem
     override protected void Awake()
     {
         base.Awake();
-        m_DefaultPosition = HandleAnchor.localPosition;
+        m_Animator = GetComponent<Animator>();
+        m_DefaultHandlePosition = HandleAnchor.localPosition;
         m_ArrowHandle.SetArrowEvent(TrySetArrow);
     }
     override public void OnSpawn()
@@ -73,38 +78,47 @@ public class Bow : BaseItem
         m_HoldCTS = new CancellationTokenSource();
         var arrowAnchor = arrow.transform;
         var meshAnchor = arrow.TailAnchor;
+        var power = 0f;
         try
         {
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.PostLateUpdate))
             {
                 if (!arrow.IsGrabbed) break;
                 m_HoldCTS.Token.ThrowIfCancellationRequested();
+                var pulled = m_DefaultHandlePosition.z - HandleAnchor.localPosition.z;
+                if (IsServer && pulled < -.025f) throw new OperationCanceledException();
+                power = Mathf.Clamp01(pulled / MAX_PULL);
+                m_Animator.SetFloat("PullValue", power);
                 HandleAnchor.position = arrow.TailAnchor.position;
                 meshAnchor.LookAt(transform, HandleAnchor.up);
                 await UniTask.Yield();
             }
         }
-        catch (OperationCanceledException) { throw; }
-        finally
+        catch (OperationCanceledException)
         {
-            m_HoldCTS = null;
             arrow.ResetMeshAnchor();
             ResetHandlePosition();
+        }
+        finally
+        {
+            m_Animator.SetFloat("PullValue", 0);
+            m_HoldCTS = null;
             if (IsServer)
                 ArrowObject = null;
         }
         if (IsOwner)
         {
-            arrowAnchor.position = (transform.position + HandleAnchor.position) / 2;
-            arrowAnchor.LookAt(transform, HandleAnchor.up);
+            arrowAnchor.SetPositionAndRotation(meshAnchor.position, meshAnchor.rotation);
+            arrow.ResetMeshAnchor();
+            ResetHandlePosition();
             arrow.SyncTransform();
         }
         if (IsServer)
-            arrow.ProjectAsync((transform.position - HandleAnchor.position).sqrMagnitude * SHOT_POWER).Forget();
+            arrow.ProjectAsync(power * SHOT_POWER).Forget();
     }
     public void ResetHandlePosition()
     {
-        HandleAnchor.localPosition = m_DefaultPosition;
+        HandleAnchor.localPosition = m_DefaultHandlePosition;
         HandleAnchor.localRotation = Quaternion.identity;
     }
 }
