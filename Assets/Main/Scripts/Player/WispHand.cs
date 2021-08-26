@@ -21,7 +21,6 @@ public class WispHand : NetworkPoolableChild
 
     public void EnableTrace(Transform handAnchor, CancellationToken token)
     {
-        // SetSpritePosition(itemPosition);
         m_SpriteRenderer.gameObject.SetActive(true);
         UniTask.Run(async () =>
         {
@@ -38,8 +37,11 @@ public class WispHand : NetworkPoolableChild
             catch (OperationCanceledException) { }
             finally
             {
-                transform.localPosition = default;
-                m_SpriteRenderer.gameObject.SetActive(false);
+                if (UnityEditor.EditorApplication.isPlaying)
+                {
+                    transform.localPosition = default;
+                    m_SpriteRenderer.gameObject.SetActive(false);
+                }
             }
         });
     }
