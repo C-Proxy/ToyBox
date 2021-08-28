@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 74972102bef747b4197efe3a61821e73
+guid: 8cf604eda7a39fd47828aa1dc3cf1ea7
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Kaushan Script
+  - digital dark system
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
