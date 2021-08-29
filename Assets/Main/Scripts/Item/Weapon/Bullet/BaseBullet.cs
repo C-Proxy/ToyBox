@@ -10,6 +10,7 @@ namespace GunSpace
 {
     public class BaseBullet : NetworkPoolableParent, INetworkInitializable, IDamageSource
     {
+        public ulong OwnerId => OwnerClientId;
         TrailLaser m_TrailLaser;
         float m_Velocity;
         float m_DamageValue;

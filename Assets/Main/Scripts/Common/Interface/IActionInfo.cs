@@ -7,11 +7,12 @@ using GunSpace;
 
 public interface IActionEvent { }
 public interface IEventSource { }
-public interface IRaycastEvent : IActionEvent { }
 public interface IDamageSource
 {
+    ulong OwnerId { get; }
     void OnDealDamage();
 }
+public interface IRaycastEvent : IActionEvent { }
 public readonly struct UnitEvent : IActionEvent { }
 public readonly struct BooleanEvent : IActionEvent
 {

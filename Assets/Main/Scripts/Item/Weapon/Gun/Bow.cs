@@ -91,13 +91,13 @@ public class Bow : BaseItem
                 m_Animator.SetFloat("PullValue", power);
                 HandleAnchor.position = arrow.TailAnchor.position;
                 meshAnchor.LookAt(transform, HandleAnchor.up);
-                await UniTask.Yield();
             }
         }
         catch (OperationCanceledException)
         {
             arrow.ResetMeshAnchor();
             ResetHandlePosition();
+            throw;
         }
         finally
         {
@@ -114,7 +114,7 @@ public class Bow : BaseItem
             arrow.SyncTransform();
         }
         if (IsServer)
-            arrow.ProjectAsync(power * SHOT_POWER).Forget();
+            arrow.ProjectAsync(OwnerClientId, power * SHOT_POWER).Forget();
     }
     public void ResetHandlePosition()
     {

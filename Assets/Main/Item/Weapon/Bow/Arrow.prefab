@@ -289,12 +289,12 @@ PrefabInstance:
     - target: {fileID: 7449680145597254925, guid: 42eaef40d4b8e0c4582d002296421ced,
         type: 3}
       propertyPath: m_Name
-      value: Arrow Variant
+      value: Arrow
       objectReference: {fileID: 0}
     - target: {fileID: 7449680145597254925, guid: 42eaef40d4b8e0c4582d002296421ced,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7449680145597254925, guid: 42eaef40d4b8e0c4582d002296421ced,
         type: 3}
