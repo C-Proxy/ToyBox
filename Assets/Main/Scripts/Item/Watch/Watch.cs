@@ -22,7 +22,6 @@ public class Watch : MonoBehaviour
                 var dateTime = DateTime.Now;
                 var minute = dateTime.Minute + dateTime.Second / 60f;
                 var hour = dateTime.Hour + minute / 60f;
-                Debug.Log($"Minute:{minute},Hour:{hour}");
                 await writer.YieldAsync((Quaternion.Euler(0, hour * 30f, 0), Quaternion.Euler(0, minute * 6f, 0)));
                 await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token);
             }

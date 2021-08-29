@@ -313,6 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4c64ee4a41f144e82f1129a7efe51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TargetLayer: 0
   m_TargetAnchor: {fileID: 4241306304323935137}
 --- !u!1 &8047725166926385182
 GameObject:
@@ -324,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4241306304323935137}
   - component: {fileID: 1678111411866784308}
-  - component: {fileID: 299837975076874359}
+  - component: {fileID: 5977992284549931709}
   m_Layer: 5
   m_Name: TargetAnchor
   m_TagString: Untagged
@@ -398,7 +399,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &299837975076874359
+--- !u!114 &5977992284549931709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -407,6 +408,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8047725166926385182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00cd4be68634bc245b53be45c0c873d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 98ed59a7a47c97f46bcba898b4691615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_UseWorldUpward: 0
+  m_TargetAnchor: {fileID: 0}
