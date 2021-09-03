@@ -8,7 +8,7 @@ using MLAPI.Messaging;
 using MLAPI.Serialization;
 using MLAPI.Spawning;
 
-public interface IGrabber
+public interface IGrabber : IEventSource
 {
     bool UseHandOffset { get; }
     HandDominant HandDominant { get; }

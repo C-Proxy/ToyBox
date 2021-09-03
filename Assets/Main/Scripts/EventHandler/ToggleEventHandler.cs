@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using MaterialSpace;
 
-public class ToggleEventHandler : BaseButtonEventHandler<BooleanEvent>, IRaycastReceivable
+public class ToggleEventHandler : BaseButtonEventHandler<bool>
 {
     [SerializeField] SpriteManager.LaserIcon m_UpLaserIcon = default, m_DownLaserIcon = default;
     override protected SpriteManager.LaserIcon GetFocusIcon() => m_IsDown ? m_UpLaserIcon : m_DownLaserIcon;
     override protected string GetFocusText() => "";
-    override protected BooleanEvent SendInfo => new BooleanEvent(!m_IsDown);
+    override protected bool CreateSendInfo(ActionEvent info) => !m_IsDown;
     SkinnedMeshRenderer m_SkinnedMeshrenderer;
     Material m_UpMaterial, m_DownMaterial, m_BaseMaterial;
 

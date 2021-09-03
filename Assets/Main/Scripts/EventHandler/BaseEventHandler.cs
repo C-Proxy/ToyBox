@@ -6,7 +6,6 @@ using UnityEngine.Events;
 using UniRx;
 
 abstract public class BaseEventHandler<T> : BaseEventReceiver, IEventHandler<T>
-where T : IActionEvent
 {
     UnityEvent<T> m_Event = new UnityEvent<T>();
     public void SetEvent(UnityAction<T> action) => m_Event.AddListener(action);
@@ -20,7 +19,6 @@ where T : IActionEvent
 }
 [RequireComponent(typeof(Collider))]
 abstract public class BaseEventColliderHandler<T> : BaseEventReceiver, IEventReceivable<T>
-where T : IActionEvent
 {
     IEventHandler<T> m_EventHandler;
     private void Awake()

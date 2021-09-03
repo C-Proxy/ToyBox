@@ -5,66 +5,69 @@ using UnityEngine;
 using UnityEngine.Events;
 using GunSpace;
 
-public interface IActionEvent { }
+abstract public class ActionEvent
+{
+    public readonly IEventSource EventSource;
+    public ActionEvent(IEventSource eventSource)
+    {
+        EventSource = eventSource;
+    }
+}
 public interface IEventSource { }
-public interface IDamageSource
+public interface IDamageSource : IEventSource
 {
     ulong OwnerId { get; }
     void OnDealDamage();
 }
-public interface IRaycastEvent : IActionEvent { }
-public readonly struct UnitEvent : IActionEvent { }
-public readonly struct BooleanEvent : IActionEvent
+public class RaycastEvent : ActionEvent
 {
-    public readonly bool Value;
-    public BooleanEvent(bool value)
+    public RaycastEvent(IEventSource source) : base(source) { }
+}
+public class UnitEvent : ActionEvent
+{
+    public UnitEvent(IEventSource source) : base(source) { }
+}
+public class ValueEvent<T> : ActionEvent
+{
+    public readonly T Value;
+    public ValueEvent(IEventSource source, T value) : base(source)
     {
         Value = value;
     }
 }
-public readonly struct FocusEvent : IRaycastEvent
+public class FocusEvent : RaycastEvent
 {
-    public readonly LaserTargetFinder Laser;
+    public LaserTargetFinder Laser => EventSource as LaserTargetFinder;
     public readonly IGrabbable GrabItem;
-    public FocusEvent(LaserTargetFinder laser, IGrabbable item)
+    public FocusEvent(LaserTargetFinder source, IGrabbable item) : base(source)
     {
-        Laser = laser;
         GrabItem = item;
     }
 }
-public readonly struct InteractEvent : IRaycastEvent
+public class InteractEvent : RaycastEvent
 {
-    public readonly IEventSource Interactor;
-    public InteractEvent(IEventSource source)
-    {
-        Interactor = source;
-    }
+    public InteractEvent(IEventSource source) : base(source) { }
 }
-public readonly struct GrabEvent : IActionEvent
+public class GrabEvent : ActionEvent
 {
-    public readonly IGrabber Grabber;
-    public GrabEvent(IGrabber grabber)
-    {
-        Grabber = grabber;
-    }
+    public IGrabber Grabber => EventSource as IGrabber;
+    public GrabEvent(IGrabber grabber) : base(grabber) { }
 }
-public readonly struct ReloadEvent : IActionEvent
+public class ReloadEvent : ActionEvent
 {
-    public readonly IEventSource EventSource;
     public readonly BulletType BulletType;
     public readonly int Count;
-    public ReloadEvent(IEventSource source, BulletType type, int count)
+    public ReloadEvent(IEventSource source, BulletType type, int count) : base(source)
     {
-        EventSource = source;
         BulletType = type;
         Count = count;
     }
 }
-public readonly struct DamageEvent : IRaycastEvent
+public class DamageEvent : RaycastEvent
 {
     public readonly IDamageSource DamageSource;
     public readonly float Value;
-    public DamageEvent(IDamageSource source, float value)
+    public DamageEvent(IDamageSource source, float value) : base(source)
     {
         DamageSource = source;
         Value = value;
@@ -72,12 +75,11 @@ public readonly struct DamageEvent : IRaycastEvent
 }
 
 public interface IEventReceivable<T>
-where T : IActionEvent
 {
     bool IsActive { set; get; }
     void SendEvent(T info);
 }
-public interface IEventHandler<T> : IEventReceivable<T> where T : IActionEvent
+public interface IEventHandler<T> : IEventReceivable<T>
 {
     void SetEvent(UnityAction<T> action);
     void RemoveEvent();
