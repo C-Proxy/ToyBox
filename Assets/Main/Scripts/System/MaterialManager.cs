@@ -48,5 +48,6 @@ namespace MaterialSpace
         Silver,
         Bronze,
         BlackMetal,
+        BlueMetal,
     }
 }
