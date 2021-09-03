@@ -43,6 +43,8 @@ public class HandFollower : LocalPoolableChild
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, default, 0.2f);
                 if (Vector3.Dot(force, m_Rigidbody.velocity) > 0 && localPosition.sqrMagnitude < SQR_RADIUS)
                     break;
+                if (Vector3.SqrMagnitude(transform.localPosition) > 10f)
+                    break;
                 token.ThrowIfCancellationRequested();
             }
         }

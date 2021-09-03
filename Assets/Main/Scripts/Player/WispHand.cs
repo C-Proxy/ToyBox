@@ -37,11 +37,11 @@ public class WispHand : NetworkPoolableChild
             catch (OperationCanceledException) { }
             finally
             {
-                if (UnityEditor.EditorApplication.isPlaying)
-                {
-                    transform.localPosition = default;
-                    m_SpriteRenderer.gameObject.SetActive(false);
-                }
+                // if (UnityEditor.EditorApplication.isPlaying)
+                // {
+                // transform.localPosition = default;
+                // m_SpriteRenderer.gameObject.SetActive(false);
+                // }
             }
         });
     }
