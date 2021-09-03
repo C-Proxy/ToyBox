@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Billboard : CameraBillboard
 {
-    [SerializeField] new protected Transform m_TargetAnchor = default;
+    [SerializeField] Transform m_LookAnchor = default;
+    private void Awake()
+    {
+        m_TargetAnchor = m_LookAnchor;
+    }
 }

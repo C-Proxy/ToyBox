@@ -1,31 +1,34 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using MaterialSpace;
 
 public class UICube : MonoBehaviour
 {
-    const float CUBE_RADIUS = 0.1f;
     [SerializeField] MeshRenderer[] m_Meshes = default;
+    [SerializeField] MeshRenderer m_CenterCubeMesh = default;
+    Transform m_CenterAnchor = default;
     Transform[] m_MeshAncors = default;
-    private void Awake()
+
+    Vector3 Scale => m_CenterAnchor.localScale;
+
+    void Awake()
     {
-        for (var i = 0; i < 8; i++)
-        {
-            m_MeshAncors[i] = m_Meshes[i].transform;
-        }
+        m_MeshAncors = m_Meshes.Select(mesh => mesh.transform).ToArray();
+        m_CenterAnchor = m_CenterCubeMesh.transform;
     }
-    public void SetDefault()
+
+    public void SetScale(Vector3 scale)
     {
-        SetPosition(new Vector3(CUBE_RADIUS, CUBE_RADIUS, CUBE_RADIUS));
-        SetMaterial(MaterialName.White);
-    }
-    public void SetPosition(Vector3 position)
-    {
-        var pos0 = new Vector3(position.x, position.y, position.z);
-        var pos1 = new Vector3(-position.x, position.y, position.z);
-        var pos2 = new Vector3(position.x, -position.y, position.z);
-        var pos3 = new Vector3(position.x, position.y, -position.z);
+        m_CenterAnchor.localScale = scale;
+        var half = scale / 2;
+        var pos0 = new Vector3(half.x, half.y, half.z);
+        var pos1 = new Vector3(-half.x, half.y, half.z);
+        var pos2 = new Vector3(half.x, -half.y, half.z);
+        var pos3 = new Vector3(half.x, half.y, -half.z);
 
         m_MeshAncors[0].localPosition = pos0;
         m_MeshAncors[1].localPosition = pos1;
@@ -44,4 +47,6 @@ public class UICube : MonoBehaviour
             mesh.material = material;
         }
     }
+    public void SetCenterMaterial(MaterialName materialName) => m_CenterCubeMesh.material = MaterialManager.GetMaterial(materialName);
+
 }

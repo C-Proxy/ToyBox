@@ -6,7 +6,7 @@ public interface ITargetFinder
 {
     Transform transform { get; }
     IEventReceivable<T> FindTarget<T>()
-    where T : IActionEvent;
+    where T : ActionEvent;
     IEventReceivable<T> FindTarget<T>(int layer)
-    where T : IActionEvent;
+    where T : ActionEvent;
 }
