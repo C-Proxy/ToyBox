@@ -74,7 +74,7 @@ MonoBehaviour:
   m_IsReversible: 0
   m_Colliders:
   - {fileID: 1938398523}
-  m_GrabEventHandler: {fileID: 0}
+  m_GrabEventHandler: {fileID: 2557052400248971780}
   m_TailCollider: {fileID: 1939553088}
 --- !u!114 &1938398525
 MonoBehaviour:
@@ -414,3 +414,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2fd965e2dfdd004c8fe880c12197ee1, type: 3}
+--- !u!114 &2557052400248971780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2059004711861234132, guid: e2fd965e2dfdd004c8fe880c12197ee1,
+    type: 3}
+  m_PrefabInstance: {fileID: 4607029021589261264}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb8ea4b88a78c34fbd0da3045b0801f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

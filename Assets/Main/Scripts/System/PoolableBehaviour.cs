@@ -25,8 +25,8 @@ abstract public class NetworkPoolableParent : NetworkPoolableBehaviour, INetwork
     override public void OnSpawn()
     {
         base.OnSpawn();
-        foreach (var poolableChild in m_PoolableChildren)
-            poolableChild.OnSpawn();
+        // foreach (var poolableChild in m_PoolableChildren)
+        // poolableChild.OnSpawn();
     }
     override public void OnPool()
     {

@@ -98,26 +98,34 @@ public class PrefabGenerator : SingletonNetworkBehaviour<PrefabGenerator>
         PrefabInit(networkObject, new RpcPackage(infos));
     }
     public void PrefabInit(NetworkObject prefab, RpcPackage package)
-    => prefab.GetComponent<INetworkInitializable>()?.NetworkInit(package);
+    {
+        if (package == null) return;
+        if (prefab.TryGetComponent<INetworkInitializable>(out var initializable))
+        {
+            initializable.NetworkInit(package);
+        }
+    }
 
-    public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, Vector3 position = default, Quaternion rotation = default)
+    public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, Vector3 position = default, Quaternion rotation = default, RpcPackage package = default)
     {
         if (!IsServer) throw new Exception("Not Server can't call SpawnPrefabOnServer");
         var networkObject = _Singleton.GetSpawnNetworkObject(prefabHash, position, rotation);
         networkObject.Spawn();
+        _Singleton.PrefabInit(networkObject, package);
         return networkObject;
     }
-    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default)
-    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], position, rotation);
-    public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, ulong ownerId, Vector3 position = default, Quaternion rotation = default)
+    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, Vector3 position = default, Quaternion rotation = default, RpcPackage package = default)
+    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], position, rotation, package);
+    public static NetworkObject SpawnPrefabOnServer(ulong prefabHash, ulong ownerId, Vector3 position = default, Quaternion rotation = default, RpcPackage package = default)
     {
         if (!IsServer) throw new Exception("Not Server can't call SpawnPrefabOnServer");
         var networkObject = _Singleton.GetSpawnNetworkObject(prefabHash, position, rotation);
         networkObject.SpawnWithOwnership(ownerId);
+        _Singleton.PrefabInit(networkObject, package);
         return networkObject;
     }
-    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, ulong ownerId, Vector3 position = default, Quaternion rotation = default)
-    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], ownerId, position, rotation);
+    public static NetworkObject SpawnPrefabOnServer(NetworkPrefabName prefabName, ulong ownerId, Vector3 position = default, Quaternion rotation = default, RpcPackage package = default)
+    => SpawnPrefabOnServer(_Singleton.m_PrefabHashes[(int)prefabName], ownerId, position, rotation, package);
     public static void DespawnPrefabOnServer(NetworkObject networkObject)
     {
         if (!IsServer) throw new Exception("Not Server can't call DespawnPrefabOnServer");
@@ -195,6 +203,14 @@ namespace Prefab
         WingmanAmmo,
         NormalBullet,
         FlyingDisc,
+        CanvasCube,
+        SpawnerCube,
+        Bow,
+        Arrow,
+        Magcup,
+        CaffeChair,
+        CaffeTable,
+        GarbageCan,
     }
     public enum LocalPrefabName
     {
@@ -215,6 +231,7 @@ namespace Prefab
 }
 public class RpcPackage
 {
+    public bool IsEmpty => m_ByteList == null;
     List<byte> m_ByteList;
     byte[] m_Array;
     byte[] Array => m_Array ?? (m_Array = m_ByteList.ToArray());

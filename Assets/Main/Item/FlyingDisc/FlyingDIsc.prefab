@@ -19,6 +19,49 @@ MonoBehaviour:
   m_Force: 15
   m_FlyableLimit: 0.6
   m_DamageEventHandler: {fileID: 3095762232987876220}
+--- !u!114 &7769514511498400939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4881261784246760323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47412dd4959189419ebbf7e46a7bbdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HandShape:
+    ThumbRotation: 0
+    Thumb:
+      Spread: 0
+      Streached1: 0
+      Streached2: 0
+      Streached3: 0
+    Index:
+      Spread: 0
+      Streached1: 0
+      Streached2: 0
+      Streached3: 0
+    Middle:
+      Spread: 0
+      Streached1: 0
+      Streached2: 0
+      Streached3: 0
+    Ring:
+      Spread: 0
+      Streached1: 0
+      Streached2: 0
+      Streached3: 0
+    Little:
+      Spread: 0
+      Streached1: 0
+      Streached2: 0
+      Streached3: 0
+  m_HandOffset:
+    m_OffsetPosition: {x: 0.03, y: -0.15, z: 0.05}
+    m_OffsetEulerAngles: {x: 0, y: 0, z: -90}
+  m_UseWorldRotation: 0
 --- !u!65 &1785139196533873600
 BoxCollider:
   m_ObjectHideFlags: 0

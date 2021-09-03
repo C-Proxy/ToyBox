@@ -10,6 +10,16 @@ using CoinSpace;
 public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
 {
     static readonly int[] CoinValues = new[] { 1, 5, 10, 25, 50, 100, 500, 1000 };
+    static readonly MaterialName[][] m_MaterialList = new MaterialName[][]{
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//1
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//5
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//10
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//25
+        new[]{MaterialName.Green,MaterialName.Blue,MaterialName.Silver},//50
+        new[]{MaterialName.Silver,MaterialName.BlackMetal,MaterialName.Gold},//100
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//500
+        new[]{MaterialName.Red,MaterialName.Black,MaterialName.Silver},//1000
+    };
     override public LocalPrefabName PrefabName => LocalPrefabName.Coin;
     public int Value { private set; get; }
     MeshRenderer m_MeshRenderer;
@@ -35,9 +45,9 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
                     break;
             }
         });
-        m_RaycastEventHandler.SetEvent(info =>
+        m_RaycastEventHandler.SetEvent(interactAction: info =>
         {
-            switch (info.Interactor)
+            switch (info.EventSource)
             {
                 case HandGrabber grabber:
                     m_Parent.HandoverTopChildrenToGrabber(grabber, this);
@@ -50,20 +60,9 @@ public class Coin : StackChildBehaviour<CoinStacker, Coin, CoinInfo>
     }
     override public void OnSet(CoinInfo info)
     {
-        var coinage = info.Coinage;
-        m_MeshRenderer.materials = coinage switch
-        {
-            Coinage.One => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.Five => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.Ten => MaterialManager.GetMaterials(new[] { MaterialName.Black, MaterialName.Red, MaterialName.Silver }),
-            Coinage.Quater => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.Fifty => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.Hundred => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.FiveHundred => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            Coinage.Thousand => MaterialManager.GetMaterials(new[] { MaterialName.Red, MaterialName.Black, MaterialName.Silver }),
-            _ => MaterialManager.GetMaterials(new[] { MaterialName.White, MaterialName.White, MaterialName.Silver }),
-        };
-        Value = CoinValues[(int)coinage];
+        var index = (int)info.Coinage;
+        m_MeshRenderer.materials = MaterialManager.GetMaterials(m_MaterialList[index]);
+        Value = CoinValues[index];
         foreach (var textMesh in m_TextMeshes)
             textMesh.text = Value.ToString();
     }

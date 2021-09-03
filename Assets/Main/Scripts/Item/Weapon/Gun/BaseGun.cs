@@ -24,7 +24,7 @@ namespace GunSpace
         abstract protected bool IsShootable { get; }
         abstract protected bool IsReloadable { get; }
 
-        [SerializeField] bool m_Infinite = true;
+        [SerializeField] bool m_Infinite = false;
 
         override public void OnSpawn()
         {
@@ -76,7 +76,10 @@ namespace GunSpace
         virtual protected void OnShot() { }
         virtual protected void SpawnBullet()
         {
-            var obj = PrefabGenerator.SpawnPrefabOnServer(BulletName, OwnerClientId, m_MuzzleAnchor.position, m_MuzzleAnchor.rotation);
+            var package = new RpcPackage();
+            package.Append(m_BulletInfo.Velocity);
+            package.Append(m_BulletInfo.Lifetime);
+            var obj = PrefabGenerator.SpawnPrefabOnServer(BulletName, OwnerClientId, m_MuzzleAnchor.position, m_MuzzleAnchor.rotation, package);
             if (obj.TryGetComponent<BaseBullet>(out var bullet))
             {
                 if (!IsHost)

@@ -25,7 +25,7 @@ public class CoinPlate : BaseItem
                 switch (info)
                 {
                     case InteractEvent interactEvent:
-                        switch (interactEvent.Interactor)
+                        switch (interactEvent.EventSource)
                         {
                             case CoinStacker coinStacker:
                                 break;

@@ -20,7 +20,7 @@ public class PokerBoard : BaseItem
     override public void OnSpawn()
     {
         base.OnSpawn();
-        m_GrabToggleButton.SetEvent(info => IsLocked = info.Value);
+        m_GrabToggleButton.SetEvent(locked => IsLocked = locked);
         m_StabilizeButton.SetEvent(_ => StabilizeServerRpc());
     }
     [ServerRpc(RequireOwnership = false)]

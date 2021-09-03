@@ -748,7 +748,7 @@ MonoBehaviour:
   - {fileID: 1405288341}
   - {fileID: 1195245226}
   - {fileID: 1577371804}
-  m_GrabTarget: {fileID: 6807293824887606757}
+  m_GrabEventHandler: {fileID: 6807293824887606757}
 --- !u!65 &2098600908
 BoxCollider:
   m_ObjectHideFlags: 0

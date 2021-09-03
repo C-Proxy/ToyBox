@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using MLAPI.Serialization;
 using Prefab;
 using PlayingCardSpace;
@@ -31,9 +32,9 @@ public class PlayingCard : StackChildBehaviour<PlayingCardStacker, PlayingCard, 
             };
             info.Laser.SetSpriteAndText(iconId);
         });
-        m_RaycastEventHandler.SetEvent(info =>
+        m_RaycastEventHandler.SetEvent(interactAction: info =>
         {
-            switch (info.Interactor)
+            switch (info.EventSource)
             {
                 case HandGrabber grabber:
                     if (m_Parent.IsDeck)

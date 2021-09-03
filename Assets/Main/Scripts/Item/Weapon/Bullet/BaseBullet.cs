@@ -41,6 +41,16 @@ namespace GunSpace
             }
             transform.position += transform.forward * m_Velocity * Time.deltaTime;
         }
+        public RpcPackage DefaultPackage
+        {
+            get
+            {
+                var package = new RpcPackage();
+                package.Append(5f);
+                package.Append(5f);
+                return package;
+            }
+        }
         public void NetworkInit(RpcPackage package)
         {
             SetClientRpc(package.GetFloat(), package.GetFloat());
