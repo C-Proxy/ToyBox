@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using MLAPI;
+using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 using System.Linq;
 using UniRx;
 using UniRx.Triggers;
@@ -18,6 +21,30 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     PoseController m_PoseController;
     HandController m_LeftHandController, m_RightHandController;
 
+    CanvasCube m_CanvasCube;
+
+    [ServerRpc]
+    void ToggleCanvasServerRpc()
+    {
+        if (m_CanvasCube)
+        {
+            if (m_CanvasCube.IsLerping) return;
+
+            UniTask.Run(async () =>
+            {
+                await UniTask.SwitchToMainThread();
+                await m_CanvasCube.CloseAsync();
+                m_CanvasCube = null;
+            }, false, m_AliveCTS.Token);
+        }
+        else
+        {
+            var eyeAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
+            m_CanvasCube = PrefabGenerator.SpawnPrefabOnServer(NetworkPrefabName.CanvasCube, eyeAnchor.position + eyeAnchor.forward, Quaternion.LookRotation(eyeAnchor.forward)).GetComponent<CanvasCube>();
+        }
+
+    }
+
     public NetworkBehaviour FindNetworkBehaviour(ushort behaviourId)
     => GetNetworkBehaviour(behaviourId);
 
@@ -30,11 +57,15 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     // }
     private void Start()
     {
-        m_LeftHandController = new HandController(m_LeftHand, IsOwner);
-        m_RightHandController = new HandController(m_RightHand, IsOwner);
+        m_LeftHandController = new HandController(m_LeftHand);
+        m_RightHandController = new HandController(m_RightHand);
         m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
         if (IsOwner)
+        {
             OVRRigTraceAsync(m_AliveCTS.Token).Forget();
+            m_LeftHandController.SetControl(InputManager.CreateHandInput(InputManager.InputType.LeftController), ToggleCanvasServerRpc);
+            m_RightHandController.SetControl(InputManager.CreateHandInput(InputManager.InputType.RightController), ToggleCanvasServerRpc);
+        }
     }
     override public void OnSpawn()
     {
@@ -167,9 +198,8 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         public IObservable<HandShape> HandShapeAsObservable { private set; get; }
         List<IDisposable> m_Subscriptions;
 
-        public HandController(PlayerHand playerHand, bool isMine)
+        public HandController(PlayerHand playerHand)
         {
-            var isLeft = playerHand.IsLeft;
             var laser = playerHand.LaserTargetFinder;
 
             m_PlayerHand = playerHand;
@@ -219,64 +249,65 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                         item.SetOffsetPosition(grabber);
                 }),
 
-                //WispSpriteMove
-                // grabber.TargetAsObservable.Subscribe(target=>{
-                //     if(HandState==HandState.Wisp)
-                //         wispHand.SetSpritePosition(target?.transform.localPosition??default);
-                // }),
             });
 
-            if (isMine)
+
+        }
+        public void SetControl(InputManager.HandInput input, UnityAction canvasAction)
+        {
+            var grabber = m_PlayerHand.HandGrabber;
+
+            //WispMode
+            input.MainClick.AddListener(isDouble =>
             {
-                var inputType = isLeft ? InputManager.InputType.LeftController : InputManager.InputType.RightController;
-                var handInput = InputManager.CreateHandInput(inputType);
-
-                //WispMode
-                handInput.MainClick.AddListener(isDouble =>
+                if (isDouble)
+                    HandState = HandState != HandState.Wisp ? HandState.Wisp : HandState.Default;
+            });
+            //LaserMode
+            input.SubClick.AddListener(isDouble =>
+            {
+                if (isDouble)
+                    HandState = HandState != HandState.Laser ? HandState.Laser : HandState.Default;
+            });
+            //Grab
+            input.HandPress.AddListener(pressed =>
+            {
+                if (pressed)
                 {
-                    if (isDouble)
-                        HandState = HandState != HandState.Wisp ? HandState.Wisp : HandState.Default;
-                });
-                //LaseMode
-                handInput.SubClick.AddListener(isDouble =>
-                {
-                    if (isDouble)
-                        HandState = HandState != HandState.Laser ? HandState.Laser : HandState.Default;
-                });
-                //Grab
-                handInput.HandPress.AddListener(pressed =>
-                {
-                    if (pressed)
-                    {
-                        if (HandState != HandState.Laser)
-                            grabber.SendGrabEvent();
-                        else
-                            m_PlayerHand.Interact();
-                    }
+                    if (HandState != HandState.Laser)
+                        grabber.SendGrabEvent();
                     else
-                        grabber.Release();
-                });
-                handInput.IndexPress.AddListener(pressed =>
+                        m_PlayerHand.Interact();
+                }
+                else
+                    grabber.Release();
+            });
+            input.IndexPress.AddListener(pressed =>
+            {
+                if (pressed)
                 {
-                    if (pressed)
+                    if (HandState == HandState.Laser)
                     {
-                        if (HandState == HandState.Laser)
-                        {
-                            m_PlayerHand.Interact();
-                        }
+                        m_PlayerHand.Interact();
                     }
-                });
-
-                InputManager.HandInput controlInput = default;
-                //InputConnection
-                m_Subscriptions.Add(grabber.TargetAsObservable.Subscribe(target =>
-                {
-                    controlInput?.Destroy();
-                    var controllable = target as IControllable ?? this;
-                    controlInput = InputManager.CreateHandInput(inputType);
-                    controllable.Connect(controlInput);
-                }));
-            }
+                }
+            });
+            var cameraAnchor = Camera.main.transform;
+            input.StartPress.AddListener(pressed =>
+            {
+                if (pressed)
+                    canvasAction();
+            });
+            var inputType = m_PlayerHand.IsLeft ? InputManager.InputType.LeftController : InputManager.InputType.RightController;
+            InputManager.HandInput controlInput = default;
+            //InputConnection
+            m_Subscriptions.Add(grabber.TargetAsObservable.Subscribe(target =>
+            {
+                controlInput?.Destroy();
+                var controllable = target as IControllable ?? this;
+                controlInput = InputManager.CreateHandInput(inputType);
+                controllable.Connect(controlInput);
+            }));
         }
         public void Connect(InputManager.HandInput input)
         {
