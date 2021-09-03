@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Fluid
+    second: {fileID: 2100000, guid: 38e7fe21ca076674fae584484d0197ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Mugcup
     second: {fileID: 2100000, guid: ba5222afa77a69548b35d431f2a6d95e, type: 2}
   materials:
