@@ -1,14 +1,8 @@
 {
-    "name": "uDD-Scripts",
+    "name": "MechanimIK",
     "rootNamespace": "",
-    "references": [
-        "GUID:ba171b3dd2a51234ab864770f99741a5"
-    ],
-    "includePlatforms": [
-        "Editor",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
