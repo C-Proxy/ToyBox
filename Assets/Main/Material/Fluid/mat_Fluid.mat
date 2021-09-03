@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3727326476921050663
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 4
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_HoloSprite
-  m_Shader: {fileID: -6465566751694194690, guid: bf20d795c4e5caf45b76cc2d0c4a2842,
+  m_Name: mat_Fluid
+  m_Shader: {fileID: -6465566751694194690, guid: f4c5ebd75af896f468ea42ff708d9133,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -90,9 +77,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_6ef2ad3967c04124966f8f65f8dc5dfb: 0.1
-    - Vector1_f47ba356a3934875a568e5e53a1fe0e4: 400
-    - Vector1_fcf90b121e934a7f939b31c7e760ae35: 0.05
+    - Vector1_0ffbf0f62dd74968a351f8554c9fa05d: 0.07
+    - Vector1_6d9b57fce9e34de5bf5176d0ba79743b: 0.815
+    - Vector1_82c59a57beae47839a50fc5778d84171: 0.14
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -120,9 +107,22 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_534d292e98574efe961e814cc96dc93e: {r: 0, g: 0.78431374, b: 1, a: 0.1254902}
+    - Color_c96df71f5de8445698dfd9821af79f3c: {r: 0.15686275, g: 0, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &8423219151335335359
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4
