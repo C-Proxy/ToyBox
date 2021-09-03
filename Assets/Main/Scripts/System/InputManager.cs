@@ -46,6 +46,8 @@ public class InputManager : SingletonBehaviour<InputManager>
         readonly public UnityEvent<float> HandTrigger = new UnityEvent<float>();
         readonly public UnityEvent<bool> HandPress = new UnityEvent<bool>();
 
+        readonly public UnityEvent<bool> StartPress = new UnityEvent<bool>();
+
         void InvokeStickAxis(InputAction.CallbackContext context) => StickAxis.Invoke(context.ReadValue<Vector2>());
         void InvokeStickSingleClick(InputAction.CallbackContext context) => StickClick.Invoke(false);
         void InvokeStickDoubleClick(InputAction.CallbackContext context) => StickClick.Invoke(true);
@@ -70,6 +72,8 @@ public class InputManager : SingletonBehaviour<InputManager>
 
         void InvokeHandTrigger(InputAction.CallbackContext context) => HandTrigger.Invoke(context.ReadValue<float>());
         void InvokeHandPress(InputAction.CallbackContext context) => HandPress.Invoke(context.ReadValueAsButton());
+
+        void InvokeStartPress(InputAction.CallbackContext context) => StartPress.Invoke(context.ReadValueAsButton());
 
         public HandInput(IInputActions input)
         {
@@ -98,6 +102,8 @@ public class InputManager : SingletonBehaviour<InputManager>
 
             input.HandTrigger.performed += InvokeHandTrigger;
             input.HandPress.performed += InvokeHandPress;
+
+            input.StartPress.performed += InvokeStartPress;
         }
         public void Destroy()
         {
@@ -127,6 +133,8 @@ public class InputManager : SingletonBehaviour<InputManager>
             input.HandTrigger.performed -= InvokeHandTrigger;
             input.HandPress.performed -= InvokeHandPress;
 
+            input.StartPress.performed -= InvokeStartPress;
+
             StickAxis.RemoveAllListeners();
             StickClick.RemoveAllListeners();
             StickTouch.RemoveAllListeners();
@@ -146,6 +154,8 @@ public class InputManager : SingletonBehaviour<InputManager>
 
             HandTrigger.RemoveAllListeners();
             HandPress.RemoveAllListeners();
+
+            StartPress.RemoveAllListeners();
         }
     }
     public enum InputType
@@ -171,5 +181,6 @@ public class InputManager : SingletonBehaviour<InputManager>
         InputAction IndexTouch { get; }
         InputAction HandTrigger { get; }
         InputAction HandPress { get; }
+        InputAction StartPress { get; }
     }
 }

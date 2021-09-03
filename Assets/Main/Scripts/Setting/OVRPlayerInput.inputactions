@@ -132,6 +132,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "StartPress",
+                    "type": "Button",
+                    "id": "60306511-fc62-432d-871e-ed94effac21f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -431,6 +439,17 @@
                     "action": "IndexClick",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a6b9277-35c0-46e5-9011-c5987d6da62e",
+                    "path": "<OculusTouchController>{LeftHand}/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "StartPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -562,6 +581,14 @@
                     "name": "HandPress",
                     "type": "Button",
                     "id": "5b330d29-53bf-4889-ada3-6040b0106e68",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "StartPress",
+                    "type": "Button",
+                    "id": "4072a6b6-2776-472e-a102-fb201aaf4100",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)"
@@ -741,6 +768,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "IndexClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c89b4c48-d4b2-478d-a4e6-afc362e2b71b",
+                    "path": "<XRInputV1::Oculus::OculusTouchControllerRight>{RightHand}/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "StartPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

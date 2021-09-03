@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Main/Setting/OVRPlayerInput.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Main/Scripts/Setting/OVRPlayerInput.inputactions'
 
 using System;
 using System.Collections;
@@ -142,6 +142,14 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                     ""name"": ""HandPress"",
                     ""type"": ""Button"",
                     ""id"": ""fb999109-5cc2-4b50-af52-177de9694114"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
+                },
+                {
+                    ""name"": ""StartPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""60306511-fc62-432d-871e-ed94effac21f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)""
@@ -444,6 +452,17 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""IndexClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a6b9277-35c0-46e5-9011-c5987d6da62e"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""StartPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -575,6 +594,14 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                     ""name"": ""HandPress"",
                     ""type"": ""Button"",
                     ""id"": ""5b330d29-53bf-4889-ada3-6040b0106e68"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
+                },
+                {
+                    ""name"": ""StartPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""4072a6b6-2776-472e-a102-fb201aaf4100"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)""
@@ -754,6 +781,17 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""XR"",
                     ""action"": ""IndexClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c89b4c48-d4b2-478d-a4e6-afc362e2b71b"",
+                    ""path"": ""<XRInputV1::Oculus::OculusTouchControllerRight>{RightHand}/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""StartPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1347,6 +1385,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         m_LeftInput_IndexTouch = m_LeftInput.FindAction("IndexTouch", throwIfNotFound: true);
         m_LeftInput_HandTrigger = m_LeftInput.FindAction("HandTrigger", throwIfNotFound: true);
         m_LeftInput_HandPress = m_LeftInput.FindAction("HandPress", throwIfNotFound: true);
+        m_LeftInput_StartPress = m_LeftInput.FindAction("StartPress", throwIfNotFound: true);
         // RightInput
         m_RightInput = asset.FindActionMap("RightInput", throwIfNotFound: true);
         m_RightInput_StickAxis = m_RightInput.FindAction("StickAxis", throwIfNotFound: true);
@@ -1365,6 +1404,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         m_RightInput_IndexTouch = m_RightInput.FindAction("IndexTouch", throwIfNotFound: true);
         m_RightInput_HandTrigger = m_RightInput.FindAction("HandTrigger", throwIfNotFound: true);
         m_RightInput_HandPress = m_RightInput.FindAction("HandPress", throwIfNotFound: true);
+        m_RightInput_StartPress = m_RightInput.FindAction("StartPress", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1442,6 +1482,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_LeftInput_IndexTouch;
     private readonly InputAction m_LeftInput_HandTrigger;
     private readonly InputAction m_LeftInput_HandPress;
+    private readonly InputAction m_LeftInput_StartPress;
     public struct LeftInputActions : InputManager.IInputActions
     {
         private @OVRPlayerInput m_Wrapper;
@@ -1462,6 +1503,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         public InputAction @IndexTouch => m_Wrapper.m_LeftInput_IndexTouch;
         public InputAction @HandTrigger => m_Wrapper.m_LeftInput_HandTrigger;
         public InputAction @HandPress => m_Wrapper.m_LeftInput_HandPress;
+        public InputAction @StartPress => m_Wrapper.m_LeftInput_StartPress;
         public InputActionMap Get() { return m_Wrapper.m_LeftInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1519,6 +1561,9 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 @HandPress.started -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnHandPress;
                 @HandPress.performed -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnHandPress;
                 @HandPress.canceled -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnHandPress;
+                @StartPress.started -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnStartPress;
+                @StartPress.performed -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnStartPress;
+                @StartPress.canceled -= m_Wrapper.m_LeftInputActionsCallbackInterface.OnStartPress;
             }
             m_Wrapper.m_LeftInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -1571,6 +1616,9 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 @HandPress.started += instance.OnHandPress;
                 @HandPress.performed += instance.OnHandPress;
                 @HandPress.canceled += instance.OnHandPress;
+                @StartPress.started += instance.OnStartPress;
+                @StartPress.performed += instance.OnStartPress;
+                @StartPress.canceled += instance.OnStartPress;
             }
         }
     }
@@ -1595,6 +1643,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_RightInput_IndexTouch;
     private readonly InputAction m_RightInput_HandTrigger;
     private readonly InputAction m_RightInput_HandPress;
+    private readonly InputAction m_RightInput_StartPress;
     public struct RightInputActions : InputManager.IInputActions
     {
         private @OVRPlayerInput m_Wrapper;
@@ -1615,6 +1664,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         public InputAction @IndexTouch => m_Wrapper.m_RightInput_IndexTouch;
         public InputAction @HandTrigger => m_Wrapper.m_RightInput_HandTrigger;
         public InputAction @HandPress => m_Wrapper.m_RightInput_HandPress;
+        public InputAction @StartPress => m_Wrapper.m_RightInput_StartPress;
         public InputActionMap Get() { return m_Wrapper.m_RightInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1672,6 +1722,9 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 @HandPress.started -= m_Wrapper.m_RightInputActionsCallbackInterface.OnHandPress;
                 @HandPress.performed -= m_Wrapper.m_RightInputActionsCallbackInterface.OnHandPress;
                 @HandPress.canceled -= m_Wrapper.m_RightInputActionsCallbackInterface.OnHandPress;
+                @StartPress.started -= m_Wrapper.m_RightInputActionsCallbackInterface.OnStartPress;
+                @StartPress.performed -= m_Wrapper.m_RightInputActionsCallbackInterface.OnStartPress;
+                @StartPress.canceled -= m_Wrapper.m_RightInputActionsCallbackInterface.OnStartPress;
             }
             m_Wrapper.m_RightInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -1724,6 +1777,9 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
                 @HandPress.started += instance.OnHandPress;
                 @HandPress.performed += instance.OnHandPress;
                 @HandPress.canceled += instance.OnHandPress;
+                @StartPress.started += instance.OnStartPress;
+                @StartPress.performed += instance.OnStartPress;
+                @StartPress.canceled += instance.OnStartPress;
             }
         }
     }
@@ -1896,6 +1952,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         void OnIndexTouch(InputAction.CallbackContext context);
         void OnHandTrigger(InputAction.CallbackContext context);
         void OnHandPress(InputAction.CallbackContext context);
+        void OnStartPress(InputAction.CallbackContext context);
     }
     public interface IRightInputActions
     {
@@ -1915,6 +1972,7 @@ public class @OVRPlayerInput : IInputActionCollection, IDisposable
         void OnIndexTouch(InputAction.CallbackContext context);
         void OnHandTrigger(InputAction.CallbackContext context);
         void OnHandPress(InputAction.CallbackContext context);
+        void OnStartPress(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
