@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_Fluid
-  m_Shader: {fileID: -6465566751694194690, guid: f4c5ebd75af896f468ea42ff708d9133,
+  m_Name: mat_GreenTea
+  m_Shader: {fileID: -6465566751694194690, guid: e71cbc9ed28ccc445b20b95bcfb96813,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -77,9 +77,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_0ffbf0f62dd74968a351f8554c9fa05d: 0.07
+    - Vector1_0ffbf0f62dd74968a351f8554c9fa05d: 1
+    - Vector1_1: 0.809
+    - Vector1_1c91dd20bde546f596ebaf2aea04b6fc: 0.57
+    - Vector1_382be6c5399b46eda24cb32c596e0130: 0.74
+    - Vector1_5a0ea150f1a0452b8574d29ce266090d: 0.86
+    - Vector1_69ba38cee2ec424eb12694e239443936: 0.05
     - Vector1_6d9b57fce9e34de5bf5176d0ba79743b: 0.815
+    - Vector1_7eb464516bd5412dbe58b802fce75fff: 0
     - Vector1_82c59a57beae47839a50fc5778d84171: 0.14
+    - Vector1_97d890374c1045a09bb6468f27eb993d: 0.7
+    - Vector1_d15d97b004004f3cad6c9eefbbcd09bf: 8
+    - Vector1_da662719219d49b8b110a9ef3bcf82f8: 0.454
+    - Vector1_e7cc609b101648658c4eb3a7af38be78: 0.98
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -107,7 +117,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_c96df71f5de8445698dfd9821af79f3c: {r: 0.15686275, g: 0, b: 0, a: 1}
+    - Color_97decf93408b41e690f6eaf1297d704f: {r: 0.103773594, g: 0.01517444, b: 0.01517444,
+        a: 1}
+    - Color_bb29654c97c240598939312a68c983e1: {r: 1, g: 1, b: 1, a: 1}
+    - Color_c96df71f5de8445698dfd9821af79f3c: {r: 1, g: 0.9563875, b: 0.0047169924,
+        a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
