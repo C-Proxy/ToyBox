@@ -2818,7 +2818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b3400e99a62fb48a3080a6b26b827a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultMode: 2
+  m_DefaultMode: 3
 --- !u!114 &1856678909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3071,8 +3071,13 @@ MonoBehaviour:
     m_Root: {fileID: 756963293}
     m_LookAnchor: {fileID: 1184919705}
     m_EyeAnchor: {fileID: 1788946811}
-    m_LeftHandAnchor: {fileID: 1252216157}
-    m_RightHandAnchor: {fileID: 1502517028}
+    m_BodyAnchor: {fileID: 0}
+    m_LeftHand: {fileID: 1252216157}
+    m_RightHand: {fileID: 1502517028}
+    m_LeftElbow: {fileID: 0}
+    m_RightElbow: {fileID: 0}
+    m_LeftKnee: {fileID: 0}
+    m_RightKnee: {fileID: 0}
 --- !u!4 &1987745869 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 477154, guid: ce816f2e6abb0504092c23ed9b970dfd,

@@ -17,8 +17,9 @@ using Prefab;
 public class GamePlayer : GrabberBehaviour, INetworkHandler
 {
     [SerializeField] PlayerIKAnchor m_PlayerIKAnchor = default;
+    [SerializeField] Animator m_PlayerAnimator = default;
     [SerializeField] PlayerHand m_LeftHand = default, m_RightHand = default;
-    PoseController m_PoseController;
+    // PoseController m_PoseController;
     HandController m_LeftHandController, m_RightHandController;
 
     CanvasCube m_CanvasCube;
@@ -39,7 +40,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         }
         else
         {
-            var eyeAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
+            var eyeAnchor = m_PlayerIKAnchor.EyeAnchor;
             m_CanvasCube = PrefabGenerator.SpawnPrefabOnServer(NetworkPrefabName.CanvasCube, eyeAnchor.position + eyeAnchor.forward, Quaternion.LookRotation(eyeAnchor.forward)).GetComponent<CanvasCube>();
         }
 
@@ -49,17 +50,11 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
     => GetNetworkBehaviour(behaviourId);
 
     public IGrabber GetGrabber(int index) => m_Grabbers[index];
-    // override protected void Awake()
-    // {
-    //     base.Awake();
-    //     m_LeftHand.Init();
-    //     m_RightHand.Init();
-    // }
     private void Start()
     {
         m_LeftHandController = new HandController(m_LeftHand);
         m_RightHandController = new HandController(m_RightHand);
-        m_PoseController = new PoseController(GetComponent<Animator>(), m_PlayerIKAnchor, m_LeftHand, m_RightHand);
+        // m_PoseController = new PoseController(m_PlayerAnimator, m_PlayerIKAnchor, m_LeftHand, m_RightHand);
         if (IsOwner)
         {
             OVRRigTraceAsync(m_AliveCTS.Token).Forget();
@@ -80,27 +75,27 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         m_RightHand.OnPool();
         m_LeftHandController = null;
         m_RightHandController = null;
-        m_PoseController = null;
+        // m_PoseController = null;
         base.OnPool();
     }
-    private void OnAnimatorIK()
-    {
-        m_PoseController.ApplyIK();
-    }
+    // private void OnAnimatorIK()
+    // {
+    //     m_PoseController.ApplyIK();
+    // }
     async UniTaskVoid OVRRigTraceAsync(CancellationToken token)
     {
-        var rootAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
-        var lookAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
-        var eyeAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
-        var leftHandAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
-        var rightHandAnchor = m_PlayerIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+        var rootAnchor = m_PlayerIKAnchor.Root;
+        var lookAnchor = m_PlayerIKAnchor.LookAnchor;
+        var eyeAnchor = m_PlayerIKAnchor.EyeAnchor;
+        var leftHandAnchor = m_PlayerIKAnchor.LeftHand;
+        var rightHandAnchor = m_PlayerIKAnchor.RightHand;
 
         var ovrIKAnchor = OVRRigHandler.PlayerIKAnchor;
-        var ovrRoot = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Root);
-        var ovrLook = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
-        var ovrLeft = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LeftHand);
-        var ovrEye = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.Eye);
-        var ovrRight = ovrIKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.RightHand);
+        var ovrRoot = ovrIKAnchor.Root;
+        var ovrLook = ovrIKAnchor.LookAnchor;
+        var ovrEye = ovrIKAnchor.EyeAnchor;
+        var ovrLeft = ovrIKAnchor.LeftHand;
+        var ovrRight = ovrIKAnchor.RightHand;
         try
         {
             await UniTaskAsyncEnumerable.EveryUpdate().ForEachAsync(_ =>
@@ -116,80 +111,67 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
         }
         catch { }
     }
-    class PoseController
-    {
-        bool IsActive = false;
-        Animator m_Animator;
-        HandShape m_LeftHandShape = default, m_RightHandShape = default;
-        Transform m_LeftThumbTransform, m_RightThumbTransform, m_LeftTarget, m_RightTarget, m_LookTarget;
-        HumanPoseHandler m_HumanPoseHandler;
-        HandController m_LeftHandController, m_RightHandController;
-        HumanPose m_HumanPose;
+    // class PoseController
+    // {
+    //     bool IsActive = true;
+    //     Animator m_Animator;
+    //     HandShape m_LeftHandShape = default, m_RightHandShape = default;
+    //     Transform m_LeftThumbTransform, m_RightThumbTransform, m_BodyTarget, m_LeftTarget, m_RightTarget, m_LookTarget, m_LeftElbow, m_RightElbow;
+    //     HumanPoseHandler m_HumanPoseHandler;
+    //     HandController m_LeftHandController, m_RightHandController;
+    //     HumanPose m_HumanPose;
 
-        public PoseController(Animator animator, PlayerIKAnchor iKAnchor, PlayerHand leftHand, PlayerHand rightHand)
-        {
-            m_Animator = animator;
-            var thumb = FingerName.Thumb;
-            m_LeftThumbTransform = leftHand.HandTransform.GetFingerTransform(thumb, 0);
-            m_RightThumbTransform = rightHand.HandTransform.GetFingerTransform(thumb, 0);
+    //     public PoseController(Animator animator, PlayerIKAnchor iKAnchor, PlayerHand leftHand, PlayerHand rightHand)
+    //     {
+    //         m_Animator = animator;
+    //         var thumb = FingerName.Thumb;
+    //         m_LeftThumbTransform = leftHand.HandTransform.GetFingerTransform(thumb, 0);
+    //         m_RightThumbTransform = rightHand.HandTransform.GetFingerTransform(thumb, 0);
 
-            m_LeftTarget = leftHand.HandFollower.transform;
-            m_RightTarget = rightHand.HandFollower.transform;
-            m_LookTarget = iKAnchor.GetIKAnchor(PlayerIKAnchor.AnchorBone.LookTarget);
+    //         m_BodyTarget = iKAnchor.BodyAnchor;
+    //         m_LeftTarget = leftHand.HandFollower.transform;
+    //         m_RightTarget = rightHand.HandFollower.transform;
+    //         m_LookTarget = iKAnchor.LookAnchor;
+    //         m_LeftElbow = iKAnchor.LeftElbow;
+    //         m_RightElbow = iKAnchor.RightElbow;
 
-            m_HumanPoseHandler = new HumanPoseHandler(animator.avatar, animator.transform);
+    //         m_HumanPoseHandler = new HumanPoseHandler(animator.avatar, animator.transform);
 
-            leftHand.HandShapeAsObservable.Subscribe(shape => m_LeftHandShape = shape).AddTo(leftHand);
-            rightHand.HandShapeAsObservable.Subscribe(shape => m_RightHandShape = shape).AddTo(rightHand);
-        }
-        void OverwriteHandPose(HandShape hand, ref int id)
-        {
-            OverwriteFingerPose(hand.Thumb, ref id);
-            OverwriteFingerPose(hand.Index, ref id);
-            OverwriteFingerPose(hand.Middle, ref id);
-            OverwriteFingerPose(hand.Ring, ref id);
-            OverwriteFingerPose(hand.Little, ref id);
-        }
-        public void OverwriteThumbRotate()
-        {
-            m_LeftThumbTransform.Rotate(Vector3.left, m_LeftHandShape.ThumbRotation * 90f, Space.Self);
-            m_RightThumbTransform.Rotate(Vector3.left, m_RightHandShape.ThumbRotation * 90f, Space.Self);
-        }
-        void OverwriteFingerPose(Finger finger, ref int id)
-        {
-            m_HumanPose.muscles[id++] = finger.Streached1;
-            m_HumanPose.muscles[id++] = finger.Spread;
-            m_HumanPose.muscles[id++] = finger.Streached2;
-            m_HumanPose.muscles[id++] = finger.Streached3;
-        }
+    //         leftHand.HandShapeAsObservable.Subscribe(shape => m_LeftHandShape = shape).AddTo(leftHand);
+    //         rightHand.HandShapeAsObservable.Subscribe(shape => m_RightHandShape = shape).AddTo(rightHand);
+    //     }
 
-        private void LateUpdate()
-        {
-            if (IsActive)
-            {
-                m_HumanPoseHandler.GetHumanPose(ref m_HumanPose);
-                int id = 55;
-                OverwriteHandPose(m_LeftHandShape, ref id);
-                OverwriteHandPose(m_RightHandShape, ref id);
-                m_HumanPoseHandler.SetHumanPose(ref m_HumanPose);
-                OverwriteThumbRotate();
-            }
-        }
-        public void ApplyIK()
-        {
-            if (!IsActive) return;
-            m_Animator.SetLookAtWeight(1, 0.2f, 0.9f, 0.7f);
-            m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-            m_Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-            m_Animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            m_Animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            m_Animator.SetIKPosition(AvatarIKGoal.LeftHand, m_LeftTarget.position);
-            m_Animator.SetIKPosition(AvatarIKGoal.RightHand, m_RightTarget.position);
-            m_Animator.SetIKRotation(AvatarIKGoal.LeftHand, m_LeftTarget.rotation);
-            m_Animator.SetIKRotation(AvatarIKGoal.RightHand, m_RightTarget.rotation);
-            m_Animator.SetLookAtPosition(m_LookTarget.position);
-        }
-    }
+
+    //     // private void LateUpdate()
+    //     // {
+    //     //     if (!IsActive) return;
+    //     //     m_HumanPoseHandler.GetHumanPose(ref m_HumanPose);
+    //     //     int id = 55;
+    //     //     OverwriteHandPose(m_LeftHandShape, ref id);
+    //     //     OverwriteHandPose(m_RightHandShape, ref id);
+    //     //     m_HumanPoseHandler.SetHumanPose(ref m_HumanPose);
+    //     //     OverwriteThumbRotate();
+    //     // }
+    //     // public void ApplyIK()
+    //     // {
+    //     //     if (!IsActive) return;
+    //     //     m_Animator.SetLookAtWeight(1, 0.2f, 0.9f, 0.7f);
+    //     //     m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+    //     //     m_Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+    //     //     m_Animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+    //     //     m_Animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+    //     //     m_Animator.bodyPosition = m_BodyTarget.position;
+    //     //     m_Animator.bodyRotation = m_BodyTarget.rotation;
+    //     //     m_Animator.SetIKPosition(AvatarIKGoal.LeftHand, m_LeftTarget.position);
+    //     //     m_Animator.SetIKPosition(AvatarIKGoal.RightHand, m_RightTarget.position);
+    //     //     m_Animator.SetIKRotation(AvatarIKGoal.LeftHand, m_LeftTarget.rotation);
+    //     //     m_Animator.SetIKRotation(AvatarIKGoal.RightHand, m_RightTarget.rotation);
+    //     //     m_Animator.SetLookAtPosition(m_LookTarget.position);
+    //     //     m_Animator.SetIKHintPosition(AvatarIKHint.LeftElbow, m_LeftElbow.position);
+    //     //     m_Animator.SetIKHintPosition(AvatarIKHint.RightElbow, m_RightElbow.position);
+
+    //     // }
+    // }
     class HandController : IControllable
     {
         PlayerHand m_PlayerHand;
@@ -206,13 +188,13 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
             var wispHand = m_PlayerHand.WispHand;
             var grabber = playerHand.HandGrabber;
 
-            HandShapeAsObservable = grabber.TargetAsObservable.Select(target =>
-            {
-                if (target != null)
-                    return target.HandShapeAsObservable;
-                else
-                    return m_PlayerHand.HandShapeAsObservable;
-            }).Switch().Publish().RefCount();
+            // HandShapeAsObservable = grabber.TargetAsObservable.Select(target =>
+            // {
+            //     if (target != null)
+            //         return target.HandShapeAsObservable;
+            //     else
+            //         return m_PlayerHand.HandShapeAsObservable;
+            // }).Switch().Publish().RefCount();
 
             CancellationTokenSource traceCTS = default;
             m_Subscriptions = new List<IDisposable>(new[]{
@@ -327,77 +309,21 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
 [Serializable]
 public struct PlayerIKAnchor
 {
-    [SerializeField] Transform m_Root, m_LookAnchor, m_EyeAnchor, m_LeftHandAnchor, m_RightHandAnchor;
-    public PlayerIKAnchor(Transform root, Transform lookAnchor, Transform eyeAnchor, Transform leftHandAnchor, Transform rightHandAnchor)
-    {
-        m_Root = root;
-        m_LookAnchor = lookAnchor;
-        m_EyeAnchor = eyeAnchor;
-        m_LeftHandAnchor = leftHandAnchor;
-        m_RightHandAnchor = rightHandAnchor;
-    }
-    public Transform GetIKAnchor(AnchorBone ikBone)
-    {
-        switch (ikBone)
-        {
-            case AnchorBone.Root:
-                return m_Root;
-            case AnchorBone.LookTarget:
-                return m_LookAnchor;
-            case AnchorBone.Eye:
-                return m_EyeAnchor;
-            case AnchorBone.LeftHand:
-                return m_LeftHandAnchor;
-            case AnchorBone.RightHand:
-                return m_RightHandAnchor;
-        }
-        return default;
-    }
-    public Transform[] ToArray() => new Transform[] { m_Root, m_LookAnchor, m_LeftHandAnchor, m_RightHandAnchor };
-
-    public enum AnchorBone
-    {
-        Root,
-        LookTarget,
-        Eye,
-        LeftHand,
-        RightHand,
-    }
+    [SerializeField] Transform m_Root, m_LookAnchor, m_EyeAnchor, m_BodyAnchor, m_LeftHand, m_RightHand, m_LeftElbow, m_RightElbow, m_LeftKnee, m_RightKnee;
+    public Transform Root => m_Root;
+    public Transform LookAnchor => m_LookAnchor;
+    public Transform EyeAnchor => m_EyeAnchor;
+    public Transform BodyAnchor => m_BodyAnchor;
+    public Transform LeftHand => m_LeftHand;
+    public Transform RightHand => m_RightHand;
+    public Transform LeftElbow => m_LeftElbow;
+    public Transform RightElbow => m_RightElbow;
+    public Transform LeftKnee => m_LeftKnee;
+    public Transform RightKnee => m_RightKnee;
 }
 
-[Serializable]
-public struct Finger
-{
-    [Range(-2f, 2f)] public float Spread, Streached1, Streached2, Streached3;
-    public Finger(float spread, float streached1, float streached2, float streached3)
-    {
-        Spread = spread;
-        Streached1 = streached1;
-        Streached2 = streached2;
-        Streached3 = streached3;
-    }
-    public override string ToString()
-    => $"({Spread}f,{Streached1}f,{Streached2}f,{Streached3}f)";
-    public static Finger Lerp(Finger finger1, Finger finger2, float lerp)
-    => new Finger(Mathf.Lerp(finger1.Spread, finger2.Spread, lerp), Mathf.Lerp(finger1.Streached1, finger2.Streached1, lerp), Mathf.Lerp(finger1.Streached2, finger2.Streached2, lerp), Mathf.Lerp(finger1.Streached3, finger2.Streached3, lerp));
-}
-[Serializable]
-public struct HandShape
-{
-    [Range(-1f, 1f)] public float ThumbRotation;
-    public Finger Thumb, Index, Middle, Ring, Little;
-    public HandShape(Finger thumb, Finger index, Finger middle, Finger ring, Finger little, float thumbRot = 0f)
-    {
-        Thumb = thumb;
-        Index = index;
-        Middle = middle;
-        Ring = ring;
-        Little = little;
-        ThumbRotation = thumbRot;
-    }
-    public static HandShape Lerp(HandShape hand1, HandShape hand2, float lerp)
-    => new HandShape(Finger.Lerp(hand1.Thumb, hand2.Thumb, lerp), Finger.Lerp(hand1.Index, hand2.Index, lerp), Finger.Lerp(hand1.Middle, hand2.Middle, lerp), Finger.Lerp(hand1.Ring, hand2.Ring, lerp), Finger.Lerp(hand1.Little, hand2.Little, lerp));
-}
+
+
 [Serializable]
 public class HandShapeReactiveProperty : ReactiveProperty<HandShape>
 {

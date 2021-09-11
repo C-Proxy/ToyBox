@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 
 public class PlayerHand : BaseHand, IHumanHand
 {
@@ -21,8 +23,8 @@ public class PlayerHand : BaseHand, IHumanHand
     public HandTransform HandTransform => m_HandTransform;
     Animator m_Animator;
     public Animator Animator => m_Animator;
-    [SerializeField] HandShapeReactiveProperty m_HandShapeRP = new HandShapeReactiveProperty();
-    public IObservable<HandShape> HandShapeAsObservable => m_HandShapeRP;
+    [SerializeField] HandShape m_HandShape = default;
+    public IUniTaskAsyncEnumerable<HandShape> HandShapeAsyncEnumerable { private set; get; }
     override public void Init()
     {
         base.Init();
@@ -31,6 +33,25 @@ public class PlayerHand : BaseHand, IHumanHand
         m_HandGrabber.Init();
         m_Laser.Init();
         m_Animator = GetComponent<Animator>();
+        HandShapeAsyncEnumerable = UniTaskAsyncEnumerable.Create<HandShape>(async (writer, token) =>
+        {
+            CancellationTokenSource tokenSource = default;
+            await foreach (var handShapeHandler in UniTaskAsyncEnumerable.EveryValueChanged(m_HandGrabber, grabber => grabber.Target?.HandShapeHandler).WithCancellation(token))
+            {
+                tokenSource?.Cancel();
+                tokenSource = new CancellationTokenSource();
+                if (handShapeHandler)
+                {
+                    await foreach (var handShape in handShapeHandler.HandShapeAsyncEnumerable.WithCancellation(tokenSource.Token))
+                        await writer.YieldAsync(handShape);
+                }
+                else
+                {
+                    await foreach (var handShape in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.LastPostLateUpdate).WithCancellation(tokenSource.Token))
+                        await writer.YieldAsync(m_HandShape);
+                }
+            }
+        });
     }
     override public void OnSpawn()
     {

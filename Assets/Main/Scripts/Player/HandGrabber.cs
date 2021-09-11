@@ -7,6 +7,7 @@ using MLAPI;
 using MLAPI.NetworkVariable;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 
 public class HandGrabber : BaseGrabber, ISingleGrabber
 {
@@ -22,6 +23,9 @@ public class HandGrabber : BaseGrabber, ISingleGrabber
     ReactiveProperty<IGrabbable> m_TargetRP = new ReactiveProperty<IGrabbable>();
     public IObservable<IGrabbable> TargetAsObservable => m_TargetRP;
     public IGrabbable Target { private set { m_TargetRP.Value = value; } get { return m_TargetRP.Value; } }
+
+    public IUniTaskAsyncEnumerable<IGrabbable> TargetAsyncEnumerable { private set; get; }
+
     override public void SetTarget(IGrabbable grabbable) => Target = grabbable;
     override public void RemoveTarget(IGrabbable grabbable)
     {

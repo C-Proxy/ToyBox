@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
-using UniRx.Triggers;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 
 public class HandShapeHandler : MonoBehaviour
 {
     [SerializeField] HandShape m_HandShape = default;
-    public IObservable<HandShape> HandShapeAsObservable;
+    public HandShape HandShape => m_HandShape;
+    public IUniTaskAsyncEnumerable<HandShape> HandShapeAsyncEnumerable { private set; get; }
     [SerializeField] HandOffset m_HandOffset = default;
     public HandOffset HandOffset => m_HandOffset;
     [SerializeField] bool m_UseWorldRotation = default;
@@ -16,7 +17,13 @@ public class HandShapeHandler : MonoBehaviour
 
     private void Awake()
     {
-        HandShapeAsObservable = this.UpdateAsObservable().Select(_ => m_HandShape).Publish().RefCount();
+        HandShapeAsyncEnumerable = UniTaskAsyncEnumerable.Create<HandShape>(async (writer, token) =>
+        {
+            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.LastPostLateUpdate).WithCancellation(token))
+            {
+                await writer.YieldAsync(m_HandShape);
+            }
+        });
     }
 }
 [Serializable]

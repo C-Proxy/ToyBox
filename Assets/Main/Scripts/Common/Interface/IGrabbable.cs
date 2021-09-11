@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MLAPI.Messaging;
+using Cysharp.Threading.Tasks;
 
 public interface IGrabbable
 {
@@ -10,7 +10,6 @@ public interface IGrabbable
     IGrabber Parent { get; }
     Transform transform { get; }
     HandShapeHandler HandShapeHandler { get; }
-    IObservable<HandShape> HandShapeAsObservable { get; }
     bool RequestChangeParent(IGrabber parent);
     void Release(IGrabber parent);
     void ForceRelease();

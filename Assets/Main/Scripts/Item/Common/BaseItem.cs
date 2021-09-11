@@ -18,7 +18,7 @@ abstract public class BaseItem : NetworkPoolableParent, IGrabbable, IEventSource
     NetworkBehaviour ParentBehaviour { set { m_ParentBehaviourNV.Value = value; } get { return m_ParentBehaviourNV.Value; } }
     HandShapeHandler m_HandShapeHandler;
     public HandShapeHandler HandShapeHandler => m_HandShapeHandler;
-    public IObservable<HandShape> HandShapeAsObservable => m_HandShapeHandler.HandShapeAsObservable;
+    public IUniTaskAsyncEnumerable<HandShape> HandShapeAsyncEnumerable{ private set; get; }
     [SerializeField] bool m_IsReversible;
     [SerializeField] Collider[] m_Colliders = default;
     protected Rigidbody m_Rigidbody;
