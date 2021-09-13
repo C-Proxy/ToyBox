@@ -13,6 +13,7 @@ using UniRx.Triggers;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using Prefab;
+using InputSpace;
 
 public class GamePlayer : GrabberBehaviour, INetworkHandler
 {
@@ -264,6 +265,7 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                 else
                     grabber.Release();
             });
+            //Interact
             input.IndexPress.AddListener(pressed =>
             {
                 if (pressed)
@@ -274,12 +276,28 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
                     }
                 }
             });
+            //Stick
+            var ovrRig = OVRRigHandler.Singleton;
+            input.StickAxis.AddListener(axis =>
+            {
+                switch (m_PlayerHand.StickControl)
+                {
+                    case StickControl.Move:
+                        ovrRig.Move(axis);
+                        break;
+                    case StickControl.Rotate:
+                        ovrRig.Rotate(axis.x);
+                        break;
+                }
+            });
+            //Menu
             var cameraAnchor = Camera.main.transform;
             input.StartPress.AddListener(pressed =>
             {
                 if (pressed)
                     canvasAction();
             });
+
             var inputType = m_PlayerHand.IsLeft ? InputManager.InputType.LeftController : InputManager.InputType.RightController;
             InputManager.HandInput controlInput = default;
             //InputConnection
@@ -309,27 +327,14 @@ public class GamePlayer : GrabberBehaviour, INetworkHandler
 [Serializable]
 public struct PlayerIKAnchor
 {
-    [SerializeField] Transform m_Root, m_LookAnchor, m_EyeAnchor, m_BodyAnchor, m_LeftHand, m_RightHand, m_LeftElbow, m_RightElbow, m_LeftKnee, m_RightKnee;
+    [SerializeField] Transform m_Root, m_LookAnchor, m_EyeAnchor, m_LeftHand, m_RightHand;
     public Transform Root => m_Root;
     public Transform LookAnchor => m_LookAnchor;
     public Transform EyeAnchor => m_EyeAnchor;
-    public Transform BodyAnchor => m_BodyAnchor;
     public Transform LeftHand => m_LeftHand;
     public Transform RightHand => m_RightHand;
-    public Transform LeftElbow => m_LeftElbow;
-    public Transform RightElbow => m_RightElbow;
-    public Transform LeftKnee => m_LeftKnee;
-    public Transform RightKnee => m_RightKnee;
 }
 
-
-
-[Serializable]
-public class HandShapeReactiveProperty : ReactiveProperty<HandShape>
-{
-    public HandShapeReactiveProperty() { }
-    public HandShapeReactiveProperty(HandShape handShape) : base(handShape) { }
-}
 [Serializable]
 public struct HandleAnchor
 {

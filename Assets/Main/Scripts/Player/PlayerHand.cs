@@ -6,11 +6,14 @@ using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+using InputSpace;
 
 public class PlayerHand : BaseHand, IHumanHand
 {
     [SerializeField] bool m_IsLeft;
     public bool IsLeft => m_IsLeft;
+    [SerializeField] StickControl m_StickControl = default;
+    public StickControl StickControl => m_StickControl;
     [SerializeField] protected WispHand m_WispHand = default;
     public WispHand WispHand => m_WispHand;
     HandGrabber m_HandGrabber;
@@ -62,4 +65,14 @@ public class PlayerHand : BaseHand, IHumanHand
     }
     public void EnableLaser(bool enable) => m_Laser.gameObject.SetActive(enable);
     public void Interact() => LaserTargetFinder.Target?.SendEvent(new InteractEvent(m_HandGrabber.Target as IEventSource ?? m_HandGrabber));
+
+
+}
+namespace InputSpace
+{
+    public enum StickControl
+    {
+        Move,
+        Rotate,
+    }
 }
