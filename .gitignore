@@ -77,3 +77,5 @@ crashlytics-build.properties
 !*.*.meta
 *.blend1
 *.blend1.meta
+*.aup
+*.au
