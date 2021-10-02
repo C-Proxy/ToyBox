@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RaycastEventHandler : BaseEventReceiver, IRaycastEventHandler
+public class RaycastEventHandler : BaseEventReceiver<RaycastEvent>, IRaycastEventHandler
 {
     UnityEvent<FocusEvent> m_FocusEvent = new UnityEvent<FocusEvent>();
     UnityEvent<InteractEvent> m_InteractEvent = new UnityEvent<InteractEvent>();
@@ -16,6 +16,21 @@ public class RaycastEventHandler : BaseEventReceiver, IRaycastEventHandler
         m_FocusEvent.RemoveAllListeners();
         m_InteractEvent.RemoveAllListeners();
         m_DamageEvent.RemoveAllListeners();
+    }
+    override public void SendEvent(RaycastEvent info)
+    {
+        switch (info)
+        {
+            case FocusEvent focusInfo:
+                m_FocusEvent?.Invoke(focusInfo);
+                break;
+            case InteractEvent interactInfo:
+                m_InteractEvent?.Invoke(interactInfo);
+                break;
+            case DamageEvent damageInfo:
+                m_DamageEvent?.Invoke(damageInfo);
+                break;
+        }
     }
     public void SendEvent(FocusEvent info) => m_FocusEvent.Invoke(info);
     public void SendEvent(InteractEvent info) => m_InteractEvent.Invoke(info);

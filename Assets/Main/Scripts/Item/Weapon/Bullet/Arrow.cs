@@ -8,6 +8,7 @@ using UniRx.Triggers;
 using MLAPI.NetworkVariable;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+using Cysharp.Threading.Tasks.Triggers;
 
 public class Arrow : BaseItem, IDamageSource
 {

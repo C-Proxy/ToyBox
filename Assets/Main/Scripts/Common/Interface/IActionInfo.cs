@@ -35,6 +35,16 @@ public class ValueEvent<T> : ActionEvent
         Value = value;
     }
 }
+public class ThermoEvent : ActionEvent
+{
+    public readonly float Intensity;
+    public readonly float Temparature;
+    public ThermoEvent(IEventSource source, float intensity, float temparature) : base(source)
+    {
+        Intensity = intensity;
+        Temparature = temparature;
+    }
+}
 public class FocusEvent : RaycastEvent
 {
     public LaserTargetFinder Laser => EventSource as LaserTargetFinder;
@@ -82,6 +92,24 @@ public interface IEventReceivable<T>
 public interface IEventHandler<T> : IEventReceivable<T>
 {
     void SetEvent(UnityAction<T> action);
+    void RemoveEvent();
+}
+public interface IEventHandler<TReceive, TEvent> : IEventReceivable<TReceive>
+{
+    void SetEvent(UnityAction<TEvent> action);
+    void RemoveEvent();
+}
+public interface IEventHandler<TReceive, TEvent1, TEvent2> : IEventReceivable<TReceive>
+{
+    void SetEvent(UnityAction<TEvent1> action);
+    void SetEvent(UnityAction<TEvent2> action);
+    void RemoveEvent();
+}
+public interface IEventHandler<TReceive, TEvent1, TEvent2, TEvent3> : IEventReceivable<TReceive>
+{
+    void SetEvent(UnityAction<TEvent1> action);
+    void SetEvent(UnityAction<TEvent2> action);
+    void SetEvent(UnityAction<TEvent3> action);
     void RemoveEvent();
 }
 public interface IRaycastReceivable : IEventReceivable<InteractEvent>, IEventReceivable<FocusEvent>, IEventReceivable<DamageEvent> { }
